@@ -1,5 +1,5 @@
 <?php
-//require_once(UKM_HOME.'inc/toolkit.inc.php');
+require_once('UKM/inc/toolkit.inc.php');
 require_once('liste.inc.php');
 function UKMdeltakere_list() {
 	global $tittellose_innslag;

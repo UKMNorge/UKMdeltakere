@@ -1,5 +1,5 @@
 <?php
-require_once(UKM_HOME.'inc/toolkit.inc.php');
+require_once('UKM/inc/toolkit.inc.php');
 
 function UKMdeltakere_ajax_view($c){
 $viser_forestilling = strpos($_SERVER['HTTP_REFERER'],'?page=UKMprogram_admin')!==false;
