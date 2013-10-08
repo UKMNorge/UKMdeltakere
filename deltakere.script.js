@@ -68,7 +68,7 @@ function innslagVisTittelloseDetaljer(jqobj) {
 
 function getDetaljer(control,view,bid,container,id2){
 	//jQuery('.innslag .detaljer').html('');
-	jQuery('#'+container).html('<span class="loading"><img src="/UKM/ico/loading.gif" width="32" /><span>Laster inn...</span></span>');
+	jQuery('#'+container).html('<span class="loading"><img src="//ico.ukm.no/loading.gif" width="32" /><span>Laster inn...</span></span>');
 	var data = {
 		action: 'UKMdeltakere_gui',
 		c: control,
