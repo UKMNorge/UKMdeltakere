@@ -1,6 +1,6 @@
 <?php
-UKM_loader('api/innslag.class');
-UKM_loader('api/tittel.class');
+require_once('UKM/innslag.class.php');
+require_once('UKM/tittel.class.php');
 function UKMdeltakere_ajax_controller($t_id){
 	
 	

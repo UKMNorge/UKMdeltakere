@@ -1,5 +1,5 @@
 <?php
-UKM_loader('api/innslag.class');
+require_once('UKM/innslag.class.php');
 function UKMdeltakere_ajax_controller($bid){
 	$place = new monstring(get_option('pl_id'));
 	$kategorier = array('annet'=>'Annet på scenen','dans'=>'Dans','litteratur'=>'Litteratur','musikk'=>'Musikk','teater'=>'Teater');

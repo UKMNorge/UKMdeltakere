@@ -1,7 +1,6 @@
 <?php
-require_once(UKM_HOME.'inc/toolkit.inc.php');
+//require_once(UKM_HOME.'inc/toolkit.inc.php');
 require_once('liste.inc.php');
-UKM_loader('private');
 function UKMdeltakere_list() {
 	global $tittellose_innslag;
 	$place = new monstring(get_option('pl_id'));

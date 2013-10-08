@@ -1,5 +1,7 @@
 <?php
-UKM_loader('api/innslag.class|api/forestilling.class');
+require_once('UKM/innslag.class.php');
+require_once('UKM/forestilling.class.php');
+
 function UKMdeltakere_ajax_controller($bid){
 	$innslag = new innslag($bid,false);
 	if(get_option('site_type')!='kommune')

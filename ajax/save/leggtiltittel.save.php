@@ -1,8 +1,8 @@
 <?php
-require_once( $_SERVER['DOCUMENT_ROOT'] . '/UKM/subdomains/pamelding/include/validation.inc.php' );
+require_once('UKM/inc/validate_innslag.inc.php');
 
 function UKMdeltakere_save() {
-	UKM_loader('api/tittel.class');
+	require_once('UKM/tittel.class.php');
 	
 	$title = new tittel(false, $_POST['bt_form']);
 	$title->create($_POST['b_id']);

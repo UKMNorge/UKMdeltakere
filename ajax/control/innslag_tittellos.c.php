@@ -1,5 +1,5 @@
 <?php
-UKM_loader('api/innslag.class');
+require_once('UKM/innslag.class.php');
 function UKMdeltakere_ajax_controller($p_id){
 	$place = new monstring(get_option('pl_id'));
 	$b_id = $_POST['i'];

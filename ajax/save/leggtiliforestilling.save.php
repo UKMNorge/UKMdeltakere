@@ -1,6 +1,6 @@
 <?php
 function UKMdeltakere_save() {
-	UKM_loader('api/forestilling.class');
+	require_once('UKM/forestilling.class.php');
 
 	$concert = new concert($_POST['c_id']);
 	$concert->addBand($_POST['b_id']);
