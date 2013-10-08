@@ -12,6 +12,7 @@ Author URI: http://www.ukm-norge.no
 $tittellose_innslag = array(4,5,8,9);
 if(is_admin()) {
 	require_once('UKM/innslag.class.php');
+	require_once('UKM/inc/phaseout.ico.inc.php');
 	global $blog_id;
 	if($blog_id != 1)
 		add_action('admin_menu', 'UKMdeltakere_menu',200);
