@@ -11,6 +11,7 @@ Author URI: http://www.ukm-norge.no
 
 $tittellose_innslag = array(4,5,8,9);
 if(is_admin()) {
+	require_once('UKM/innslag.class.php');
 	global $blog_id;
 	if($blog_id != 1)
 		add_action('admin_menu', 'UKMdeltakere_menu',200);
@@ -32,7 +33,6 @@ function UKMdeltakere_addnew(){
 			header("Location: ".admin_url('admin.php?page=UKMdeltakere&addnewforwarded='.$_GET['addnew']));
 			exit();
 		} else {
-			UKM_loader('private');
 			if(get_option('site_type')=='kommune') {
 				$m = new monstring(get_option('pl_id'));
 				$kommuner = $m->g('kommuner');
