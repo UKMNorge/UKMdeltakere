@@ -17,6 +17,7 @@ if(is_admin()) {
 	if($blog_id != 1)
 		add_action('admin_menu', 'UKMdeltakere_menu',200);
 
+	require_once('UKM/inc/toolkit.inc.php');
 	require_once('ajax.deltakere.php');
 	add_action('wp_ajax_UKMdeltakere_gui', 'UKMdeltakere_gui');
 	
