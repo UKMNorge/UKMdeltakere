@@ -122,7 +122,7 @@ function UKMdeltakere_menu() {
 }
 ## INCLUDE SCRIPTS
 function UKMdeltakere_scriptsandstyles() {
-	wp_enqueue_style( 'jquery-ui-style', WP_PLUGIN_URL .'/UKMNorge/js/css/jquery-ui-1.7.3.custom.css');
+	wp_enqueue_style( 'jquery-ui-style', WP_PLUGIN_URL .'/UKMresources/css/jquery-ui-1.7.3.custom.css');
 	wp_enqueue_style( 'jquery-ui-stylefont', WP_PLUGIN_URL .'/UKMdeltakere/deltakere.style.css');
 
 	wp_enqueue_script('jquery');

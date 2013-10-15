@@ -1,6 +1,5 @@
 <?php
-require_once( $_SERVER['DOCUMENT_ROOT'] . '/UKM/pamelding/stat_realtime.inc.php' );
-require_once( $_SERVER['DOCUMENT_ROOT'] . '/UKM/subdomains/pamelding/include/validation.inc.php' );
+require_once('UKM/inc/validate_innslag.inc.php');
 
 function UKMdeltakere_save() {
 	// Ny person fra skjema
