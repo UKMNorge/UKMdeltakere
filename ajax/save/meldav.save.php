@@ -11,7 +11,7 @@ function UKMdeltakere_save() {
 	} else {
 		$res = $inn->delete();
 	}
-	stat_realtime_avmeld($inn->g('kommune'), $inn->g('b_id'), $inn->g('season'));
+//	stat_realtime_avmeld($inn->g('kommune'), $inn->g('b_id'), $inn->g('season'));
 	
 	die(json_encode(array('result'=>$res)));
 }

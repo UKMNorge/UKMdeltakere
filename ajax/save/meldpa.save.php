@@ -11,9 +11,10 @@ function UKMdeltakere_save() {
 	$_POST['log_current_value_b_status'] = 0;
 	$_POST['b_status'] = 8;
 	$innslag->update('b_status');
-	
+	$innslag->statistikk_oppdater();
+
 	validateBand($_POST['i']);
-	stat_realtime_add($innslag->g('kommune'), $innslag->g('b_id'), $innslag->g('bt_id'), $innslag->g('kategori'), 0, $innslag->g('b_season'));
+//	stat_realtime_add($innslag->g('kommune'), $innslag->g('b_id'), $innslag->g('bt_id'), $innslag->g('kategori'), 0, $innslag->g('b_season'));
 	
 	$innslag = new innslag($_POST['i'],false);
 	die(json_encode(array('result'=>$innslag->g('b_status')==8)));
