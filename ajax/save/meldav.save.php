@@ -1,8 +1,5 @@
 <?php
 function UKMdeltakere_save() {
-	// MANGLER STATISTIKK!!	
-	die(array('result'=>false));
-	
 	$inn = new innslag($_POST['i'],false);
 	if(get_option('site_type')!='kommune') {
 		$pl_from = new kommune_monstring($inn->g('b_kommune'), get_option('season'));
