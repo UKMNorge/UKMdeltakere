@@ -15,7 +15,7 @@ if(is_admin()) {
 	require_once('UKM/inc/phaseout.ico.inc.php');
 	global $blog_id;
 	if($blog_id != 1)
-		add_action('admin_menu', 'UKMdeltakere_menu',200);
+		add_action('UKM_admin_menu', 'UKMdeltakere_menu',200);
 
 	require_once('UKM/inc/toolkit.inc.php');
 	require_once('ajax.deltakere.php');
@@ -116,9 +116,9 @@ function UKMdeltakere_addnew(){
 ## CREATE A MENU
 function UKMdeltakere_menu() {
 	global $UKMN;
-	$page = add_menu_page('Deltakere', 'Deltakere', 'editor', 'UKMdeltakere', 'UKMdeltakere', 'http://ico.ukm.no/people-menu.png',201);
+	UKM_add_menu_page('monstring','Deltakere', 'Deltakere', 'editor', 'UKMdeltakere', 'UKMdeltakere', 'http://ico.ukm.no/people-menu.png',5);
 
-	add_action( 'admin_print_styles-' . $page, 'UKMdeltakere_scriptsandstyles' );
+	UKM_add_scripts_and_styles('UKMdeltakere', 'UKMdeltakere_scriptsandstyles' );
 }
 ## INCLUDE SCRIPTS
 function UKMdeltakere_scriptsandstyles() {
