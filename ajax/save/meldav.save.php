@@ -2,7 +2,11 @@
 function UKMdeltakere_save() {
 	$inn = new innslag($_POST['i'],false);
 	if(get_option('site_type')!='kommune') {
-		$pl_from = new kommune_monstring($inn->g('b_kommune'), get_option('season'));
+		$kommune = $inn->g('b_kommune');
+		if( empty( $kommune ) ) {
+			die( json_encode(array('result'=>false)) );
+		}
+		$pl_from = new kommune_monstring($kommune, get_option('season'));
 		$pl_from = $pl_from->monstring_get();
 		$res = $inn->avmeld($pl_from->g('pl_id'), get_option('pl_id'));
 	} else {

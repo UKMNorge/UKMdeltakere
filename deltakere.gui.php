@@ -113,7 +113,7 @@ $viste_kategorier = array();
 						<a name="innslag_<?=$inn->g('b_id')?>"></a>
 						<a name="rediger_<?=$inn->g('b_id')?>"></a>
 						<li class="innslag" id="<?=$inn->g('b_id')?>" data-filter="<?=$sokestrenger[$inn->g('b_id')]?>">
-						<?
+						<?php
 							UKMd_innslagsboks($inn,$place,$tittellose_innslag);
 						?></li><?php
 						}
