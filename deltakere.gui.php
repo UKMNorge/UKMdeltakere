@@ -8,6 +8,7 @@ function UKMdeltakere_list() {
 
 	if($place->g('type')=='land')
 		$geo_omrader = $place->fylkeArray();
+		var_dump( $geo_omrader );
 	elseif($place->g('type')=='fylke')
 		$geo_omrader = $place->g('kommuner_i_fylket');
 	else
@@ -109,7 +110,7 @@ $viste_kategorier = array();
 						if($place->g('fellesmonstring')){
 							echo '<h2>'.$geo_omrader[$geo_omrade_san].'</h2>';
 						} elseif($place->g('type')=='fylke') {
-							echo '<h2 style="clear:both;">'.$geo_omrader[$geo_omrade_san].'</h2>';
+							echo '<h2 style="clear:both;">'.$geo_omrader[$geo_omrade_san].'('.$geo_omrade_san.')</h2>';
 						}
 						?>
 						<ul class="ukmdeltakere_liste">
