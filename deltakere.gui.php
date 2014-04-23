@@ -6,14 +6,15 @@ function UKMdeltakere_list() {
 	$place = new monstring(get_option('pl_id'));
 	$kategorier = $place->getBandTypes();
 
-	if($place->g('type')=='land')
+	if($place->g('type')=='land') {
 		$geo_omrader = $place->fylkeArray();
 		var_dump( $geo_omrader );
-	elseif($place->g('type')=='fylke')
+	} elseif($place->g('type')=='fylke') {
 		$geo_omrader = $place->g('kommuner_i_fylket');
-	else
+	} else {
 		$geo_omrader = $place->kommuneArray();
-
+	}
+	
 	if(!isset($_GET['stat'])||$_GET['stat']==8) {
 		$innslag_pa_monstringen = $place->innslag();
 		$innslag_kun_pameldte = true;
