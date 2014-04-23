@@ -35,7 +35,12 @@ function UKMdeltakere_list() {
 		if(get_option('site_type')!='kommune')
 			$inn->videresendte(get_option('pl_id'));
 		$inn->kalkuler_titler(get_option('pl_id'));
-		$innslag[$inn->g('bt_id')][$inn->g('b_kommune')][$inn->g('b_id')] = $inn;
+		if( get_option('site_type') == 'land' ) {
+			$inn->loadGeo();
+			$innslag[$inn->g('bt_id')][$inn->g('fylke')][$inn->g('b_id')] = $inn;
+		} else {
+			$innslag[$inn->g('bt_id')][$inn->g('b_kommune')][$inn->g('b_id')] = $inn;
+		}
 
 		$sokestreng = $inn->g('b_name');
 		$personer = $inn->personer();
@@ -86,7 +91,7 @@ Her redigerer du dine påmeldinger. Via <a href="?page=UKMrapport_admin">rapport
 <div class="ukmdeltakere_wrapper">
 <?php
 $viste_kategorier = array();
-	if(!is_array($innslag))
+	if(!is_array($innslag)||sizeof($innslag)==0)
 		echo '<strong> Ingen innslag i denne listen</strong>';
 	else
 	foreach($innslag as $kategori_san => $trash) {
