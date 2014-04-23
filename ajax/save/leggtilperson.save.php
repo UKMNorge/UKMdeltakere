@@ -48,17 +48,19 @@ function UKMdeltakere_save() {
 	if(get_option('site_type')=='fylke') {
 		$pl_from = new kommune_monstring($band->g('b_kommune'), get_option('season'));
 		$pl_from = $pl_from->monstring_get();
-		$pers->videresend($pl_from->g('pl_id'), get_option('pl_id'));
+		$pers->videresend($pl_from->g('pl_id'), get_option('pl_id'), 0);
 	}
 	// Forward?
 	
 	validateBand($_POST['b_id']);
+/*
 	stat_realtime_add($_POST['p_kommune'],
 					  $_POST['b_id'],
 					  $band->g('bt_id'),
 					  $band->g('kategori'),
 					  $pers->g('p_id'),
 					  $band->g('b_season'));
+*/
 	
 	$inn = new innslag($_POST['b_id']);
 	if(get_option('site_type')!='kommune')
