@@ -8,6 +8,9 @@ function UKMdeltakere_list() {
 
 	if($place->g('type')=='land') {
 		$geo_omrader = $place->fylkeArray();
+		foreach( $geo_omrader as $id => $name ) {
+			$geo_omrader[$id] = utf8_encode($name);
+		}
 	} elseif($place->g('type')=='fylke') {
 		$geo_omrader = $place->g('kommuner_i_fylket');
 	} else {
