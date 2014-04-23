@@ -37,7 +37,7 @@ function UKMdeltakere_list() {
 		$inn->kalkuler_titler(get_option('pl_id'));
 		if( get_option('site_type') == 'land' ) {
 			$inn->loadGeo();
-			$innslag[$inn->g('bt_id')][$inn->g('fylke')][$inn->g('b_id')] = $inn;
+			$innslag[$inn->g('bt_id')][$inn->g('fylke_id')][$inn->g('b_id')] = $inn;
 		} else {
 			$innslag[$inn->g('bt_id')][$inn->g('b_kommune')][$inn->g('b_id')] = $inn;
 		}
