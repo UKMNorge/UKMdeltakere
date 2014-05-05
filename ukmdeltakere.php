@@ -98,7 +98,7 @@ function UKMdeltakere_addnew(){
 					if(get_option('site_type') != 'kommune') {
 						$pl_from = new kommune_monstring($band->g('b_kommune'), get_option('season'));
 						$pl_from = $pl_from->monstring_get();
-						$res = $pers->videresend($pl_from->g('pl_id'), get_option('pl_id'));
+						$res = $pers->videresend($pl_from->g('pl_id'), get_option('pl_id'), 0);
 						$res = $band->videresend($pl_from->g('pl_id'), get_option('pl_id'));
 					}
 				}
