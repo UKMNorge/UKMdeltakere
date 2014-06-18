@@ -14,7 +14,7 @@ function UKMdeltakere_ajax_controller($bid){
 		$f_info[$f_id] = array('id'=>$forestilling->g('c_id'),
 							   'navn' => $forestilling->g('c_name'),
 							   'start'=> $forestilling->starter(),
-							   'nummer'=> $order,
+							   'nummer'=> ($order+1), // WOOOOW, BURDE SKJE I INNSLAG.CLASS!
 							   'antall'=> $forestilling->antall_innslag(),
 							   'varighet'=> $forestilling->g('varighet'));
 	}
