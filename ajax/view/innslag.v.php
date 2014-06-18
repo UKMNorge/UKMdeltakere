@@ -246,7 +246,7 @@ if(get_option('site_type')=='fylke' && $c['innslag']->g('bt_form') != 'smartukm_
 			<li class="forestillinger_start">Start forestilling</li>
 			<?php /*<li class="forestillinger_number">Nummer</li>*/ ?>
 			<li class="forestillinger_number">&nbsp;</li>
-			<li class="forestillinger_antall">Antall innslag</li>
+			<li class="forestillinger_antall">Rekkefølge</li>
 			<li class="forestillinger_varighet">Varighet</li>
 			<li class="forestillinger_remove">Fjern fra forestilling</li>
 		</ul>
@@ -258,7 +258,7 @@ if(get_option('site_type')=='fylke' && $c['innslag']->g('bt_form') != 'smartukm_
 			<li class="forestillinger_start"><?=$forestilling['start'];?></li>
 			<?php /*<li class="forestillinger_number"><?=$forestilling['nummer'];?></li>*/?>
 			<li class="forestillinger_number">&nbsp;</li>
-			<li class="forestillinger_antall"><?=$forestilling['antall'];?></li>
+			<li class="forestillinger_antall"><?=$forestilling['nummer'];?> av <?= $forestilling['antall'] ?></li>
 			<li class="forestillinger_varighet"><?=$forestilling['varighet'];?></li>
 			<?php if($forestilling && $forestilling['id']!=$this_c_id) { ?>
 				<li class="forestillinger_remove_icon clickable"><?=UKMN_icoAlt('delete','Fjern fra forestilling',12)?></li>
