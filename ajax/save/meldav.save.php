@@ -10,7 +10,12 @@ function UKMdeltakere_save() {
 		$pl_from = $pl_from->monstring_get();
 		$res = $inn->avmeld($pl_from->g('pl_id'), get_option('pl_id'));
 	} else {
-		$res = $inn->delete();
+		#$res = $inn->delete();
+		# Endret nov 2015 for kompabilitet med UKMdelta og oppgradert logg.
+		global $current_user;
+    		get_currentuserinfo();   
+    		$user_id = $current_user->ID;
+		$res = $inn->delete('UKMdeltakere', $current_user->ID, get_option('pl_id'));
 	}
 //	stat_realtime_avmeld($inn->g('kommune'), $inn->g('b_id'), $inn->g('season'));
 	
