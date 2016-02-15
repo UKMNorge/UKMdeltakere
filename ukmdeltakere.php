@@ -22,6 +22,7 @@ if(is_admin()) {
 	add_action('wp_ajax_UKMdeltakere_gui', 'UKMdeltakere_gui');
 	
 	add_action('admin_init', 'UKMdeltakere_addnew', 300);	
+	add_action('UKMWPDASH_shortcuts', 'UKMdeltakere_dash_shortcut', 30);
 }
 
 function UKMdeltakere_addnew(){
@@ -112,6 +113,16 @@ function UKMdeltakere_addnew(){
 	}
 }
 
+
+function UKMdeltakere_dash_shortcut( $shortcuts ) {	
+	$shortcut = new stdClass();
+	$shortcut->url = 'admin.php?UKMdeltakere';
+	$shortcut->title = 'Deltakere';
+	$shortcut->icon = 'http://ico.ukm.no/people-menu.png';
+	$shortcuts[] = $shortcut;
+	
+	return $shortcuts;
+}
 
 ## CREATE A MENU
 function UKMdeltakere_menu() {
