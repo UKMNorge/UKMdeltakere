@@ -116,7 +116,7 @@ function UKMdeltakere_addnew(){
 
 function UKMdeltakere_dash_shortcut( $shortcuts ) {	
 	$shortcut = new stdClass();
-	$shortcut->url = 'admin.php?UKMdeltakere';
+	$shortcut->url = 'admin.php?page=UKMdeltakere';
 	$shortcut->title = 'Deltakere';
 	$shortcut->icon = 'http://ico.ukm.no/people-menu.png';
 	$shortcuts[] = $shortcut;
