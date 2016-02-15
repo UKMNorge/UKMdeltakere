@@ -14,15 +14,15 @@ if(is_admin()) {
 	require_once('UKM/innslag.class.php');
 	require_once('UKM/inc/phaseout.ico.inc.php');
 	global $blog_id;
-	if($blog_id != 1)
+	if( in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
 		add_action('UKM_admin_menu', 'UKMdeltakere_menu',200);
-
+		add_action('UKMWPDASH_shortcuts', 'UKMdeltakere_dash_shortcut', 30);
+	}
 	require_once('UKM/inc/toolkit.inc.php');
 	require_once('ajax.deltakere.php');
 	add_action('wp_ajax_UKMdeltakere_gui', 'UKMdeltakere_gui');
 	
 	add_action('admin_init', 'UKMdeltakere_addnew', 300);	
-	add_action('UKMWPDASH_shortcuts', 'UKMdeltakere_dash_shortcut', 30);
 }
 
 function UKMdeltakere_addnew(){
