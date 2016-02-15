@@ -26,7 +26,7 @@ function UKMd_innslagsboks($inn,$place,$tittellose_innslag,$forestilling=false,$
 
 		<div class="kontaktperson smallerFont permaGray">
 			<?php $kontaktperson = $inn->kontaktperson(); ?>
-			<?= (strlen($kontaktperson->g('p_firstname')) > 18 ? shortString($kontaktperson->g('p_firstname'),15) : $kontaktperson->g('p_firstname'))?> (<?=$kontaktperson->getAge()?>)&nbsp;<span class="phone"><?=$kontaktperson->getNicePhoneWithColor()?></span>
+			<?= (strlen($kontaktperson->g('p_firstname')) > 18 ? shortString($kontaktperson->g('p_firstname'),15) : $kontaktperson->g('p_firstname'))?> (<?= ($kontaktperson->getAge()==26 ? 'over 25' : $kontaktperson->getAge()) ?>)&nbsp;<span class="phone"><?=$kontaktperson->getNicePhoneWithColor()?></span>
 		</div>
 	</div>
 
@@ -56,7 +56,7 @@ function UKMd_innslagsboks($inn,$place,$tittellose_innslag,$forestilling=false,$
 					if (round($alder) != $alder)
 						$alder = ($alder - 0.5).' &frac12;';
 				}
-				echo $alder . ' &aring;r';
+				echo ($alder==26 ? 'over 25' : $alder) . ' &aring;r';
 			?>
 		</div>
 	</div>

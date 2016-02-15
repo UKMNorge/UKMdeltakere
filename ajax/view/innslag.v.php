@@ -63,7 +63,7 @@ if(strlen($c['advarsler'])>0) {
 					$pers = new person($p['p_id'], $c['innslag']->g('b_id'));
 					$kontakt_rolle = $pers->g('instrument');
 					$kontakt_epost = $pers->g('p_email');
-					$kontakt_alder = '('.$pers->alder().')';
+					$kontakt_alder = '('.($pers->alder()==26 ? 'over 25' : $pers->alder()).')';
 					
 					if (empty($kontakt_rolle)) {
 						$kontakt_rolle = 'Kontaktp. (deltar ikke)';
@@ -93,7 +93,7 @@ if(strlen($c['advarsler'])>0) {
 		<ul id="<?=$person->g('p_id')?>" class="person_selector_class">
 			<li class="person_icon" title="Rediger person"><div class="ikon_person_rediger"><?=UKMN_icoAlt('pencil', 'Redigér', 12)?></div></li>
 			<li class="person_contact clickable" data-pid="<?=$person->g('p_id');?>" title="Sett som kontaktperson"><div class="ikon_person_sett_kontakt"><?=UKMN_icoAlt('user-gray', 'Sett som kontaktperson')?></li>
-			<li class="person_name" title="<?=$person->g('name')?>" ><em><?=shortString($person->g('name'), 22);?> (<?=$person->alder()?>)</em></li>
+			<li class="person_name" title="<?=$person->g('name')?>" ><em><?=shortString($person->g('name'), 22);?> (<?=($person->alder()==26 ? 'over 25' : $person->alder())?>)</em></li>
 			<li class="person_cellnumber" title="<?=$person->g('p_phone')?>" ><em><?=$person->getNicePhoneWithColor();?></em></li>
 			<li class="person_instrument" title="<?=$person->g('instrument')?>" ><em><?=shortString($person->g('instrument'), 29); ?></em></li>
 			<li class="person_email" title="<?=$person->g('p_email')?>" ><em><?=shortString($person->g('p_email'), 24); ?></em></li>
@@ -133,7 +133,7 @@ if(get_option('site_type')=='fylke' && $c['innslag']->g('bt_form') != 'smartukm_
 		<ul id="<?=$person->g('p_id')?>" class="person_selector_class">
 			<li class="person_icon" title="Rediger person"> </li>
 			<li class="person_contact"> </li>
-			<li class="person_name" title="<?=$person->g('name')?>" ><em><?=shortString($person->g('name'), 22);?> (<?=$person->alder()?>)</em></li>
+			<li class="person_name" title="<?=$person->g('name')?>" ><em><?=shortString($person->g('name'), 22);?> (<?=($person->alder()==26 ? 'over 25' : $person->alder())?>)</em></li>
 			<li class="person_cellnumber" title="<?=$person->g('p_phone')?>" ><em><?=$person->getNicePhoneWithColor();?></em></li>
 			<li class="person_instrument" title="<?=$person->g('instrument')?>" ><em><?=shortString($person->g('instrument'), 29); ?></em></li>
 			<li class="person_email" title="<?=$person->g('p_email')?>" ><em><?=shortString($person->g('p_email'), 24); ?></em></li>

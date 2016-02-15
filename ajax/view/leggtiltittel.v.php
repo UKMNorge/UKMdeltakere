@@ -1,4 +1,4 @@
-<?php function UKMdeltakere_ajax_view($c){?>
+<?php function UKMdeltakere_ajax_view($c) { ?>
 
 <form class="edit_title_form">
 	<fieldset>
@@ -45,4 +45,6 @@
 	</fieldset>
 </form>
 
-<?php } ?>
+<?php 
+} 
+?>

@@ -44,7 +44,7 @@
 						$date = '1 January ' . ($year-$i);
 						$timestamp = strtotime( $date );
 					?>
-					<option value="<?=$timestamp?>"><?=$i . ' &aring;r'?></option>
+					<option value="<?=$timestamp?>"><?= ($i==26 ? '25+' : $i) . ' &aring;r'?></option>
 					<?php } ?>
 				</select>
 			</div>
