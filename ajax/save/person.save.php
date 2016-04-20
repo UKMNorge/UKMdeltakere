@@ -1,5 +1,5 @@
 <?php
-require_once( $_SERVER['DOCUMENT_ROOT'] . '/UKM/subdomains/pamelding/include/validation.inc.php' );
+#require_once( $_SERVER['DOCUMENT_ROOT'] . '/UKM/subdomains/pamelding/include/validation.inc.php' );
 
 function UKMdeltakere_save() {
 	$reload = false;
@@ -29,10 +29,9 @@ function UKMdeltakere_save() {
 	
 	// Bare tittelløst innslag	
 	if (isset($_POST['erfaring'])) {
-		$pers->update('td_konferansier', 'erfaring', $_POST['b']);
-		
 		// Sett innslagnavn likt med deltaker
 		$innslag = new innslag($_POST['b']);
+		$innslag->update('td_konferansier', 'erfaring', $_POST['b']);
 		$_POST['b_name'] = $_POST['p_firstname'].' '.$_POST['p_lastname'];
 		$innslag->update('b_name');
 		
@@ -41,7 +40,7 @@ function UKMdeltakere_save() {
 	if(get_option('site_type')!='kommune')
 		$innslag->videresendte(get_option('pl_id'));
 	
-	validateBand($_POST['b']);
+#	validateBand($_POST['b']);
 	
 	$pers = new person($_POST['i'], $_POST['b']);
 	$data = array('person'=>$pers->g('p_id'),
@@ -87,7 +86,8 @@ function UKMdeltakere_save() {
 		$snitt = round($alder / sizeof($personer));
 	
 	$personer = $inn->num_personer() . ' person' . ($inn->num_personer() == 1 ? '':'er');
-
+	
+	$inn->validateBand2( $inn->g('b_id') );
 	$data['personer'] = $personer;
 	$data['snitt']	= $snitt;
 	$data['b_id'] = isset($_POST['b']) ? $_POST['b'] : $_POST['i2'];
