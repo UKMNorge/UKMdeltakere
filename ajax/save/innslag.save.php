@@ -1,5 +1,5 @@
 <?php
-require_once( $_SERVER['DOCUMENT_ROOT'] . '/UKM/subdomains/pamelding/include/validation.inc.php' );
+#require_once( $_SERVER['DOCUMENT_ROOT'] . '/UKM/subdomains/pamelding/include/validation.inc.php' );
 
 function UKMdeltakere_save() {
 	$reload = false;
@@ -26,7 +26,7 @@ function UKMdeltakere_save() {
 		$inn->clear('b_description');
 	}
 	
-	validateBand($_POST['i']);
+	$inn->validateBand2($_POST['i']);
 	
 	$data = array(
 		'innslag'=>$_POST['b_name'],
