@@ -1,4 +1,20 @@
 <?php
+
+function data_person( $person ) {
+	$data = new stdClass();
+	$data->id 					= $person->getId();
+	$data->fornavn				= $person->getFornavn();
+	$data->etternavn			= $person->getEtternavn();
+	$data->mobil				= $person->getMobil();
+	$data->epost				= $person->getEpost();
+	$data->alder_tall			= $person->getAlder('');
+	$data->alder				= $person->getAlder();
+	$data->kommune_id			= $person->getKommune()->getId();
+	$data->kommune_navn			= $person->getKommune()->getNavn();
+	$data->valgte_funksjoner	= $person->getInstrumentObject();
+	return $data;
+}
+
 $JSON->view = $_POST['view'];
 
 $monstring = new monstring_v2( get_option('pl_id') );
@@ -32,22 +48,40 @@ foreach( $innslag->getProgram( $monstring )->getAll() as $hendelse ) {
 }
 
 if( $innslag->getType()->harTitler() ) {
+	// INFO OM INNSLAGET
+	$JSON->innslag->kontaktperson 	= $innslag->getKontaktperson();
+	$JSON->innslag->beskrivelse 	= $innslag->getBeskrivelse();
+	
+	// TITLER OG VARIGHET
+	$JSON->innslag->titler = [];
+	$titler = $innslag->getTitler( $monstring )->getAll();
+	if( is_array( $titler ) ) {
+		foreach( $titler as $tittel ) {
+			$tmp = new stdClass();
+			$tmp->id			= $tittel->getId();
+			$tmp->tittel		= $tittel->getTittel();
+			$tmp->varighet		= $tittel->getVarighet();
+			$tmp->parentes		= $tittel->getParentes();
+	
+			$JSON->innslag->titler[] = $tmp;
+		}
+	}
+	$JSON->innslag->varighet 		= $innslag->getTitler( $monstring )->getVarighet();
+	
+	// PERSONER I INNSLAGET
+	$JSON->innslag->personer 		= [];
+	$snittalder = 0;
+	foreach( $innslag->getPersoner()->getAll( $monstring ) as $person ) {
+		$tmp = data_person( $person );
+		$tmp->rolle = $person->getInstrument();
+		$snittalder += ( ($tmp->alder_tall == '25+' || $tmp->alder_tall == 0 ) ? 0 : $tmp->alder_tall );
+		$JSON->innslag->personer[] = $tmp;
+	}
+	$JSON->innslag->snittalder 		= round( $snittalder / ($innslag->getPersoner()->getAntall() > 0 ? $innslag->getPersoner()->getAntall() : 1 ), 1);
+	
 } else {
 	$person = $innslag->getPersoner()->getSingle();
-
-	$JSON->person = new stdClass();
-	$JSON->person->id 					= $person->getId();
-	$JSON->person->fornavn				= $person->getFornavn();
-	$JSON->person->etternavn			= $person->getEtternavn();
-	$JSON->person->mobil				= $person->getMobil();
-	$JSON->person->epost				= $person->getEpost();
-	$JSON->person->alder_tall			= $person->getAlder('');
-	$JSON->person->alder				= $person->getAlder();
-	$JSON->person->kommune_id			= $person->getKommune()->getId();
-	$JSON->person->kommune_navn			= $person->getKommune()->getNavn();
-	$JSON->person->valgte_funksjoner	= $person->getInstrumentObject();
-
-
+	$JSON->person = data_person( $person );
 	$JSON->erfaring			= $innslag->getBeskrivelse();
 
 }
@@ -56,6 +90,7 @@ $JSON->twigJS = 'twigJSunsupported';
 switch( $_POST['view'] ) {
 	case 'overview':
 		if( $innslag->getType()->harTitler() ) {
+			$JSON->twigJS = 'twigJSoverview';
 		} else {
 			$JSON->twigJS = 'twigJSoverviewtittellos';
 		}

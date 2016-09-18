@@ -1,0 +1,99 @@
+<div class="row">
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend class="hidden-xs">Informasjon</legend>
+		<p>
+			<label>Kontaktperson: </label> {{ innslag.kontaktperson.fornavn }} {{ innslag.kontaktperson.etternavn }}
+			<br />
+			<label>Mobil: </label> <a href="#innslag_{{ innslag_id }}" class="UKMSMS">{{ innslag.kontaktperson.mobil }}</a>
+			<br />
+			<label>E-post: </label> <a href="mailto:{{ innslag.kontaktperson.epost }}">{{ innslag.kontaktperson.epost }}</a>
+			<br />
+			<label>Beskrivelse: </label> {{ innslag.beskrivelse }}
+		</p>
+	</fieldset>
+
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Personer</small></legend>
+		<p class="explain">Snittalder: {{ innslag.snittalder }} år</p>
+		<ol class="list-group list-group-compact">
+			{% for person in innslag.personer %}
+				<li class="list-group-item person clickChildLink" data-person-id="{{ person.id }}">
+					<div class="pull-right">
+						{% if person.id == innslag.kontaktperson.id %}
+							<a href="#innslag{{innslag_id}}" class="btn btn-warning btn-xs" onclick="alert('{{ person.fornavn }} er kontaktperson for {{ innslag.navn }}. For å fjerne {{ person.fornavn }} må du først velge en annen kontakperson');">Fjern</a>
+						{% else %}
+							<a href="#innslag_{{innslag_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Er du sikker på at du vil fjerne {{ person.fornavn }} fra {{ innslag.navn }}?');">Fjern</a>	
+						{% endif %}
+					</div>
+
+					<a href="#" class="momClickMe">{{ person.fornavn }} {{ person.etternavn}}</a>
+					<br />
+					<small>{{ person.rolle }}</small>
+				</li>
+			{% else %}
+				<li class="list-group-item">
+					Det er ikke lagt til noen personer
+				</li>
+			{% endfor %}
+		</ol>
+	</fieldset>
+
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Titler</small></legend>
+		<p class="explain">Varighet: {{ innslag.varighet }}</p>
+	
+		<ol class="list-group list-group-compact">
+			{% for tittel in innslag.titler %}
+				<li class="list-group-item person clickChildLink" data-person-id="{{ person.id }}">
+					<div class="pull-right">
+						<a href="#innslag_{{innslag_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Er du sikker på at du vil fjerne {{ person.fornavn }} fra {{ innslag.navn }}?');">Fjern</a>	
+					</div>
+
+					<a href="#" class="momClickMe">{{ tittel.navn }}</a>
+					<br />
+					<small>{{ tittel.type }}</small>
+				</li>
+			{% else %}
+				<li class="list-group-item">
+					Det er ikke lagt til noen titler
+				</li>
+			{% endfor %}
+		</ol>
+	
+	</fieldset>
+	
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Hendelser</small></legend>
+		<ol class="list-group list-group-compact">
+			{% for hendelse in innslag.hendelser %}
+				<li class="list-group-item">
+					<small>Nr {{ hendelse.rekkefolge }} i {{ hendelse.navn }}</small>
+					<a href="#innslag_{{ innslag_id }}" class="btn btn-default btn-xs pull-right" onclick="return confirm('Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?');">Fjern</a>
+				</li>
+			{% else %}
+				<li class="list-group-item">
+					<small>Ikke lagt til i noen hendelser</small>
+				</li>
+			{% endif %}
+		</ol>
+	
+	</fieldset>
+	
+	<div class="clearfix visible-lg"></div>
+	
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Handlinger</small></legend>
+		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
+
+		<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-primary btn-outline">Bytt kontaktperson</a>
+		
+		<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success btn-outline">Legg til person</a>
+
+		<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success btn-outline">Legg til tittel</a>
+
+		<a href="#innslag_{{ innslag_id }}" class="actionEventAdd btn btn-block btn-success btn-outline">Legg til i hendelse</a>
+		
+		<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
+		<div class="clearfix"></div>
+	</fieldset>
+</div>

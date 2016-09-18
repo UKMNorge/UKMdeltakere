@@ -65,6 +65,7 @@ function UKMdeltakere_scriptsandstyles() {
 	wp_enqueue_style('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.css' );
 	wp_enqueue_script('WPbootstrap3_js');
 	wp_enqueue_style('WPbootstrap3_css');
+	wp_enqueue_style('WPbootstrap3_outlinebtn');
 }
 
 ## SHOW STATS OF PLACES

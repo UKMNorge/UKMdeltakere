@@ -3,6 +3,11 @@ jQuery(document).on('click', 'button[type="submit"]', function(e){
 	jQuery(document).trigger('innslag.resetBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), true]);
 });
 
+jQuery(document).on('click', '.clickChildLink', function(e) {
+	e.preventDefault();
+	console.warn('Should find and click .momClickMe');
+	return true;
+});
 
 /********** GUI INTERACTIONS ************ */
 jQuery(document).on('click', '.innslag .header', function(e){

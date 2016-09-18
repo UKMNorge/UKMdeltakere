@@ -6,6 +6,17 @@
     padding-right: 10px !important;
 }
 
+p.explain {
+	margin-top: -20px;
+	font-style: italic;
+}
+
+.list-group.list-group-compact li.list-group-item {
+	padding: 7px;
+	margin: 0px;
+	line-height: 14px;
+	font-size: 13px;
+}
 
 .innslagBlock {
 	margin-bottom: 25px;
