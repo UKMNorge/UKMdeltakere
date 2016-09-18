@@ -1,0 +1,53 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="row">
+	{% for type_innslag in monstring.getInnslagTyper() %}
+		<div class="innslagBlock col-xs-12">
+			<div class="innslagTypeHeader">
+				<a href="#" class="pull-right btn btn-xs btn-default">Legg til nytt innslag</a>
+				
+				<img src="{{ type_innslag.getIcon() }}" height="45" />
+				<h3>{{ type_innslag }}</h3>
+				<div class="clearfix"></div>
+			</div>
+			<ol class="list-group">
+				{% for innslag in monstring.getInnslag().getAllByType( type_innslag ) %}
+					<li id="innslag_{{ innslag.getId() }}" class="list-group-item innslag" data-innslag-id="{{ innslag.getId() }}" data-innslag-type="{{ innslag.getType().getKey() }}">
+						<div class="header clickable row">
+							<div class="col-xs-8">
+								{{ innslag.getNavn() }}
+								<br />
+								<small>
+									{% if innslag.getType().harTitler() %}
+										{{ innslag.getPersoner().getAntall() }}					
+										person{{ innslag.getPersoner().getAntall() != 1 ? 'er' : '' }}
+									{% else %}
+										{{ innslag.getPersoner().getSingle().getInstrument() }}
+									{% endif %}
+								</small>
+							</div>
+							
+							<div class="col-xs-3 col-xs-offset-1" style="text-align:right;">
+								{% if innslag.getType().harTitler() %}
+									1m 20s
+								{% else %}
+									{{ innslag.getPersoner().getSingle().getAlder() }}
+								{% endif %}
+								<br />
+								<small>{{ innslag.getKommune }}</small>
+							</div>
+						</div>
+						<div class="body" data-load-state="false" style="display:none;">
+							Vennligst vent
+						</div>
+						<div class="clearfix"></div>
+					</li>
+				{% else %}
+					<li class="list-group-item">Ingen påmeldte i {{ type_innslag }}</li>
+				{% endfor %}
+			</ol>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

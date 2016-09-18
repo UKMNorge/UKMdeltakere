@@ -1,0 +1,20 @@
+<fieldset class="col-xs-12 col-sm-6 col-lg-4">
+	<legend class="hidden-xs">Informasjon</legend>
+	<p>
+		<label>Mobil: </label> <a href="#" class="UKMSMS">{{ person.mobil }}</a>
+		<br />
+		<label>E-post: </label> <a href="mailto:{{ person.epost }}">{{ person.epost }}</a>
+		<br />
+		<label>Erfaring: </label> {{ erfaring }}
+	</p>
+</fieldset>
+
+<fieldset class="col-xs-12 col-sm-6 col-lg-4">
+	<legend class="hidden-xs">Handlinger</legend>
+	<a href="#" class="actionEdit btn btn-block btn-default">Rediger informasjon</a>
+	
+	<a href="#" class="addToEvent btn btn-block btn-default">Legg til i hendelse</a>
+	
+	<a href="#" class="btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av innslag?');">Meld av min mønstring</a>
+	<div class="clearfix"></div>
+</fieldset>

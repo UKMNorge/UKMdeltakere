@@ -1,0 +1,29 @@
+.row .list-group {
+    margin: 0px;
+}
+
+.row {
+    padding-right: 10px !important;
+}
+
+
+.innslagBlock {
+	margin-bottom: 25px;
+}
+.innslag.selected {
+	background-color: #f3f3f3;
+}
+
+.innslagTypeHeader {
+	margin-bottom: 4px;
+}
+.innslagTypeHeader img {
+	float:left;
+	height: 45px;
+	margin-top: -10px;
+	margin-right: 7px;
+}
+
+.innslagTypeHeader a {
+	margin-top: 8px;
+}

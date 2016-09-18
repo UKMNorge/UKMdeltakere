@@ -1,0 +1,90 @@
+<form>
+	<div class="row">
+		<div class="col-xs-12">
+			<h4 style="margin-bottom: 0px;">Rediger informasjon</h4>
+			<p>Røde felt (merket *) er obligatoriske!</p>
+		</div>
+		
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="form-group text-danger">
+				<label for="fornavn">Fornavn *</label>
+				<input name="fornavn" type="text" class="form-control" value="{{ person.fornavn }}" required />
+			</div>
+			<div class="form-group text-danger">
+				<label for="etternavn">Etternavn *</label>
+				<input name="etternavn" type="text" class="form-control" value="{{ person.etternavn }}" required />
+			</div>
+			
+			<div class="form-group text-danger">
+				<label for="alder">Alder *</label>
+				<select name="alder" class="form-control delta-select" required>
+					<option value=""{{ (person.alder_tall < 25) and (person.alder_tall > 9) and (person.alder_tall != '25+') ? '' : 'selected' }} disabled="disabled">Velg alder</option> 
+					{% for i in 10..25 %}
+						<option value="{{ i }}" {{ person.alder_tall == i ? 'selected' : '' }}>{{ i }} år</option> 
+					{% endfor %}
+					<option value="0"{{ person.alder_tall == '25+' ? 'selected' : '' }}>Over 25 år</option>
+				</select>
+			</div>
+	
+		</div>
+	
+		
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="form-group text-danger">
+				<label>Mobil *</label>
+				<input name="mobil" type="tel" class="form-control" value="{{ person.mobil }}" required />
+			</div>
+		
+			<div class="form-group">
+				<label>E-post</label>
+				<input name="epost" type="text" class="form-control" value="{{ person.epost }}" />
+			</div>
+			
+			{% if monstring.erFellesmonstring %}
+				<div class="form-group text-danger">
+					<label for="kommune">Kommune/bydel *</label>
+					<select name="kommune" class="form-control" required>
+						{% for id, navn in monstring.kommuner %}
+							<option value="{{ id }}" {{person.kommune_id == id ? 'selected="selected"':''}}>{{ navn }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			{% else %}
+				<input type="text" name="kommune" value="{{ person.kommune_id }}" />
+			{% endif %}
+		
+		</div>
+		
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="form-group">
+				<label>Erfaring</label>
+				<textarea name="erfaring" class="form-control">{{ erfaring }}</textarea>
+			</div>
+		</div>	
+	
+		{% if innslag.type.key == 'nettredaksjon' or innslag.type.key == 'arrangor' %}
+			<div class="col-xs-12 col-sm-6 col-lg-4">
+				<label>Funksjon / rolle / oppgave</label>
+				<ul class="list-group">
+					{% for funksjon in funksjoner %}
+						<label class="list-group-item click" for="funksjon_{{ funksjon }}">
+							<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" {% if funksjon in person.valgte_funksjoner %} checked="checked"{% endif %} id="funksjon_{{ funksjon }}" /> &nbsp; {{ funksjonsnavn[funksjon] }}
+						</label>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+	</div>
+
+	<div class="clearfix"></div>
+	<p>&nbsp;</p>
+
+
+	
+	<div class="clearfix"></div>
+	<button type="submit" class="btn btn-success">Lagre</button>
+	&nbsp; &nbsp; eller 
+	<a href="#" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
+	
+	<div class="clearfix"></div>
+</form>
