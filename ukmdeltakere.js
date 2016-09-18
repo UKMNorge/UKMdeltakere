@@ -1,20 +1,33 @@
+jQuery(document).on('click', 'button[type="submit"]', function(e){
+	e.preventDefault();
+	jQuery(document).trigger('innslag.resetBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), true]);
+});
+
+
 /********** GUI INTERACTIONS ************ */
 jQuery(document).on('click', '.innslag .header', function(e){
 	e.preventDefault();
 	jQuery(document).trigger('innslag.toggleBody', jQuery(this).parents('li').attr('data-innslag-id') );
 });
 jQuery(document).on('click', '.innslag .body .actionEdit', function(e) {
-	e.preventDefault();
+//	e.preventDefault();
 	jQuery(document).trigger('innslag.loadView', ['edit', jQuery(this).parents('li').attr('data-innslag-id')] );
 });
 jQuery(document).on('click', '.innslagResetBody', function(e){
-	e.preventDefault();
+//	e.preventDefault();
 	jQuery(document).trigger('innslag.resetBody', jQuery(this).attr('data-innslag-id'));
 });
 jQuery(document).on('click', '.innslagResetAndReloadBody', function(e){
-	e.preventDefault();
+//	e.preventDefault();
 	jQuery(document).trigger('innslag.resetBody', [jQuery(this).attr('data-innslag-id'), true]);
 });
+
+/* Legg til i hendelse */
+jQuery(document).on('click', '.actionEventAdd', function(e){
+//	e.preventDefault();
+	jQuery(document).trigger('innslag.loadView', ['addToEvent', jQuery(this).parents('li').attr('data-innslag-id')] );
+});
+
 
 /********** BODY CONTAINER FUNCTIONS ***** */
 /**

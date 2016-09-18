@@ -19,6 +19,17 @@ $JSON->innslag->type->id 	= $innslag->getType()->getId();
 $JSON->innslag->type->key 	= $innslag->getType()->getKey();
 $JSON->innslag->type->navn 	= $innslag->getType()->getNavn();
 
+$JSON->innslag->hendelser	= [];
+foreach( $innslag->getProgram( $monstring )->getAll() as $hendelse ) {
+	$tmp = new stdClass();
+	$tmp->id	 		= $hendelse->getId();
+	$tmp->rekkefolge	= $innslag->getProgram( $monstring )->getRekkefolge( $hendelse );
+	$tmp->navn			= $hendelse->getNavn();
+	$tmp->sted			= $hendelse->getSted();
+	$tmp->start			= $hendelse->getStart();
+	
+	$JSON->innslag->hendelser[ $hendelse->getId() ] = $tmp;
+}
 
 if( $innslag->getType()->harTitler() ) {
 } else {
@@ -55,6 +66,9 @@ switch( $_POST['view'] ) {
 			$JSON->twigJS = 'twigJSformtittellos';
 			
 			if( 'nettredaksjon' == $innslag->getType()->getKey() ) {
+				if( null == $JSON->person->valgte_funksjoner ) {
+					$JSON->person->valgte_funksjoner = [];
+				}
 				$JSON->funksjoner 			= array('tekst','foto','videoreportasjer','flerkamera_regi','flerkamera_kamera','pr');
 				$JSON->funksjonsnavn		= array('tekst'=> 'Journalist',
 													'foto' => 'Fotograf',
@@ -64,6 +78,9 @@ switch( $_POST['view'] ) {
 													'pr' => 'PR og pressekontakt'
 													);
 			} elseif ( 'arrangor' == $innslag->getType()->getKey() ) {
+				if( null == $JSON->person->valgte_funksjoner ) {
+					$JSON->person->valgte_funksjoner = [];
+				}
 				$JSON->funksjoner			= array('lyd','lys','scenearbeider','artistvert','info','koordinator');
 				$JSON->funksjonsnavn		= array('lyd' => 'Lyd',
 													'lys' => 'Lys',
@@ -76,5 +93,17 @@ switch( $_POST['view'] ) {
 			}
 		}
 		break;
+	case 'addToEvent':
+		$JSON->twigJS = 'twigJSaddToEvent';
+		
+		$JSON->monstring->hendelser = [];
+		foreach( $monstring->getProgram()->getAllInkludertSkjulte() as $hendelse ) {
+			$tmp = new stdClass();
+			$tmp->id 	= $hendelse->getId();
+			$tmp->navn 	= $hendelse->getNavn();
+			$tmp->start	= $hendelse->getStart();
+			
+			$JSON->monstring->hendelser[] = $tmp;
+		}
+		break;
 }
-

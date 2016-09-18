@@ -14,6 +14,10 @@
 	background-color: #f3f3f3;
 }
 
+.innslag .body {
+	margin-top: 8px;
+}
+
 .innslagTypeHeader {
 	margin-bottom: 4px;
 }

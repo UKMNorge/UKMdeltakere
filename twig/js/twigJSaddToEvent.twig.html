@@ -1,0 +1,21 @@
+<form>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="form-group text-danger">
+				<select name="alder" class="form-control" required="required">
+					<option value="false" disabled="disabled" selected="selected">Velg hendelse</option> 
+					{% for hendelse in monstring.hendelser %}
+						<option value="hendelse.id"><i>{{ hendelse.start.date|date('H:i') }}</i> {{ hendelse.navn }}</option> 
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+	<button type="submit" class="btn btn-success">Lagre</button>
+	&nbsp; &nbsp; eller 
+	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
+	
+	<div class="clearfix"></div>
+</form>

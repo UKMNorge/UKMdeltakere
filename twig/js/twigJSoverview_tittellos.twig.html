@@ -1,20 +1,42 @@
-<fieldset class="col-xs-12 col-sm-6 col-lg-4">
-	<legend class="hidden-xs">Informasjon</legend>
-	<p>
-		<label>Mobil: </label> <a href="#" class="UKMSMS">{{ person.mobil }}</a>
-		<br />
-		<label>E-post: </label> <a href="mailto:{{ person.epost }}">{{ person.epost }}</a>
-		<br />
-		<label>Erfaring: </label> {{ erfaring }}
-	</p>
-</fieldset>
+<div class="row">
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend class="hidden-xs">Informasjon</legend>
+		<p>
+			<label>Mobil: </label> <a href="#innslag_{{ innslag_id }}" class="UKMSMS">{{ person.mobil }}</a>
+			<br />
+			<label>E-post: </label> <a href="mailto:{{ person.epost }}">{{ person.epost }}</a>
+			<br />
+			<label>Erfaring: </label> {{ erfaring }}
+		</p>
+	</fieldset>
+	
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Hendelser</small></legend>
+		<ol class="list-group">
+			{% for hendelse in innslag.hendelser %}
+				<li class="list-group-item">
+					<small>Nr {{ hendelse.rekkefolge }} i {{ hendelse.navn }}</small>
+					<a href="#innslag_{{ innslag_id }}" class="btn btn-default btn-xs pull-right" onclick="return confirm('Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?');">Fjern</a>
+				</li>
+			{% else %}
+				<li class="list-group-item">
+					<small>Ikke lagt til i noen hendelser</small>
+				</li>
+			{% endif %}
+		</p>
+	
+	</fieldset>
+	
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+	</fieldset>
 
-<fieldset class="col-xs-12 col-sm-6 col-lg-4">
-	<legend class="hidden-xs">Handlinger</legend>
-	<a href="#" class="actionEdit btn btn-block btn-default">Rediger informasjon</a>
-	
-	<a href="#" class="addToEvent btn btn-block btn-default">Legg til i hendelse</a>
-	
-	<a href="#" class="btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av innslag?');">Meld av min mønstring</a>
-	<div class="clearfix"></div>
-</fieldset>
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Handlinger</small></legend>
+		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-default">Rediger informasjon</a>
+		
+		<a href="#innslag_{{ innslag_id }}" class="actionEventAdd btn btn-block btn-default">Legg til i hendelse</a>
+		
+		<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
+		<div class="clearfix"></div>
+	</fieldset>
+</div>
