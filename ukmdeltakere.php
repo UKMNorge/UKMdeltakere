@@ -60,6 +60,8 @@ function UKMdeltakere_menu() {
 ## INCLUDE SCRIPTS
 function UKMdeltakere_scriptsandstyles() {
 	wp_enqueue_script('TwigJS');
+	
+	wp_enqueue_script('jQuery-fastlivefilter');
 
 	wp_enqueue_script('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.js' );
 	wp_enqueue_style('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.css' );

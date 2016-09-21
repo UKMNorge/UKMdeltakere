@@ -5,9 +5,14 @@ jQuery(document).on('click', '.action', function( e ) {
 	}
 	e.preventDefault();
 	switch( jQuery(this).attr('data-action') ) {
+		case 'addPerson':
+			jQuery(document).trigger('innslag.loadView', ['addPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+			break;
 		case 'editPerson':
-			console.info('TRIGGER: person.edit');
 			jQuery(document).trigger('innslag.loadView', ['editPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
+			break;
+		case 'showNewPerson':
+			jQuery('#filter_persons_create').slideDown();
 			break;
 		default:
 			console.warn('Unknown action '+ jQuery(this).attr('data-action') );
@@ -49,6 +54,20 @@ jQuery(document).on('click', '.actionEventAdd', function(e){
 	jQuery(document).trigger('innslag.loadView', ['addToEvent', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 });
 
+/********** FILTER LISTS ***************** */
+jQuery(document).on('loadedView.twigJSpersonadd', function(){
+	console.info('initate filter');
+	jQuery('#filter_persons').fastLiveFilter('#filter_persons_results', {
+												callback: function(total) { 
+													if( 0 == total ) {
+														jQuery('#filter_persons_create').slideDown();
+													} else {
+														jQuery('#filter_persons_create').slideUp();
+													}
+												}
+											  }
+											);
+});
 
 /********** BODY CONTAINER FUNCTIONS ***** */
 /**
@@ -143,4 +162,5 @@ jQuery(document).on('innslag.renderBody', function(e, server_response ) {
 	
 	var rendered = eval( 'twigJS'+ server_response.twigJS + '.render( server_response )' );
 	jQuery('#innslag_'+ server_response.innslag_id).find('.body').attr('data-load-state','true').html( rendered );
+	jQuery(document).trigger('loadedView.'+ server_response.twigJS );
 });
