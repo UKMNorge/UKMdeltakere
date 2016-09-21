@@ -40,18 +40,30 @@
 
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 		<legend><small>Titler</small></legend>
-		<p class="explain">Varighet: {{ innslag.varighet }}</p>
+		<p class="explain">
+			{% if 'utstilling' == innslag.type.key %}
+				&nbsp;
+			{% else %}
+				Varighet: {{ innslag.varighet }}
+			{% endif %}
+		</p>
 	
 		<ol class="list-group list-group-compact">
 			{% for tittel in innslag.titler %}
-				<li class="list-group-item person clickChildLink" data-person-id="{{ person.id }}">
+				<li class="list-group-item person clickChildLink" data-tittel-id="{{ tittel.id }}">
 					<div class="pull-right">
-						<a href="#innslag_{{innslag_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Er du sikker på at du vil fjerne {{ person.fornavn }} fra {{ innslag.navn }}?');">Fjern</a>	
+						<a href="#innslag_{{innslag_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Er du sikker på at du vil fjerne {{ tittel.tittel }} fra {{ innslag.navn }}?');">Fjern</a>	
 					</div>
 
-					<a href="#" class="momClickMe">{{ tittel.navn }}</a>
+					<a href="#" class="momClickMe">{{ tittel.tittel }}</a>
 					<br />
-					<small>{{ tittel.type }}</small>
+					<small>
+						{% if 'utstilling' == innslag.type.key %}
+							KOMMER
+						{% else %}
+							{{ tittel.varighet_human }}
+						{% endif %}
+					</small>
 				</li>
 			{% else %}
 				<li class="list-group-item">
@@ -64,11 +76,16 @@
 	
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 		<legend><small>Hendelser</small></legend>
+		<p class="explain">
+				&nbsp;
+		</p>
+
 		<ol class="list-group list-group-compact">
 			{% for hendelse in innslag.hendelser %}
 				<li class="list-group-item">
 					<small>Nr {{ hendelse.rekkefolge }} i {{ hendelse.navn }}</small>
 					<a href="#innslag_{{ innslag_id }}" class="btn btn-default btn-xs pull-right" onclick="return confirm('Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?');">Fjern</a>
+					<div class="clearfix"></div>
 				</li>
 			{% else %}
 				<li class="list-group-item">
