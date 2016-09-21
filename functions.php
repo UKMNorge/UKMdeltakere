@@ -18,7 +18,7 @@ function data_tittel( $tittel ) {
 /**
  * Lag et TWIGjs-objekt av et innslag
  */
-function data_innslag( $innslag ) {
+function data_innslag( $innslag, $monstring ) {
 	$data = new stdClass();
 	$data->id	 		= $innslag->getId();
 	$data->navn			= $innslag->getNavn();
@@ -30,6 +30,11 @@ function data_innslag( $innslag ) {
 	$data->type->id 	= $innslag->getType()->getId();
 	$data->type->key 	= $innslag->getType()->getKey();
 	$data->type->navn 	= $innslag->getType()->getNavn();
+	
+	if( $innslag->getType()->harTitler() ) {
+		$data->varighet		= $innslag->getTitler( $monstring )->getVarighet();
+		$data->varighet_human= $innslag->getTitler( $monstring )->getVarighet()->getHumanShort();
+	}
 	
 	$data->hendelser	= [];
 	

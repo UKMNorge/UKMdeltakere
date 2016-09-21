@@ -1,9 +1,25 @@
+jQuery(document).on('click', '.action', function( e ) {
+	if( jQuery(this).attr('data-action') == undefined || jQuery(this).attr('data-action') == null ) {
+		console.warn('Could not find action (data-action attr missing');
+		return true;
+	}
+	e.preventDefault();
+	switch( jQuery(this).attr('data-action') ) {
+		case 'editPerson':
+			console.info('TRIGGER: person.edit');
+			jQuery(document).trigger('innslag.loadView', ['editPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
+			break;
+		default:
+			console.warn('Unknown action '+ jQuery(this).attr('data-action') );
+			break;
+	}
+})
 jQuery(document).on('click', 'button[type="submit"]', function(e){
 	e.preventDefault();
 	jQuery(document).trigger('innslag.resetBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), true]);
 });
 
-jQuery(document).on('click', '.clickChildLink', function(e) {
+jQuery(document).on('click', '.clickChildLink :not(a)', function(e) {
 	e.preventDefault();
 	console.warn('Should find and click .momClickMe');
 	return true;
@@ -12,11 +28,11 @@ jQuery(document).on('click', '.clickChildLink', function(e) {
 /********** GUI INTERACTIONS ************ */
 jQuery(document).on('click', '.innslag .header', function(e){
 	e.preventDefault();
-	jQuery(document).trigger('innslag.toggleBody', jQuery(this).parents('li').attr('data-innslag-id') );
+	jQuery(document).trigger('innslag.toggleBody', jQuery(this).parents('li.innslag').attr('data-innslag-id') );
 });
 jQuery(document).on('click', '.innslag .body .actionEdit', function(e) {
 //	e.preventDefault();
-	jQuery(document).trigger('innslag.loadView', ['edit', jQuery(this).parents('li').attr('data-innslag-id')] );
+	jQuery(document).trigger('innslag.loadView', ['edit', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 });
 jQuery(document).on('click', '.innslagResetBody', function(e){
 //	e.preventDefault();
@@ -30,7 +46,7 @@ jQuery(document).on('click', '.innslagResetAndReloadBody', function(e){
 /* Legg til i hendelse */
 jQuery(document).on('click', '.actionEventAdd', function(e){
 //	e.preventDefault();
-	jQuery(document).trigger('innslag.loadView', ['addToEvent', jQuery(this).parents('li').attr('data-innslag-id')] );
+	jQuery(document).trigger('innslag.loadView', ['addToEvent', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 });
 
 
@@ -85,7 +101,7 @@ jQuery(document).on('innslag.showBody', function(e, innslag_id) {
  * innslag.loadBody
  * called by innslag.showBody if body attr(data-load-state') == 'false'
 **/
-jQuery(document).on('innslag.loadView', function(e, view, innslag_id) {
+jQuery(document).on('innslag.loadView', function(e, view, innslag_id, object_id) {
 
 	var innslag = jQuery('#innslag_'+ innslag_id);
 	var body = innslag.find('.body');
@@ -93,7 +109,8 @@ jQuery(document).on('innslag.loadView', function(e, view, innslag_id) {
 					'action':'UKMdeltakere_ajax',
 					'do': 'renderView',
 					'innslag': innslag_id,
-					'view': view
+					'view': view,
+					'object_id': object_id
 				}
 	body.html('<p>Vennligst vent, laster inn...</p>').attr('data-load-state', 'false');
 

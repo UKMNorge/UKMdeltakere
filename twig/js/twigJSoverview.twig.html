@@ -26,7 +26,7 @@
 						{% endif %}
 					</div>
 
-					<a href="#" class="momClickMe">{{ person.fornavn }} {{ person.etternavn}}</a>
+					<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe">{{ person.fornavn }} {{ person.etternavn}}</a>
 					<br />
 					<small>{{ person.rolle }}</small>
 				</li>
@@ -35,6 +35,9 @@
 					Det er ikke lagt til noen personer
 				</li>
 			{% endfor %}
+			<li class="list-group-item">
+				<a href="#innslag_{{ innslag_id }}" class="action">+ Legg til person</a>
+			</li>
 		</ol>
 	</fieldset>
 
@@ -44,7 +47,7 @@
 			{% if 'utstilling' == innslag.type.key %}
 				&nbsp;
 			{% else %}
-				Varighet: {{ innslag.varighet }}
+				Varighet: {{ innslag.varighet_human }}
 			{% endif %}
 		</p>
 	
@@ -59,7 +62,7 @@
 					<br />
 					<small>
 						{% if 'utstilling' == innslag.type.key %}
-							KOMMER
+							&nbsp;
 						{% else %}
 							{{ tittel.varighet_human }}
 						{% endif %}
@@ -70,6 +73,9 @@
 					Det er ikke lagt til noen titler
 				</li>
 			{% endfor %}
+			<li class="list-group-item">
+				<a href="#innslag_{{ innslag_id }}" class="action ">+ Legg til tittel</a>
+			</li>
 		</ol>
 	
 	</fieldset>
@@ -92,6 +98,10 @@
 					<small>Ikke lagt til i noen hendelser</small>
 				</li>
 			{% endif %}
+			<li class="list-group-item">
+				<a href="#innslag_{{ innslag_id }}" class="actionEventAdd">+ Legg til i hendelse</a>
+			</li>
+
 		</ol>
 	
 	</fieldset>
@@ -103,12 +113,6 @@
 		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
 
 		<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-primary btn-outline">Bytt kontaktperson</a>
-		
-		<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success btn-outline">Legg til person</a>
-
-		<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success btn-outline">Legg til tittel</a>
-
-		<a href="#innslag_{{ innslag_id }}" class="actionEventAdd btn btn-block btn-success btn-outline">Legg til i hendelse</a>
 		
 		<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
 		<div class="clearfix"></div>
