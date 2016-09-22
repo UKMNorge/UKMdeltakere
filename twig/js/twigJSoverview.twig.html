@@ -65,6 +65,11 @@
 				<a href="#innslag_{{ innslag_id }}" data-action="addPerson" class="action">+ Legg til person</a>
 			</li>
 		</ol>
+		{% if 'kommune' != site_type %}
+			<p class="explain">Personer som ikke er videresendt</p>
+			<ol class="list-group list-group-compact">
+			</ol>
+		{% endif %}
 	</fieldset>
 
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">

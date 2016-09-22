@@ -4,9 +4,6 @@
 			{{ innslag.getNavn() }}
 			<br />
 			<small>
-				{% if 1 == innslag.getType().getId() %}
-					{{ innslag.getType().getNavn()|upper }}:
-				{% endif %}
 				{% if innslag.getType().harTitler() %}
 					{% if innslag.getAdvarsler( monstring ).har('personer') %}
 						<span class="label label-outline label-warning">

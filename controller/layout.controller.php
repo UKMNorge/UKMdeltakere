@@ -16,3 +16,5 @@ $stat->pabegynte 		= sizeof( $pabegynte );
 $TWIGdata['tab_active'] = isset( $_GET['list'] ) ? $_GET['list'] : 'fullstendig';
 $TWIGdata['monstring'] = $monstring;
 $TWIGdata['stat'] = $stat;
+
+$TWIGdata['site_type'] = get_option('site_type');
