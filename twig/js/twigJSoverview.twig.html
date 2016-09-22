@@ -74,7 +74,7 @@
 				</li>
 			{% endfor %}
 			<li class="list-group-item">
-				<a href="#innslag_{{ innslag_id }}" class="action ">+ Legg til tittel</a>
+				<a href="#innslag_{{ innslag_id }}" class="action" data-action="addTitle">+ Legg til tittel</a>
 			</li>
 		</ol>
 	
@@ -116,5 +116,11 @@
 		
 		<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
 		<div class="clearfix"></div>
+		
+		<p>&nbsp;</p>
+		<div class="clearfix"></div>
+		<p>
+			<a href="#innslag_{{ innslag_id }}" class="action" data-action="close">avbryt</a>
+		</p>
 	</fieldset>
 </div>

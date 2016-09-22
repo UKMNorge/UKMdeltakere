@@ -5,6 +5,9 @@ jQuery(document).on('click', '.action', function( e ) {
 	}
 	e.preventDefault();
 	switch( jQuery(this).attr('data-action') ) {
+		case 'addTitle':
+			jQuery(document).trigger('innslag.loadView', ['addTitle', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+			break;
 		case 'addPerson':
 			jQuery(document).trigger('innslag.loadView', ['addPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
@@ -17,6 +20,10 @@ jQuery(document).on('click', '.action', function( e ) {
 		case 'addExistingPerson':
 			jQuery(document).trigger('innslag.loadView', ['addExistingPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 			break;
+		case 'close':
+			jQuery(document).trigger('innslag.hideBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+			break;
+
 		default:
 			console.warn('Unknown action '+ jQuery(this).attr('data-action') );
 			break;

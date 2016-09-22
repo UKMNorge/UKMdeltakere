@@ -29,6 +29,9 @@ switch( $_POST['view'] ) {
 	case 'addExistingPerson':
 		require_once('person_addExisting.controller.php');
 		break;
+	case 'addTitle':
+		require_once('title_add.controller.php');
+		break;
 	case 'addToEvent':
 		require_once('event_add.controller.php');
 		break;
