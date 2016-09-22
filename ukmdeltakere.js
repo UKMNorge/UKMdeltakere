@@ -8,6 +8,10 @@ jQuery(document).on('click', '.action', function( e ) {
 		case 'addTitle':
 			jQuery(document).trigger('innslag.loadView', ['addTitle', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
+		case 'editTitle':
+			jQuery(document).trigger('innslag.loadView', ['editTitle', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-title-id')] );
+			break;
+
 		case 'addPerson':
 			jQuery(document).trigger('innslag.loadView', ['addPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
@@ -16,6 +20,9 @@ jQuery(document).on('click', '.action', function( e ) {
 			break;
 		case 'showNewPerson':
 			jQuery('#'+ jQuery(this).attr('data-target')).fadeIn();
+			break;
+		case 'editContact':
+			jQuery(document).trigger('innslag.loadView', ['changeContact', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
 		case 'addExistingPerson':
 			jQuery(document).trigger('innslag.loadView', ['addExistingPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
@@ -46,21 +53,21 @@ jQuery(document).on('click', '.innslag .header', function(e){
 	jQuery(document).trigger('innslag.toggleBody', jQuery(this).parents('li.innslag').attr('data-innslag-id') );
 });
 jQuery(document).on('click', '.innslag .body .actionEdit', function(e) {
-//	e.preventDefault();
+	e.preventDefault();
 	jQuery(document).trigger('innslag.loadView', ['edit', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 });
 jQuery(document).on('click', '.innslagResetBody', function(e){
-//	e.preventDefault();
+	e.preventDefault();
 	jQuery(document).trigger('innslag.resetBody', jQuery(this).attr('data-innslag-id'));
 });
 jQuery(document).on('click', '.innslagResetAndReloadBody', function(e){
-//	e.preventDefault();
+	e.preventDefault();
 	jQuery(document).trigger('innslag.resetBody', [jQuery(this).attr('data-innslag-id'), true]);
 });
 
 /* Legg til i hendelse */
 jQuery(document).on('click', '.actionEventAdd', function(e){
-//	e.preventDefault();
+	e.preventDefault();
 	jQuery(document).trigger('innslag.loadView', ['addToEvent', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 });
 

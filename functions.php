@@ -9,8 +9,17 @@ function data_tittel( $tittel ) {
 	$data->id			= $tittel->getId();
 	$data->tittel		= $tittel->getTittel();
 	$data->varighet		= $tittel->getVarighet();
+	$data->varighet_sek	= $tittel->getVarighet()->getSekunder();
 	$data->varighet_human= $tittel->getVarighet()->getHumanShort();
-	$data->parentes		= 'test';#$tittel->getParentes();
+	$data->beskrivelse	= $tittel->getBeskrivelse();
+	$data->typeogteknikk= $tittel->getType();
+		
+	$data->koreografi_av= $tittel->getKoreografiAv();
+	$data->instrumental = $tittel->erInstrumental();
+	$data->selvlaget	= $tittel->erSelvlaget();
+	$data->tekst_av		= $tittel->getTekstAv();
+	$data->melodi_av	= $tittel->getMelodiAv();
+	$data->lese_opp		= $tittel->getLitteraturLesOpp();
 
 	return $data;
 }

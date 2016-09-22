@@ -1,6 +1,7 @@
 <form>
 	<div class="row">
 			
+		<input type="hidden" name="innslagsnavn" value="{{ innslag.navn }}" />
 		<div class="col-xs-12">
 		<h4>Legg til film</h4>
 			<p>Røde felt (merket *) er obligatoriske!</p>
@@ -8,10 +9,24 @@
 		
 		<div class="col-xs-12 col-sm-6 col-lg-4">
 			<div class="form-group text-danger">
-				<label for="tittel">Filmens tittel / navn *</label>
+				<label for="tittel">Navn på tekst / verk *</label>
 				<input name="tittel" type="text" class="form-control" value="{{ tittel.tittel }}" required />
 			</div>
-			<div class="form-group text-danger">
+
+			<div class="form-group">
+				<label>Eventuelle medforfattere</label>
+				<input type="text" name="tekstforfatter" class="form-control" value="{{ tittel.tekst_av }}" />
+			</div>
+		</div>
+		
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="form-group" id="leseopp-valg">
+				<p><label>Ønsker {{ innslag.navn }} å lese opp denne?</label></p>
+				<label class="radio-inline"><input type="radio" name="leseopp" value="1" {{ tittel.lese_opp ? 'checked="checked"' : '' }}>ja</label>
+				<label class="radio-inline"><input type="radio" name="leseopp" value="0" {{ tittel.lese_opp ? '' : 'checked="checked"' }}>nei</label>
+			</div>
+			
+			<div class="form-group leseopp-true">
 				<label for="lengde">Varighet *</label>
 				<select name="lengde" required="required" class="form-control">
 					<option value="" disabled="disabled" {{ tittel.varighet_sek == 0 ? 'selected="selected"' : }}>Velg varighet</option>
@@ -29,6 +44,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="clearfix"></div>
 	<p>&nbsp;</p>
 	

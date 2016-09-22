@@ -1,0 +1,30 @@
+<form>
+	<h4>Bytt kontaktperson</h4>
+	<p>Du kan kun bytte mellom personer i innslaget.</p>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="form-group text-danger">
+				<select name="alder" class="form-control" required="required">
+					<option value="false" disabled="disabled">Velg person</option> 
+					{% for person in personer %}
+						<option value="{{ person.id }}" {{ person.id == kontaktperson }}>{{ person.fornavn }} {{ person.etternavn }} ({{ person.alder }})</option> 
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	<p>Hvis du vil legge til en ny person som ikke skal delta i innslaget må du:</p>
+	<ol>
+		<li>Legge til en ny person i innslaget</li>
+		<li>Bytte kontaktperson</li>
+		<li>Fjerne personen fra innslaget (dette vil ikke fjerne vedkommende som kontaktperson)</li>
+	</ol>
+
+	<div class="clearfix"></div>
+	<button type="submit" class="btn btn-success">Lagre</button>
+	&nbsp; &nbsp; eller 
+	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
+	
+	<div class="clearfix"></div>
+</form>

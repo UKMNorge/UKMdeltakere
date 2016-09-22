@@ -1,11 +1,12 @@
 <form>
 	<div class="row">
 		<div class="col-xs-12">
+			<h4>Legg til {{ innslag.navn }} i hendelse</h4>
 			<div class="form-group text-danger">
 				<select name="alder" class="form-control" required="required">
 					<option value="false" disabled="disabled" selected="selected">Velg hendelse</option> 
 					{% for hendelse in monstring.hendelser %}
-						<option value="hendelse.id"><i>{{ hendelse.start.date|date('H:i') }}</i> {{ hendelse.navn }}</option> 
+						<option value="{{ hendelse.id }}"><i>{{ hendelse.start.date|date('H:i') }}</i> {{ hendelse.navn }}</option> 
 					{% endfor %}
 				</select>
 			</div>
