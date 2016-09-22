@@ -35,6 +35,10 @@ function data_innslag( $innslag, $monstring ) {
 	$data->kategori		= $innslag->getKategori();
 	$data->sjanger		= $innslag->getSjanger();
 	
+	$data->subscription	= $innslag->getSubscriptionTime();
+	$data->avmeldbar	= $innslag->erAvmeldbar();
+	$data->avmeldlas	= $innslag->getAvmeldbar();
+	
 	$data->type			= new stdClass();
 	$data->type->id 	= $innslag->getType()->getId();
 	$data->type->key 	= $innslag->getType()->getKey();

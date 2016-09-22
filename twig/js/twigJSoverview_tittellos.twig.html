@@ -36,7 +36,19 @@
 		
 		<a href="#innslag_{{ innslag_id }}" class="actionEventAdd btn btn-block btn-success btn-outline">Legg til i hendelse</a>
 		
-		<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
+		{% if innslag.status != 8 %}
+			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success" data-action="meldPa">Meld på UKM</a>
+		{% endif %}
+		
+		{% if innslag.avmeldbar == false %}
+			<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
+		{% else %}
+			<p>
+				Innslaget startet påmeldingen for kort tid siden ({{ innslag.subscription.date|dato('d.M H:i') }}). Vi anbefaler at du venter til {{ innslag.avmeldlas|dato('d.M H:i') }} før du melder av innslaget!
+			</p>
+			<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger btn-xs" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?');">Meld av UKM</a>
+
+		{% endif %}
 		<div class="clearfix"></div>
 	</fieldset>
 </div>

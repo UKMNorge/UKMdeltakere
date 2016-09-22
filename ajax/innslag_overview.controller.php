@@ -30,7 +30,7 @@ if( $innslag->getType()->harTitler() ) {
 } else {
 	$JSON->twigJS	 	= 'twigJSoverviewtittellos';
 	$person 			= $innslag->getPersoner()->getSingle();
-	$JSON->person 		= data_person( $person );
+	$JSON->person 		= 'ta';#data_person( $person );
 	$JSON->erfaring		= $innslag->getBeskrivelse();
 }
 // HENT UT PROGRAMMET FOR INNSLAGET PÅ DENNE MØNSTRINGEN
@@ -39,4 +39,43 @@ foreach( $innslag->getProgram( $monstring )->getAllInkludertSkjulte() as $hendel
 	$tmp->rekkefolge	= $innslag->getProgram( $monstring )->getRekkefolge( $hendelse );
 	
 	$JSON->innslag->hendelser[ $hendelse->getId() ] = $tmp;
+}
+
+// FINN LIGNENDE INNSLAG
+if( 8 > $innslag->getStatus() ) {
+	$JSON->lignende = true;
+	$JSON->alle_lignende = [];
+	
+	$alle_innslag = array_merge( $monstring->getInnslag()->getAll(), $monstring->getInnslag()->getAllUfullstendige() );
+	
+	foreach( $alle_innslag as $sammenlign_innslag ) {
+		// Hopp over seg selv
+		if( $innslag->getId() == $sammenlign_innslag->getId() ) {
+			continue;
+		}
+		
+		// Navnesjekk
+		similar_text($innslag->getNavn(),$sammenlign_innslag->getNavn(), $likhet);
+		if($likhet > 60) {
+			$data = data_innslag( $sammenlign_innslag, $monstring );
+			$data->grunnlag = 'Lignende navn ('. $likhet .'%)';
+			$JSON->alle_lignende[ $sammenlign_innslag->getId() ] = $data;
+		}
+		
+		// Samme kontaktperson
+		if( $innslag->getKontaktpersonId() == $sammenlign_innslag->getKontaktpersonId() ) {
+			$data = data_innslag( $sammenlign_innslag, $monstring );
+			$data->grunnlag = $innslag->getKontaktperson()->getFornavn() .' '. $innslag->getKontaktperson()->getEtternavn() .' er kontaktperson';
+			$JSON->alle_lignende[ $sammenlign_innslag->getId() ] = $data;
+		}
+		
+		// Deltakere
+		foreach( $innslag->getPersoner()->getAll() as $deltaker ) {
+			if( $deltaker->getId() == $sammenlign_innslag->getKontaktperson()->getId() ) {
+			$data = data_innslag( $sammenlign_innslag, $monstring );
+				$data->grunnlag = $person->getFornavn() .' '. $person->getEtternavn() .' er kontaktperson';
+				$JSON->alle_lignende[ $sammenlign_innslag->getId() ] = $data;
+			}
+		}
+	}
 }

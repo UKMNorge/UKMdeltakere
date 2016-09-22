@@ -13,43 +13,7 @@
 			</div>
 			<ol class="list-group innslag_lister">
 				{% for innslag in monstring.getInnslag().getAllByType( type_innslag ) %}
-					<li id="innslag_{{ innslag.getId() }}" class="list-group-item innslag" data-innslag-id="{{ innslag.getId() }}" data-innslag-type="{{ innslag.getType().getKey() }}" data-filter="{{ innslag.navn }} {% for person in innslag.getPersoner().getAll() %}{{ person.getFornavn() }} {{ person.getEtternavn() }} {% endfor %}{% if innslag.getType().harTitler() %}{% for tittel in innslag.getTitler( monstring ).getAll() %}{{ tittel.getTittel() }} {% endfor %}{% endif %}">
-						<div class="header clickable row">
-							<div class="col-xs-8">
-								{{ innslag.getNavn() }}
-								<br />
-								<small>
-									{% if 1 == innslag.getType().getId() %}
-										{{ innslag.getType().getNavn()|upper }}:
-									{% endif %}
-									{% if innslag.getType().harTitler() %}
-										{{ innslag.getPersoner().getAntall() }}					
-										person{{ innslag.getPersoner().getAntall() != 1 ? 'er' : '' }}
-									{% else %}
-										{{ innslag.getPersoner().getSingle().getInstrument() }}
-									{% endif %}
-								</small>
-							</div>
-							
-							<div class="col-xs-3 col-xs-offset-1" style="text-align:right;">
-								{% if innslag.getType().harTitler() %}
-									{% if 'utstilling' == type_innslag.getKey() %}
-										{{ innslag.getTitler( monstring )|length }} verk
-									{% else %}
-										{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
-									{% endif %}
-								{% else %}
-									{{ innslag.getPersoner().getSingle().getAlder() }}
-								{% endif %}
-								<br />
-								<small>{{ innslag.getKommune }}</small>
-							</div>
-						</div>
-						<div class="body" data-load-state="false" style="display:none;">
-							Vennligst vent
-						</div>
-						<div class="clearfix"></div>
-					</li>
+					{% embed "list_item.html.twig" %}{% endembed %}
 				{% else %}
 					<li class="list-group-item">Ingen påmeldte i {{ type_innslag }}</li>
 				{% endfor %}

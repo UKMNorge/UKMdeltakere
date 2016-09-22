@@ -5,6 +5,7 @@ jQuery(document).on('click', '.action', function( e ) {
 	}
 	e.preventDefault();
 	switch( jQuery(this).attr('data-action') ) {
+		// TITLER
 		case 'addTitle':
 			jQuery(document).trigger('innslag.loadView', ['addTitle', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
@@ -12,6 +13,7 @@ jQuery(document).on('click', '.action', function( e ) {
 			jQuery(document).trigger('innslag.loadView', ['editTitle', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-title-id')] );
 			break;
 
+		// PERSONER
 		case 'addPerson':
 			jQuery(document).trigger('innslag.loadView', ['addPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
@@ -27,8 +29,13 @@ jQuery(document).on('click', '.action', function( e ) {
 		case 'addExistingPerson':
 			jQuery(document).trigger('innslag.loadView', ['addExistingPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 			break;
+		
+		// INNSLAG
 		case 'close':
 			jQuery(document).trigger('innslag.hideBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+			break;
+		case 'meldPa':
+			jQuery(document).trigger('innslag.loadView', ['meldPa', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
 
 		default:
