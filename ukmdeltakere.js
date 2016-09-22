@@ -12,7 +12,10 @@ jQuery(document).on('click', '.action', function( e ) {
 			jQuery(document).trigger('innslag.loadView', ['editPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 			break;
 		case 'showNewPerson':
-			jQuery('#filter_persons_create').slideDown();
+			jQuery('#'+ jQuery(this).attr('data-target')).fadeIn();
+			break;
+		case 'addExistingPerson':
+			jQuery(document).trigger('innslag.loadView', ['addExistingPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 			break;
 		default:
 			console.warn('Unknown action '+ jQuery(this).attr('data-action') );
@@ -56,18 +59,31 @@ jQuery(document).on('click', '.actionEventAdd', function(e){
 
 /********** FILTER LISTS ***************** */
 jQuery(document).on('loadedView.twigJSpersonadd', function(){
-	console.info('initate filter');
-	jQuery('#filter_persons').fastLiveFilter('#filter_persons_results', {
-												callback: function(total) { 
+	jQuery('.filter_personer').each(function() {
+		jQuery(this).fastLiveFilter(jQuery('#' + jQuery(this).attr('data-results')), {
+												callback: function(total, id) { 
 													if( 0 == total ) {
-														jQuery('#filter_persons_create').slideDown();
+														jQuery('#'+ id +'_create').fadeIn();
 													} else {
-														jQuery('#filter_persons_create').slideUp();
+														jQuery('#'+ id +'_create').fadeOut();
 													}
 												}
 											  }
 											);
+									});
 });
+
+jQuery(document).ready(function(){
+	jQuery('#filter_innslag').each(function() {
+		jQuery(this).fastLiveFilter('.innslag_lister', {
+												callback: function(total, id) { 
+													jQuery('#filter_innslag_counter').fadeIn().html(''+ total +' innslag i listen nedenfor');
+												}
+											  }
+									);
+	});
+});
+
 
 /********** BODY CONTAINER FUNCTIONS ***** */
 /**

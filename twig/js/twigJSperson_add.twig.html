@@ -7,11 +7,11 @@
 			
 			<div class="form-group">
 				<label for="fornavn">SØK:</label>
-				<input name="fornavn" id="filter_persons" type="search" class="form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." />
+				<input name="fornavn" id="filter_persons_innslag_{{ innslag.id }}" data-results="filter_persons_innslag_{{ innslag.id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." />
 			</div>
-			<ol class="list-group" id="filter_persons_results">
+			<ol class="list-group" id="filter_persons_innslag_{{ innslag.id }}_results">
 				{% for person in personer %}
-					<li class="list-group-item" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
+					<li class="list-group-item action clickable" data-action="addExistingPerson" data-person-id="{{ person.id }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
 						{{ person.fornavn }} {{ person.etternavn }} <small>{{ person.mobil }}</small>
 					</li>
 				{% else %}
@@ -21,7 +21,7 @@
 
 			<p>
 				<small>
-					Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" class="action">Legg til ny person.</a>
+					Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" data-target="filter_persons_innslag_{{ innslag.id }}_create" class="action">Legg til ny person.</a>
 				</small>
 			</p>
 
@@ -29,9 +29,9 @@
 		</div>
 			
 		
-		<div id="filter_persons_create">
+		<div id="filter_persons_innslag_{{ innslag.id }}_create" style="display:none">
 			<div class="col-xs-12">
-				<h4 style="margin-bottom: 0px;">Fant ingen personer. Opprett en ny med skjemaet nedenfor</h4>
+				<h4 style="margin-bottom: 0px;">Opprett ny person</h4>
 				<p>Røde felt (merket *) er obligatoriske!</p>
 			</div>
 			
