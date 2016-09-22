@@ -8,8 +8,15 @@
 					{{ innslag.getType().getNavn()|upper }}:
 				{% endif %}
 				{% if innslag.getType().harTitler() %}
-					{{ innslag.getPersoner().getAntall() }}					
-					person{{ innslag.getPersoner().getAntall() != 1 ? 'er' : '' }}
+					{% if innslag.getAdvarsler( monstring ).har('personer') %}
+						<span class="label label-outline label-warning">
+							{{ innslag.getPersoner().getAntall() }}					
+							person{{ innslag.getPersoner().getAntall() != 1 ? 'er' : '' }}
+						</span>
+					{% else %}
+						{{ innslag.getPersoner().getAntall() }}					
+						person{{ innslag.getPersoner().getAntall() != 1 ? 'er' : '' }}
+					{% endif %}
 				{% else %}
 					{{ innslag.getPersoner().getSingle().getInstrument() }}
 				{% endif %}
@@ -18,10 +25,16 @@
 		
 		<div class="col-xs-3 col-xs-offset-1" style="text-align:right;">
 			{% if innslag.getType().harTitler() %}
-				{% if 'utstilling' == type_innslag.getKey() %}
-					{{ innslag.getTitler( monstring )|length }} verk
-				{% else %}
-					{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
+				{% if innslag.getAdvarsler( monstring ).har('titler') %}
+					<span class="label label-outline label-warning">
+				{% endif %}
+					{% if 'utstilling' == type_innslag.getKey() %}
+						{{ innslag.getTitler( monstring )|length }} verk
+					{% else %}
+						{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
+					{% endif %}
+				{% if innslag.getAdvarsler( monstring ).har('titler') %}
+					</span>
 				{% endif %}
 			{% else %}
 				{{ innslag.getPersoner().getSingle().getAlder() }}

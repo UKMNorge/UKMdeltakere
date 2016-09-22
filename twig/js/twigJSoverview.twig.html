@@ -1,7 +1,7 @@
 <div class="row">
 	{% if innslag.avmeldbar == false %}
 		<div class="col-xs-12">
-			<div class="alert alert-warning">
+			<div class="alert alert-info">
 				<b>OBS:</b>
 				<p>
 				Innslaget startet påmeldingen for kort tid siden ({{ innslag.subscription.date|dato('d.M H:i') }}), og det er derfor mulig at de fortsatt jobber med påmeldingen sin. 
@@ -10,6 +10,21 @@
 			</div>
 		</div>
 	{% endif %}
+	{% if innslag.advarsler|length > 0 %}
+		<div class="col-xs-12">
+			<div class="alert alert-warning">
+				<p>
+					<b>Innslaget har blitt flagget for følgende advarsler:</b>
+				</p>
+				<ul class="list-group list-group-compact">
+				{% for advarsel in innslag.advarsler %}
+					<li class="list-group-item">{{ advarsel.melding }}</li>
+				{% endfor %}
+				</ul>
+				<p>Du trenger ikke å gjøre noe med dette, da dette bare er et hint fra systemet om at innslaget kan by på en overraskelse i gjennomføringen</p>
+			</div>
+		</div>
+	{% endif %}	
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 		<legend class="hidden-xs">Informasjon</legend>
 		<p>
@@ -158,11 +173,13 @@
 		{% if innslag.status != 8 %}
 			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success" data-action="meldPa">Meld på UKM</a>
 		{% endif %}
-		{% if innslag.avmeldbar == false %}
+
+		{% if innslag.avmeldbar %}
 			<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
 		{% else %}
 			<a href="#innslag_{{ innslag_id }}" class="actionDelete btn btn-block btn-danger btn-xs" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?');">Meld av UKM</a>
 		{% endif %}
+
 		<div class="clearfix"></div>
 		
 		<p>&nbsp;</p>

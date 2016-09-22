@@ -44,6 +44,11 @@ function data_innslag( $innslag, $monstring ) {
 	$data->type->key 	= $innslag->getType()->getKey();
 	$data->type->navn 	= $innslag->getType()->getNavn();
 	
+	$data->advarsler = [];
+	foreach( $innslag->getAdvarsler( $monstring ) as $advarsel ) {
+		$data->advarsler[] = data_advarsel( $advarsel );
+	}
+	
 	if( $innslag->getType()->harTitler() ) {
 		$data->varighet		= $innslag->getTitler( $monstring )->getVarighet();
 		$data->varighet_human= $innslag->getTitler( $monstring )->getVarighet()->getHumanShort();
@@ -51,6 +56,13 @@ function data_innslag( $innslag, $monstring ) {
 	
 	$data->hendelser	= [];
 	
+	return $data;
+}
+
+function data_advarsel( $advarsel ) {
+	$data = new stdClass();
+	$data->kategori = $advarsel->getKategori();
+	$data->melding = $advarsel->getMelding();
 	return $data;
 }
 
