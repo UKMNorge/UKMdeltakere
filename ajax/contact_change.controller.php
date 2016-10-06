@@ -10,7 +10,7 @@ foreach( $innslag->getPersoner()->getAll() as $person ) {
 }
 
 if( !in_array( $innslag->getKontaktperson()->getId(), $ids ) ) {
-	$JSON->personer[] = data_person( $innslag->getKontakt() );
+	$JSON->personer[] = data_person( $innslag->getKontaktperson() );
 }
 
 $JSON->kontaktperson = $innslag->getKontaktperson()->getId();
