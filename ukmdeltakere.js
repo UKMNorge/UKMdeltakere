@@ -37,12 +37,15 @@ jQuery(document).on('click', '.action', function( e ) {
 		case 'meldPa':
 			jQuery(document).trigger('innslag.loadView', ['meldPa', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
-
+		case 'save':
+			jQuery(document).trigger('save', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+			break;
 		default:
 			console.warn('Unknown action '+ jQuery(this).attr('data-action') );
 			break;
 	}
-})
+});
+
 jQuery(document).on('click', 'button[type="submit"]', function(e){
 	e.preventDefault();
 	jQuery(document).trigger('innslag.resetBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), true]);
@@ -153,6 +156,35 @@ jQuery(document).on('innslag.showBody', function(e, innslag_id) {
 							['overview', innslag.attr('data-innslag-id')]);
 	} 
 });
+
+jQuery(document).on('save', function(e, innslag_id, form ){
+	var innslag = jQuery('#innslag_'+ innslag_id);
+	var body = innslag.find('.body');
+	var form = body.find('form');
+	var data = {
+					'action':'UKMdeltakere_ajax',
+					'do': 'save',
+					'innslag': innslag_id,
+					'formData': form.serializeArray()
+				}
+
+	body.html('<p>Vennligst vent, lagrer...</p>').attr('data-load-state', 'false');
+	
+	jQuery.post(ajaxurl, data, function(response) {
+		if( response.success === false ) {
+			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
+			jQuery(document).trigger('innslag.resetBody', response.innslag_id );
+		}
+		else if( response.success ) {
+			jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true] );
+		}
+		else {
+			alert('Beklager, klarte ikke å hente informasjon fra server!');
+			jQuery(document).trigger('innslag.resetBody', response.innslag_id );
+			console.log( response );
+		}
+	});
+});
 /**
  * innslag.loadBody
  * called by innslag.showBody if body attr(data-load-state') == 'false'
@@ -189,7 +221,6 @@ jQuery(document).on('innslag.loadView', function(e, view, innslag_id, object_id)
  * innslag.renderBody
 **/
 jQuery(document).on('innslag.renderBody', function(e, server_response ) {
-	console.log( server_response );
 	if( undefined == server_response.view || null == server_response.view ) {
 		alert('Beklager, en feil har oppstått. Ukjent view '+ server_response.view );
 	}

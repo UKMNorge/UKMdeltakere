@@ -34,6 +34,7 @@ function data_innslag( $innslag, $monstring ) {
 	$data->beskrivelse	= $innslag->getBeskrivelse();
 	$data->kategori		= $innslag->getKategori();
 	$data->sjanger		= $innslag->getSjanger();
+	$data->status		= $innslag->getStatus();
 	
 	$data->subscription	= $innslag->getSubscriptionTime();
 	$data->avmeldbar	= $innslag->erAvmeldbar();
