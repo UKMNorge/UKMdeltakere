@@ -1,12 +1,12 @@
-<form>
+<form action="personAddExisting" data-object-id="{{ person.id }}">
 	<div class="row">
 			
 		<div class="col-xs-12">
 			<h4>Legg til {{ person.fornavn }} {{ person.etternavn }} i {{ innslag.navn }}</h4>
 
 			<div class="form-group text-danger">
-				<label for="instrument">Rolle / funksjon / instrument *</label>
-				<input name="instrument" type="text" class="form-control" value="{{ person.instrument }}" required />
+				<label for="rolle">Rolle / funksjon / instrument *</label>
+				<input name="rolle" type="text" class="form-control" value="{{ person.rolle }}" required />
 			</div>
 		</div>
 	</div>
@@ -16,7 +16,7 @@
 
 	
 	<div class="clearfix"></div>
-	<button type="submit" class="btn btn-success">Lagre</button>
+	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>
 	&nbsp; &nbsp; eller 
 	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
 	

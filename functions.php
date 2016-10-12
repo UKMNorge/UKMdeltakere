@@ -95,7 +95,7 @@ function data_person( $person ) {
 	$data->alder				= $person->getAlder();
 	$data->kommune_id			= $person->getKommune()->getId();
 	$data->kommune_navn			= $person->getKommune()->getNavn();
-	$data->valgte_funksjoner	= $person->getInstrumentObject();
+	$data->valgte_funksjoner	= $person->getRolleObject();
 	return $data;
 }
 

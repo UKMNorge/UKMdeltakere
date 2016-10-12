@@ -22,7 +22,7 @@ if( $innslag->getType()->harTitler() ) {
 	$snittalder 		= 0;
 	foreach( $innslag->getPersoner()->getAll( $monstring ) as $person ) {
 		$tmp 			= data_person( $person );
-		$tmp->rolle 	= $person->getInstrument();
+		$tmp->rolle 	= $person->getRolle();
 		$snittalder 	+= ( ($tmp->alder_tall == '25+') ? 0 : $tmp->alder_tall );
 		$JSON->innslag->personer[] = $tmp;
 	}
