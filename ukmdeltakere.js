@@ -4,7 +4,19 @@ jQuery(document).on('click', '.action', function( e ) {
 		return true;
 	}
 	e.preventDefault();
+
 	switch( jQuery(this).attr('data-action') ) {
+
+		// GENERISK LAGRINGSFUNKSJON
+		case 'save':
+			jQuery(document).trigger('save', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+			break;
+
+		case 'simpleSave':
+			jQuery(document).trigger('simpleSave', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this)] );
+			break;
+
+
 		// TITLER
 		case 'addTitle':
 			jQuery(document).trigger('innslag.loadView', ['addTitle', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
@@ -37,9 +49,6 @@ jQuery(document).on('click', '.action', function( e ) {
 		case 'meldPa':
 			jQuery(document).trigger('innslag.loadView', ['meldPa', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
-		case 'save':
-			jQuery(document).trigger('save', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
-			break;
 		default:
 			console.warn('Unknown action '+ jQuery(this).attr('data-action') );
 			break;
@@ -51,11 +60,11 @@ jQuery(document).on('click', 'button[type="submit"]', function(e){
 	jQuery(document).trigger('innslag.resetBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), true]);
 });
 
-jQuery(document).on('click', '.clickChildLink :not(a)', function(e) {
+/*jQuery(document).on('click', '.clickChildLink :not(a)', function(e) {
 	e.preventDefault();
 	console.warn('Should find and click .momClickMe');
 	return true;
-});
+});*/
 
 /********** GUI INTERACTIONS ************ */
 jQuery(document).on('click', '.innslag .header', function(e){
@@ -157,15 +166,51 @@ jQuery(document).on('innslag.showBody', function(e, innslag_id) {
 	} 
 });
 
-jQuery(document).on('save', function(e, innslag_id, form ){
+/**
+ * Simple save for deleting stuff etc
+ *
+ */
+jQuery(document).on('simpleSave', function(e, innslag_id, clicked){
+	var innslag = jQuery('#innslag_'+ innslag_id);
+	var body = innslag.find('.body');
+	var data = {
+					'action':'UKMdeltakere_ajax',
+					'do': 'save',
+					'doSave': clicked.attr('data-handle'),
+					'innslag': innslag_id,
+					'object_id': clicked.attr('data-object-id')
+				}
+
+	body.html('<p>Vennligst vent, lagrer...</p>').attr('data-load-state', 'false');
+	
+	jQuery.post(ajaxurl, data, function(response) {
+		if( response.success === false ) {
+			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
+			jQuery(document).trigger('innslag.resetBody', response.innslag_id );
+		}
+		else if( response.success ) {
+			jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true] );
+		}
+		else {
+			alert('Beklager, klarte ikke å hente informasjon fra server!');
+			jQuery(document).trigger('innslag.resetBody', response.innslag_id );
+			console.log( response );
+		}
+	});
+});
+
+
+jQuery(document).on('save', function(e, innslag_id){
 	var innslag = jQuery('#innslag_'+ innslag_id);
 	var body = innslag.find('.body');
 	var form = body.find('form');
 	var data = {
 					'action':'UKMdeltakere_ajax',
 					'do': 'save',
+					'doSave': form.attr('action'),
 					'innslag': innslag_id,
-					'formData': form.serializeArray()
+					'formData': form.serializeArray(),
+					'object_id': form.attr('data-object-id')
 				}
 
 	body.html('<p>Vennligst vent, lagrer...</p>').attr('data-load-state', 'false');

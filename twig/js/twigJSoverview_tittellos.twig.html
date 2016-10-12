@@ -4,7 +4,7 @@
 		<p>
 			<label>Mobil: </label> <a href="#innslag_{{ innslag_id }}" class="UKMSMS">{{ person.mobil }}</a>
 			<br />
-			<label>E-post: </label> <a href="mailto:{{ person.epost }}">{{ person.epost }}</a>
+			<label>E-post: </label> <a href="mailto:{{ person.epost }}">{{ person.epost }}</a>
 			<br />
 			<label>Erfaring: </label> {{ erfaring }}
 		</p>
@@ -16,7 +16,7 @@
 			{% for hendelse in innslag.hendelser %}
 				<li class="list-group-item">
 					<small>Nr {{ hendelse.rekkefolge }} i {{ hendelse.navn }}</small>
-					<a href="#innslag_{{ innslag_id }}" class="btn btn-default btn-xs pull-right" onclick="return confirm('Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?');">Fjern</a>
+					<a href="#innslag_{{ innslag_id }}" class="action btn btn-default btn-xs pull-right" data-action="delete" data-object-id="{{ hendelse.id }}" onclick="return confirm('Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?');">Fjern</a>
 				</li>
 			{% else %}
 				<li class="list-group-item">
