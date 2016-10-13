@@ -7,7 +7,7 @@
 				<select name="person" class="form-control" required="required">
 					<option value="false" disabled="disabled">Velg person</option> 
 					{% for person in personer %}
-						<option value="{{ person.id }}" {{ person.id == kontaktperson ? 'selected' : '' }}>{{ person.fornavn }} {{ person.etternavn }} ({{ person.alder }})</option> 
+						<option value="{{ person.id }}" {{ person.id == kontaktperson.id ? 'selected' : '' }}>{{ person.fornavn }} {{ person.etternavn }} ({{ person.alder }})</option> 
 					{% endfor %}
 				</select>
 			</div>
@@ -20,6 +20,9 @@
 		<li>Bytte kontaktperson</li>
 		<li>Fjerne personen fra innslaget (dette vil ikke fjerne vedkommende som kontaktperson)</li>
 	</ol>
+	{% if kontaktperson.deltar == false %}
+		<p><b>Hvis kontaktperson {{ kontaktperson.fornavn }} {{ kontaktperson.etternavn }} skal være med i innslaget, må personen legges til innslaget igjen på vanlig måte.</b></p>
+	{% endif %}
 
 	<div class="clearfix"></div>
 	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>

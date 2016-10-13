@@ -50,7 +50,7 @@
 				<li class="list-group-item person clickChildLink" data-person-id="{{ person.id }}">
 					<div class="pull-right">
 						{% if person.id == innslag.kontaktperson.id %}
-							<a href="#innslag{{innslag_id}}" class="btn btn-warning btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" onclick="alert('{{ person.fornavn }} er kontaktperson for {{ innslag.navn }}. Selv om du fjerner {{ person.fornavn }} fra innslaget, vil han/hun fortsatt stå som kontaktperson.');">Fjern</a>
+							<a href="#innslag{{innslag_id}}" class="action btn btn-warning btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" onclick="alert('{{ person.fornavn }} er kontaktperson for {{ innslag.navn }}. Selv om du fjerner {{ person.fornavn }} fra innslaget, vil han/hun fortsatt stå som kontaktperson.');">Fjern</a>
 						{% else %}
 							<a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" onclick="return confirm('Er du sikker på at du vil fjerne {{ person.fornavn }} fra {{ innslag.navn }}?');">Fjern</a>	
 						{% endif %}
