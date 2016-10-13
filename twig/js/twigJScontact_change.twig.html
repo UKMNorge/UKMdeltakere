@@ -1,13 +1,13 @@
-<form>
+<form action="contact">
 	<h4>Bytt kontaktperson</h4>
 	<p>Du kan kun bytte mellom personer i innslaget.</p>
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="form-group text-danger">
-				<select name="alder" class="form-control" required="required">
+				<select name="person" class="form-control" required="required">
 					<option value="false" disabled="disabled">Velg person</option> 
 					{% for person in personer %}
-						<option value="{{ person.id }}" {{ person.id == kontaktperson }}>{{ person.fornavn }} {{ person.etternavn }} ({{ person.alder }})</option> 
+						<option value="{{ person.id }}" {{ person.id == kontaktperson ? 'selected' : '' }}>{{ person.fornavn }} {{ person.etternavn }} ({{ person.alder }})</option> 
 					{% endfor %}
 				</select>
 			</div>
@@ -22,7 +22,7 @@
 	</ol>
 
 	<div class="clearfix"></div>
-	<button type="submit" class="btn btn-success">Lagre</button>
+	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>
 	&nbsp; &nbsp; eller 
 	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
 	

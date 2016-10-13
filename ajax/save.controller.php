@@ -17,7 +17,7 @@ if(is_array($_POST['formData'])) {
 
 switch( $_POST['doSave'] ) {
 
-	#### DELETE
+	#### DELETE SOMETHING
 	case 'deletePerson':
 		require_once( plugin_dir_path( __FILE__ ) .'../delete/person.save.php' );
 		break;
@@ -38,6 +38,9 @@ switch( $_POST['doSave'] ) {
 	case 'person':
 		require_once( plugin_dir_path( __FILE__ ). '../save/person.save.php' );
 		break;
+	case 'contact':
+	    require_once( plugin_dir_path( __FILE__ ). '../save/contact.save.php' );
+	    break;
 	case 'tittellos':
 	default:
 		throw new Exception("NOT IMPLEMENTED!");
