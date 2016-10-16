@@ -2,7 +2,8 @@
 	
 if( $innslag->getType()->harTitler() ) {
 	$JSON->twigJS = 'twigJSform';
-
+	// Kommune hvor innslaget er meldt på:
+	$JSON->innslag->kommune_id = $innslag->getKommune()->getId();
 } else {
 	$JSON->twigJS = 'twigJSformtittellos';
 	

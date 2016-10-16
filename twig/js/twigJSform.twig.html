@@ -7,7 +7,7 @@
 		
 		<div class="col-xs-12 col-sm-6 col-lg-4">
 			<div class="form-group text-danger">
-				<label for="navn">Navn</label>
+				<label for="navn">Navn *</label>
 				<input name="navn" type="text" class="form-control" value="{{ innslag.navn }}" />
 			</div>
 
@@ -30,7 +30,7 @@
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
 						{% for id, navn in monstring.kommuner %}
-							<option value="{{ id }}" {{person.kommune_id == id ? 'selected="selected"':''}}>{{ navn }}</option>
+							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ navn }}</option>
 						{% endfor %}
 					</select>
 				</div>
