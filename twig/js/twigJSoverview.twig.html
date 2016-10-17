@@ -95,7 +95,7 @@
 			{% for tittel in innslag.titler %}
 				<li class="list-group-item person clickChildLink" data-tittel-id="{{ tittel.id }}">
 					<div class="pull-right">
-						<a href="#innslag_{{innslag_id}}" class="btn btn-danger btn-xs" onclick="return confirm('Er du sikker på at du vil fjerne {{ tittel.tittel }} fra {{ innslag.navn }}?');">Fjern</a>	
+						<a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" onclick="return confirm('Er du sikker på at du vil fjerne {{ tittel.tittel }} fra {{ innslag.navn }}?');" data-action="simpleSave" data-handle="deleteTitle" data-object-id="{{ tittel.id }}" >Fjern</a>	
 					</div>
 
 					<a href="#" class="action momClickMe" data-action="editTitle" data-title-id="{{ tittel.id }}">{{ tittel.tittel }}</a>
