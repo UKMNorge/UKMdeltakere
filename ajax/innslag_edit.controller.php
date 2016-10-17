@@ -10,6 +10,7 @@ if( $innslag->getType()->harTitler() ) {
 	$person 			= $innslag->getPersoner()->getSingle();
 	$JSON->person 		= data_person( $person );
 	$JSON->erfaring		= $innslag->getBeskrivelse();
+	$JSON->innslag->kommune_id = $innslag->getKommune()->getId();
 
 	if( in_array($innslag->getType()->getKey(), array('nettredaksjon', 'arrangor') ) ) {
 		if( null == $JSON->person->valgte_funksjoner ) {

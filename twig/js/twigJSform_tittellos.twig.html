@@ -45,12 +45,13 @@
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
 						{% for id, navn in monstring.kommuner %}
-							<option value="{{ id }}" {{person.kommune_id == id ? 'selected="selected"':''}}>{{ navn }}</option>
+							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected="selected"' : '' }}>{{ navn }}</option>
 						{% endfor %}
 					</select>
 				</div>
 			{% else %}
-				<input type="text" name="kommune" value="{{ person.kommune_id }}" />
+				{# TODO: Bytt til hidden når debug er done #}
+				<input type="text" name="kommune" value="{{ innslag.kommune_id }}" />
 			{% endif %}
 		
 		</div>
@@ -68,7 +69,7 @@
 				<ul class="list-group">
 					{% for funksjon in funksjoner %}
 						<label class="list-group-item click" for="funksjon_{{ funksjon }}">
-							<input type="checkbox" name="funksjoner[]" value="{{ funksjon }}" {% if funksjon in person.valgte_funksjoner %} checked="checked"{% endif %} id="funksjon_{{ funksjon }}" /> &nbsp; {{ funksjonsnavn[funksjon] }}
+							<input type="checkbox" class="funksjon" name="funksjoner[]" value="{{ funksjon }}" {% if funksjon in person.valgte_funksjoner %} checked="checked"{% endif %} id="funksjon_{{ funksjon }}" /> &nbsp; {{ funksjonsnavn[funksjon] }}
 						</label>
 					{% endfor %}
 				</ul>
