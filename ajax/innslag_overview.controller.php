@@ -30,7 +30,7 @@ if( $innslag->getType()->harTitler() ) {
 } else {
 	$JSON->twigJS	 	= 'twigJSoverviewtittellos';
 	$person 			= $innslag->getPersoner()->getSingle();
-	$JSON->person 		= 'ta';#data_person( $person );
+	$JSON->person 		= data_person( $person );
 	$JSON->erfaring		= $innslag->getBeskrivelse();
 }
 // HENT UT PROGRAMMET FOR INNSLAGET PÅ DENNE MØNSTRINGEN
