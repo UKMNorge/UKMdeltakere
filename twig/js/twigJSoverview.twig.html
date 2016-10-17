@@ -34,6 +34,11 @@
 			<br />
 			<label>E-post: </label> <a href="mailto:{{ innslag.kontaktperson.epost }}">{{ innslag.kontaktperson.epost }}</a>
 			<br />
+			{# Bruker samme sjekk som i edit #}
+			{% if 1 == innslag.type.id %} 
+				<label>Sjanger: </label> {{ innslag.sjanger }}
+				<br />
+			{% endif %}
 			<label>Beskrivelse: </label> {{ innslag.beskrivelse }}
 		</p>
 		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
