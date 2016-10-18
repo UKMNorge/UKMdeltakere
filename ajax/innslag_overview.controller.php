@@ -1,6 +1,8 @@
 <?php
+
 // HENT UT INFORMASJON OM TITLER HVIS INNSLAGET HAR DET
 if( $innslag->getType()->harTitler() ) {
+
 	$JSON->twigJS = 'twigJSoverview';
 	
 	// INFO OM INNSLAGET

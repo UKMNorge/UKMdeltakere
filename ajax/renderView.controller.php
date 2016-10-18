@@ -15,7 +15,6 @@ $JSON->monstring = data_monstring( $monstring );
 $JSON->innslag = data_innslag( $innslag, $monstring );
 
 $JSON->twigJS = 'twigJSunsupported';
-
 switch( $_POST['view'] ) {
 	// INNSLAG
 	case 'overview':
