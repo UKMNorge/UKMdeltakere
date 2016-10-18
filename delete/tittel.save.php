@@ -11,6 +11,8 @@ $title_collection = new titler($innslag->getId(), $innslag->getType(), $monstrin
 
 switch($innslag->getType()->getKey()) {
 	case 'musikk':
+	case 'scene':
+	case 'dans':
 		$tittel = new write_tittel( $_POST['object_id'], 'smartukm_titles_scene');
 		$title_collection->fjern($tittel);
 		break;

@@ -1,9 +1,10 @@
-<form>
+<form action="dansTittel">
 	<div class="row">
 			
 		<input type="hidden" name="innslagsnavn" value="{{ innslag.navn }}" />
+		<input type="hidden" name="tittel_id" value="{{ tittel.id }}" />
 		<div class="col-xs-12">
-		<h4>Legg til film</h4>
+		<h4>Legg til dans</h4>
 			<p>Røde felt (merket *) er obligatoriske!</p>
 		</div>
 		
@@ -49,7 +50,7 @@
 	
 	
 	<div class="clearfix"></div>
-	<button type="submit" class="btn btn-success">Lagre</button>
+	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>
 	&nbsp; &nbsp; eller 
 	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
 	
