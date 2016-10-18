@@ -1,4 +1,4 @@
-<form>
+<form action="filmTittel">
 	<div class="row">
 			
 		<div class="col-xs-12">
@@ -6,6 +6,7 @@
 			<p>Røde felt (merket *) er obligatoriske!</p>
 		</div>
 		
+		<input type="hidden" name="tittel_id" value="{{ tittel.id }}" />
 		<div class="col-xs-12 col-sm-6 col-lg-4">
 			<div class="form-group text-danger">
 				<label for="tittel">Filmens tittel / navn *</label>
@@ -35,7 +36,7 @@
 	
 	
 	<div class="clearfix"></div>
-	<button type="submit" class="btn btn-success">Lagre</button>
+	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>
 	&nbsp; &nbsp; eller 
 	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
 	
