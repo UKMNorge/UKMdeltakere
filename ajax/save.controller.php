@@ -25,6 +25,9 @@ switch( $_POST['doSave'] ) {
 	case 'deleteTitle':
 		require_once( plugin_dir_path( __FILE__ ) .'../delete/tittel.save.php' );
 		break;
+	case 'meldAvInnslag':
+		require_once( plugin_dir_path( __FILE__ ) .'../delete/innslag.save.php' );
+		break;
 
 	#### SAVE AND UPDATE
 	case 'innslag':

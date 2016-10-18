@@ -190,6 +190,11 @@ jQuery(document).on('simpleSave', function(e, innslag_id, clicked){
 		}
 		else if( response.success ) {
 			jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true] );
+
+			// Hvis dette var en avmeldingsforespørsel som gikk i orden, skjul hele elementet fra listen
+			if ( 'meldAvInnslag' == clicked.attr('data-handle') ) {
+				innslag.slideUp();
+			}
 		}
 		else {
 			alert('Beklager, klarte ikke å hente informasjon fra server!');
