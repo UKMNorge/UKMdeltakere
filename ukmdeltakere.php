@@ -35,6 +35,24 @@ function UKMdeltakere_ajax() {
 		}
 	}
 
+	#var_dump($JSON);
+	$test = json_encode($JSON);
+	if( false == $test ) {
+		$JSON = null;
+		$JSON = new stdClass();
+		$JSON->innslag_id = $_POST['innslag'];
+		$JSON->success = false;
+		switch(json_last_error() ) {
+			case JSON_ERROR_SYNTAX:
+				$JSON->message = "JSON har syntaks-feil! Dette er en systemfeil, kontakt UKM Norge.";
+				break;
+			case JSON_ERROR_UTF8:
+				$JSON->message = "En UTF8/JSON-feil oppsto. Dette er en systemfeil, kontakt UKM Norge.";
+				break;
+			default:
+				$JSON->message = "En ukjent feil oppsto med JSON-enkodingen. Dette er en systemfeil, kontakt UKM Norge. JSON-feil: ".json_last_error();
+		}
+	}
 	header('Content-Type: application/json');
 	echo json_encode( $JSON );
 	wp_die(); // this is required to terminate immediately and return a proper response
