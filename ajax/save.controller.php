@@ -11,7 +11,7 @@ UKMlogger::setID( 'wordpress', $current_user->ID, get_option('pl_id') );
 $DATA = [];
 if(is_array($_POST['formData'])) {
 	foreach( $_POST['formData'] as $field ) {
-		// TODO: Denne håndterer ikke array som verdier (ie. funksjoner[] som navn).
+		// TODO: Denne håndterer ikke array som verdier (ie. funksjoner[] som navn).
 		$DATA[ $field['name'] ] = $field['value'];
 	}
 }
@@ -59,6 +59,9 @@ switch( $_POST['doSave'] ) {
 		break;
 	case 'litteraturTittel':
 		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_litteratur.save.php');
+		break;
+	case 'sceneTittel':
+		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_scene.save.php');
 		break;
 	default:
 		throw new Exception("NOT IMPLEMENTED!");
