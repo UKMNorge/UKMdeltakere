@@ -54,6 +54,9 @@ switch( $_POST['doSave'] ) {
 	case 'dansTittel':
 		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_dans.save.php');
 		break;
+	case 'teaterTittel':
+		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_teater.save.php');
+		break;
 	default:
 		throw new Exception("NOT IMPLEMENTED!");
 		break;
