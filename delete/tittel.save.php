@@ -22,6 +22,10 @@ switch($innslag->getType()->getKey()) {
 		$tittel = new write_tittel( $_POST['object_id'], 'smartukm_titles_video');
 		$title_collection->fjern($tittel);
 		break;
+	case 'utstilling':
+		$tittel = new write_tittel( $_POST['object_id'], 'smartukm_titles_exhibition');
+		$title_collection->fjern($tittel);
+		break;
 	default:
 		throw new Exception("Tittel-save: Kan kun fjerne titler på scene eller video, ikke ". $innslag->getType()->getKey());
 }
