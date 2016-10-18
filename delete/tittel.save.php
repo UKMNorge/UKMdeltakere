@@ -14,6 +14,7 @@ switch($innslag->getType()->getKey()) {
 	case 'scene':
 	case 'dans':
 	case 'teater':
+	case 'litteratur':
 		$tittel = new write_tittel( $_POST['object_id'], 'smartukm_titles_scene');
 		$title_collection->fjern($tittel);
 		break;
