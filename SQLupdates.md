@@ -1,0 +1,26 @@
+### 
+SQL-oppdateringer:
+
+**Log_actions**
+
+```
+INSERT INTO `log_actions` (`log_action_id`, `log_action_verb`, `log_action_element`, `log_action_datatype`, `log_action_identifier`, `log_action_printobject`)
+VALUES
+	(501, 'opprettet', 'tittel for scene', 'int', 'smartukm_titles_scene|create', 0),
+	(502, 'endret', 'tittelnavn', 'text', 'smartukm_titles_scene|t_name', 1),
+	(503, 'endret', 'lengde', 'int', 'smartukm_titles_scene|t_time', 1),
+	(504, 'endret', 'sangtype', 'bool', 'smartukm_titles_scene|t_instrumental', 1),
+	(505, 'endret', 'selvlaget', 'bool', 'smartukm_titles_scene|t_selfmade', 1),
+	(506, 'endret', 'tekst av', 'text', 'smartukm_titles_scene|t_titleby', 1),
+	(507, 'endret', 'melodi av', 'text', 'smartukm_titles_scene|t_musicby', 1),
+	(508, 'endret', 'koreografi av', 'text', 'smartukm_titles_scene|t_coreography', 1),
+	(509, 'endret', 'om teksten skal leses opp', 'bool', 'smartukm_titles_scene|t_litterature_read', 1),
+	(510, 'opprettet', 'film-tittel', 'int', 'smartukm_titles_video|create', 0),
+	(511, 'endret', 'navn', 'text', 'smartukm_titles_video|t_v_title', 1),
+	(512, 'endret', 'varighet av film', 'int', 'smartukm_titles_video|t_v_time', 1),
+	(513, 'endret', 'filmformat', 'text', 'smartukm_titles_video|t_v_format', 1),
+	(514, 'opprettet', 'utstillingstittel', 'int', 'smartukm_titles_exhibition|create', 0),
+	(515, 'endret', 'navn', 'text', 'smartukm_titles_exhibition|t_e_title', 1),
+	(516, 'endret', 'type og teknikk', 'text', 'smartukm_titles_exhibtion|t_e_type', 1),
+	(517, 'endret', 'beskrivelse', 'text', 'smartukm_titles_exhibition|t_e_comments', 1);
+```
