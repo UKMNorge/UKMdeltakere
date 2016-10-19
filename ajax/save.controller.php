@@ -25,6 +25,9 @@ switch( $_POST['doSave'] ) {
 	case 'deleteTitle':
 		require_once( plugin_dir_path( __FILE__ ) .'../delete/tittel.save.php' );
 		break;
+	case 'deleteFromEvent':
+		require_once( plugin_dir_path( __FILE__) . '../delete/event.save.php' );
+		break;
 	case 'meldAvInnslag':
 		require_once( plugin_dir_path( __FILE__ ) .'../delete/innslag.save.php' );
 		break;
@@ -32,6 +35,9 @@ switch( $_POST['doSave'] ) {
 	#### SAVE AND UPDATE
 	case 'innslag':
 		require_once( plugin_dir_path( __FILE__ ) .'../save/innslag.save.php' );
+		break;
+	case 'addToEvent':
+		require_once( plugin_dir_path( __FILE__ ) .'../save/event.save.php' );
 		break;
 	case 'personAdd':
 		require_once( plugin_dir_path( __FILE__ ). '../save/personAdd.save.php');
