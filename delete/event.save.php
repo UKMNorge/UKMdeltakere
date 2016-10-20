@@ -6,4 +6,4 @@ require_once('UKM/forestilling.class.php');
 $innslag = new write_innslag($_POST['innslag']);
 $forestilling = new forestilling_v2($_POST['object_id']);
 
-$forestilling->fjernInnslag($innslag);
+$forestilling->getInnslag()->fjern($innslag);

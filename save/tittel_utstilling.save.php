@@ -7,12 +7,9 @@ $innslag = new write_innslag($_POST['innslag']);
 
 // Skal vi lagre en ny tittel?
 if(null == $DATA['tittel_id']) {
-	$id = write_tittel::create( 'smartukm_titles_exhibition', $innslag->getId() );
-	$tittel = new write_tittel( $id, 'smartukm_titles_exhibition' );
+	$DATA['tittel_id'] = write_tittel::create( $innslag );
 }
-else {
-	$tittel = new write_tittel( $DATA['tittel_id'], 'smartukm_titles_exhibition' );
-}
+$tittel = new write_tittel( $DATA['tittel_id'], $innslag->getType()->getTabell() );
 
 $tittel->setTittel($DATA['tittel']);
 $tittel->setType($DATA['teknikk']);
