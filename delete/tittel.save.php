@@ -27,5 +27,5 @@ switch($innslag->getType()->getKey()) {
 		$title_collection->fjern($tittel);
 		break;
 	default:
-		throw new Exception("Tittel-save: Kan kun fjerne titler på scene eller video, ikke ". $innslag->getType()->getKey());
+		throw new Exception("Tittel-save: Kan kun fjerne titler for scene, video eller utstilling, ikke ". $innslag->getType()->getKey());
 }
