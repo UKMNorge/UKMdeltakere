@@ -43,6 +43,10 @@ jQuery(document).on('click', '.action', function( e ) {
 			break;
 		
 		// INNSLAG
+		case 'nyttInnslag':
+			var btn = e.target;
+			jQuery(document).trigger('innslag.showNew', btn);
+			break;
 		case 'close':
 			jQuery(document).trigger('innslag.hideBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
@@ -90,6 +94,7 @@ jQuery(document).on('click', '.actionEventAdd', function(e){
 	jQuery(document).trigger('innslag.loadView', ['addToEvent', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 });
 
+
 /********** FILTER LISTS ***************** */
 jQuery(document).on('loadedView.twigJSpersonadd', function(){
 	jQuery('.filter_personer').each(function() {
@@ -117,6 +122,61 @@ jQuery(document).ready(function(){
 	});
 });
 
+/********** NEW INNSLAG FUNCTIONS ******** */
+jQuery(document).on('innslag.showNew', function(e, button) {
+	var action = jQuery(button).attr('data-action');
+	var type = jQuery(button).attr('data-type');
+	var body = jQuery("#newInnslagBox_"+type);
+
+	body.slideDown();
+
+	jQuery(document).trigger('innslag.loadNew', [type, body]);
+	
+});
+
+jQuery(document).on('innslag.loadNew', function(e, type, body) {
+	body = jQuery(body);
+	var data = {
+					'action':'UKMdeltakere_ajax',
+					'do': 'renderView',
+					'view': type
+				}
+	body.find(".body").html('<p>Vennligst vent, laster inn skjema...</p>').attr('data-load-state', 'false');
+
+	jQuery.post(ajaxurl, data, function(response) {
+		if( response.success === false ) {
+			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
+			
+			// Uncomment når debugging er done:
+			//body.slideUp();
+		}
+		else if( response.success ) {
+			jQuery(document).trigger('innslag.renderNewForm', [body, response])
+		}
+		else {
+			alert('Beklager, klarte ikke å hente informasjon fra server!');
+			
+			// Uncomment når debugging er done:
+			//body.slideUp();
+			console.log( response );
+		}
+	});
+});
+
+/**
+ * innslag.renderBody
+**/
+jQuery(document).on('innslag.renderNewForm', function(e, body, server_response ) {
+	if( undefined == server_response.view || null == server_response.view ) {
+		alert('Beklager, en feil har oppstått. Ukjent view '+ server_response.view );
+	}
+	
+	var rendered = eval( 'twigJS'+ server_response.twigJS + '.render( server_response )' );
+	console.log(jQuery(body));
+	console.log(jQuery(body).find('.body'));
+
+	jQuery(body).find('.body').html( rendered );
+});
 
 /********** BODY CONTAINER FUNCTIONS ***** */
 /**
@@ -271,6 +331,7 @@ jQuery(document).on('innslag.loadView', function(e, view, innslag_id, object_id)
  * innslag.renderBody
 **/
 jQuery(document).on('innslag.renderBody', function(e, server_response ) {
+	console.log(server_response);
 	if( undefined == server_response.view || null == server_response.view ) {
 		alert('Beklager, en feil har oppstått. Ukjent view '+ server_response.view );
 	}

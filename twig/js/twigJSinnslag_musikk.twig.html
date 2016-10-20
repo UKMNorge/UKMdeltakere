@@ -1,28 +1,26 @@
-<form action="innslag" data-object-id="{{ innslag.id }}">
+<form action="musikkinnslag">
 	<div class="row">
-		<div class="col-xs-12">
-			<h4 style="margin-bottom: 0px;">Rediger informasjon</h4>
-			<p>Røde felt (merket *) er obligatoriske!</p>
-		</div>
-		
 		<div class="col-xs-12 col-sm-6 col-lg-4">
 			<div class="form-group text-danger">
 				<label for="navn">Navn *</label>
-				<input name="navn" type="text" class="form-control" value="{{ innslag.navn }}" />
-			</div>
+				<input type="text" class="form-control" required name="navn" />
+			</div>		
 
-			{% if 'utstilling' != innslag.type.key %}
-				<div class="form-group">
-					<label for="sjanger">Sjanger</label>
-					<input name="sjanger" type="text" class="form-control" value="{{ innslag.sjanger }}" />
-				</div>
-			{% endif %}
-			
+		{% if 'utstilling' != innslag.type.key %}
 			<div class="form-group">
-				<label>Beskrivelse</label>
-				<textarea name="beskrivelse" class="form-control">{{ innslag.beskrivelse }}</textarea>
+				<label for="sjanger">Sjanger</label>
+				<input name="sjanger" type="text" class="form-control" />
+			</div>
+		{% endif %}
+
+			<div class="form-group">
+				<label for="beskrivelse">Beskrivelse</label>
+				<textarea type="text" class="form-control" required name="beskrivelse"></textarea>
 			</div>
 		</div>
+
+		<label>KONTAKTPERSON</label>
+
 		<div class="col-xs-12 col-sm-6 col-lg-4">
 			{% if monstring.erFellesmonstring %}
 				<div class="form-group text-danger">
@@ -41,7 +39,7 @@
 			{% if 1 == innslag.type.id %}
 				<div class="form-group">
 					<label for="kategori">Kategori</label>
-					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ innslag.kategori }}" />
+					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ kategori }}"/>
 				</div>
 			{% endif %}
 		</div>
@@ -51,7 +49,7 @@
 	<p>&nbsp;</p>
 	
 	<div class="clearfix"></div>
-	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>
+	<button type="submit" class="action btn btn-success" data-action="save">Opprett innslag</button>
 	&nbsp; &nbsp; eller 
 	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
 	
