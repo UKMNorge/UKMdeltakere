@@ -205,9 +205,9 @@ jQuery(document).on('innslag.resetNew', function(e, container) {
 jQuery(document).on('innslag.addKontaktperson', function(e, sel) {
 	var person_id = jQuery(sel).attr('data-person-id');
 	var person = jQuery(sel).html();
-	console.log('Valgt kontaktperson: ');
+	/*console.log('Valgt kontaktperson: ');
 	console.log(sel);
-	console.log(person);
+	console.log(person);*/
 	jQuery("#kontaktperson_felt").show();
 	jQuery("#kontaktperson_id").val(person_id);
 	jQuery("#kontaktperson_info").html(person);
@@ -227,17 +227,17 @@ jQuery(document).on('innslag.lukkPersonliste', function() {
 jQuery(document).on('innslag.saveNew', function(e, container) {
 	var container = jQuery(container); // Nødvendig?
 	var form = container;
-	console.log(form);
+	//console.log(form);
 	var data = {
 					'action':'UKMdeltakere_ajax',
 					'do': 'save', 
 					'doSave': 'nyttInnslag',
 					'formData': form.serializeArray()
 				};
-	console.log(data);
-
+	//console.log(data);
 	container.html('<p>Vennligst vent, lagrer...</p>').attr('data-load-state', 'false');
-	
+	console.log("Sender skjema...");
+
 	jQuery.post(ajaxurl, data, function(response) {
 		if( response.success === false ) {
 			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
@@ -253,6 +253,9 @@ jQuery(document).on('innslag.saveNew', function(e, container) {
 			alert('Beklager, klarte ikke å hente informasjon fra server!');
 			console.log( response );
 		}
+	}).error( function(error) { 
+		console.log("AJAX error: ");
+		console.log(error);
 	});
 });
 
