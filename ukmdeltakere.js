@@ -42,11 +42,32 @@ jQuery(document).on('click', '.action', function( e ) {
 			jQuery(document).trigger('innslag.loadView', ['addExistingPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 			break;
 		
-		// INNSLAG
+		// NYTT INNSLAG
 		case 'nyttInnslag':
 			var btn = e.target;
 			jQuery(document).trigger('innslag.showNew', btn);
 			break;
+		case 'addKontaktperson':
+			var btn = e.target;
+			if(btn.class != 'clickable') {
+				// Det hender at man trykker på mobilnummeret og ikke boksen, så da finner vi boksen:
+				btn = btn.closest('li');
+			}
+			jQuery(document).trigger('innslag.addKontaktperson', btn);
+			break;
+		case 'resetKontaktperson':
+			jQuery(document).trigger('innslag.resetKontaktperson');
+			break;
+		case 'saveNyttInnslag':
+			var btn = e.target;
+			var form = jQuery("#nyttInnslagContainer");
+			jQuery(document).trigger('innslag.saveNew', form);
+			break;
+		case 'closeNyttInnslag':
+			var container = jQuery(e.target).attr('data-target');
+			jQuery(document).trigger('innslag.resetNew', container);
+
+		// INNSLAG
 		case 'close':
 			jQuery(document).trigger('innslag.hideBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
 			break;
@@ -122,6 +143,22 @@ jQuery(document).ready(function(){
 	});
 });
 
+jQuery(document).on('innslag.showNewFilter', function(){
+	jQuery('.filter_personer').each(function() {
+		jQuery(this).fastLiveFilter(jQuery('#' + jQuery(this).attr('data-results')), {
+												callback: function(total, id) { 
+													if( 0 == total ) {
+														jQuery('#'+ id +'_create').fadeIn();
+													} else {
+														jQuery('#'+ id +'_create').fadeOut();
+													}
+												}
+											  }
+											);
+									});
+});
+
+
 /********** NEW INNSLAG FUNCTIONS ******** */
 jQuery(document).on('innslag.showNew', function(e, button) {
 	var action = jQuery(button).attr('data-action');
@@ -146,18 +183,74 @@ jQuery(document).on('innslag.loadNew', function(e, type, body) {
 	jQuery.post(ajaxurl, data, function(response) {
 		if( response.success === false ) {
 			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
-			
-			// Uncomment når debugging er done:
-			//body.slideUp();
+			jQuery(document).trigger('innslag.resetNew', body);
 		}
 		else if( response.success ) {
-			jQuery(document).trigger('innslag.renderNewForm', [body, response])
+			jQuery(document).trigger('innslag.renderNewForm', [body, response]);
+			jQuery(document).trigger('innslag.showNewFilter');
 		}
 		else {
 			alert('Beklager, klarte ikke å hente informasjon fra server!');
-			
-			// Uncomment når debugging er done:
-			//body.slideUp();
+			console.log( response );
+			jQuery(document).trigger('innslag.resetNew', body);
+		}
+	});
+});
+
+jQuery(document).on('innslag.resetNew', function(e, container) {
+	jQuery(container).slideUp();
+	jQuery(container).find('.body').html = "";
+});
+
+jQuery(document).on('innslag.addKontaktperson', function(e, sel) {
+	var person_id = jQuery(sel).attr('data-person-id');
+	var person = jQuery(sel).html();
+	console.log('Valgt kontaktperson: ');
+	console.log(sel);
+	console.log(person);
+	jQuery("#kontaktperson_felt").show();
+	jQuery("#kontaktperson_id").val(person_id);
+	jQuery("#kontaktperson_info").html(person);
+	jQuery(document).trigger('innslag.lukkPersonliste');
+});
+
+jQuery(document).on('innslag.resetKontaktperson', function() {
+	jQuery("#kontaktperson_id").val('');
+	jQuery("#kontaktperson_info").html('');
+	jQuery("#kontaktperson_felt").hide();
+	jQuery("#sokefelt").show();
+});
+jQuery(document).on('innslag.lukkPersonliste', function() {
+	jQuery("#sokefelt").hide();
+});
+
+jQuery(document).on('innslag.saveNew', function(e, container) {
+	var container = jQuery(container); // Nødvendig?
+	var form = container;
+	console.log(form);
+	var data = {
+					'action':'UKMdeltakere_ajax',
+					'do': 'save', 
+					'doSave': 'nyttInnslag',
+					'formData': form.serializeArray()
+				};
+	console.log(data);
+
+	container.html('<p>Vennligst vent, lagrer...</p>').attr('data-load-state', 'false');
+	
+	jQuery.post(ajaxurl, data, function(response) {
+		if( response.success === false ) {
+			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
+		}
+		else if( response.success ) {
+			console.log("Suksess");
+			// Skjul skjema
+			jQuery(document).trigger('innslag.resetNew', container);
+			// Trigger ny innlasting av listen.
+
+		}
+		else {
+			alert('Beklager, klarte ikke å hente informasjon fra server!');
 			console.log( response );
 		}
 	});

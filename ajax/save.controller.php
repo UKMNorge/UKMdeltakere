@@ -33,7 +33,7 @@ switch( $_POST['doSave'] ) {
 		break;
 
 	#### ADD NEW INNSLAG
-	case 'musikkinnslag':
+	case 'nyttInnslag':
 		require_once( plugin_dir_path( __FILE__ ) .'../save/nytt_innslag.save.php' );
 		break;
 
