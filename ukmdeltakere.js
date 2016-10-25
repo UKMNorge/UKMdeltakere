@@ -242,7 +242,6 @@ jQuery(document).on('innslag.saveNew', function(e, container) {
 			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
 		}
 		else if( response.success ) {
-			console.log("Suksess");
 			// Skjul skjema
 			jQuery(document).trigger('innslag.resetNew', container);
 			// Trigger ny innlasting av listen.
@@ -283,7 +282,7 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 	li += '<div class="header clickable row"></div>';
 	li += '<div class="body" data-load-state="false" style="display:none;">Vennligst vent... </div>';
 	li += '<div class="clearfix"></div></div></li>';
-	
+
 	// Hvis vi har innslag i boksen, legg til ny boks, hvis ikke, bytt ut "Ingen påmeldte" med ny boks.
 	if( list.children.length > 1 ) {
 		list.append(li);
@@ -330,15 +329,18 @@ jQuery(document).on('innslag.loadHeader', function(e, innslag_id) {
  * innslag.renderHeader
 **/
 jQuery(document).on('innslag.renderHeader', function(e, container, server_response ) {
-	console.log("Rendering header...");
 	var header = jQuery(container).find(".header");
 	jQuery(header).html("<p>Vennligst vent...</p>");
 
 	var rendered = eval( 'twigJS'+ server_response.twigJS + '.render( server_response )' );
 	jQuery(header).html( rendered );
 
+	jQuery(container).attr('data-innslag-id', server_response.innslag.id );
 	jQuery(container).attr('data-innslag-type', server_response.innslag.type.key );
 	jQuery(container).attr('data-filter', server_response.filter );
+
+	// Utvid skjema:
+	jQuery(document).trigger('innslag.toggleBody', server_response.innslag_id);
 });
 
 /********** BODY CONTAINER FUNCTIONS ***** */
