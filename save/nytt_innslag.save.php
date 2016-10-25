@@ -20,3 +20,4 @@ if( !is_numeric($id) ) {
 	throw new Exception("Klarte ikke å opprette nytt innslag.");
 }
 $JSON->innslag_id = $id;
+$JSON->type = $type;

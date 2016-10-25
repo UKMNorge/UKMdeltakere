@@ -59,7 +59,6 @@ jQuery(document).on('click', '.action', function( e ) {
 			jQuery(document).trigger('innslag.resetKontaktperson');
 			break;
 		case 'saveNyttInnslag':
-			var btn = e.target;
 			var form = jQuery("#nyttInnslagContainer");
 			jQuery(document).trigger('innslag.saveNew', form);
 			break;
@@ -198,6 +197,10 @@ jQuery(document).on('innslag.loadNew', function(e, type, body) {
 });
 
 jQuery(document).on('innslag.resetNew', function(e, container) {
+	if( !jQuery(container).is('ol') ) {
+		container = container.closest("ol");
+	}
+
 	jQuery(container).slideUp();
 	jQuery(container).find('.body').html = "";
 });
@@ -205,9 +208,7 @@ jQuery(document).on('innslag.resetNew', function(e, container) {
 jQuery(document).on('innslag.addKontaktperson', function(e, sel) {
 	var person_id = jQuery(sel).attr('data-person-id');
 	var person = jQuery(sel).html();
-	/*console.log('Valgt kontaktperson: ');
-	console.log(sel);
-	console.log(person);*/
+
 	jQuery("#kontaktperson_felt").show();
 	jQuery("#kontaktperson_id").val(person_id);
 	jQuery("#kontaktperson_info").html(person);
@@ -227,16 +228,14 @@ jQuery(document).on('innslag.lukkPersonliste', function() {
 jQuery(document).on('innslag.saveNew', function(e, container) {
 	var container = jQuery(container); // Nødvendig?
 	var form = container;
-	//console.log(form);
 	var data = {
 					'action':'UKMdeltakere_ajax',
 					'do': 'save', 
 					'doSave': 'nyttInnslag',
 					'formData': form.serializeArray()
 				};
-	//console.log(data);
+
 	container.html('<p>Vennligst vent, lagrer...</p>').attr('data-load-state', 'false');
-	console.log("Sender skjema...");
 
 	jQuery.post(ajaxurl, data, function(response) {
 		if( response.success === false ) {
@@ -247,7 +246,7 @@ jQuery(document).on('innslag.saveNew', function(e, container) {
 			// Skjul skjema
 			jQuery(document).trigger('innslag.resetNew', container);
 			// Trigger ny innlasting av listen.
-
+			jQuery(document).trigger('innslag.newHeader', [response.innslag_id, response.type]);
 		}
 		else {
 			alert('Beklager, klarte ikke å hente informasjon fra server!');
@@ -268,10 +267,78 @@ jQuery(document).on('innslag.renderNewForm', function(e, body, server_response )
 	}
 	
 	var rendered = eval( 'twigJS'+ server_response.twigJS + '.render( server_response )' );
-	console.log(jQuery(body));
-	console.log(jQuery(body).find('.body'));
 
 	jQuery(body).find('.body').html( rendered );
+});
+
+/********** HEADER CONTAINER FUNCTIONS ***** */
+jQuery(document).on('innslag.resetHeader', function(e, innslag_id ) {
+	var container = jQuery("#innslag_" + innslag_id);
+});
+
+jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
+	//console.log('Adding new header...');
+	var list = jQuery("#innslag_liste_"+type.key);
+	var li = '<li id="innslag_'+innslag_id+'" class="list-group-item innslag">';
+	li += '<div class="header clickable row"></div>';
+	li += '<div class="body" data-load-state="false" style="display:none;">Vennligst vent... </div>';
+	li += '<div class="clearfix"></div></div></li>';
+	
+	// Hvis vi har innslag i boksen, legg til ny boks, hvis ikke, bytt ut "Ingen påmeldte" med ny boks.
+	if( list.children.length > 1 ) {
+		list.append(li);
+	}
+	else {
+		list.html(li);
+	}
+
+	// Hent inn data.
+	jQuery(document).trigger('innslag.loadHeader', innslag_id);
+});
+
+jQuery(document).on('innslag.loadHeader', function(e, innslag_id) {
+	//console.log('Loading header-data...');
+	var container = jQuery("#innslag_" + innslag_id);
+	var header = container.find('.header');
+	var data = {
+					'action':'UKMdeltakere_ajax',
+					'do': 'renderView',
+					'innslag': innslag_id,
+					'view': 'header'
+				}
+
+	jQuery.post(ajaxurl, data, function(response) {
+		if( response.success === false ) {
+			alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + response.message );
+			//jQuery(document).trigger('innslag.resetBody', response.innslag_id );
+		}
+		else if( response.success ) {
+			jQuery(document).trigger('innslag.renderHeader', [container, response]);
+		}
+		else {
+			alert('Beklager, klarte ikke å hente informasjon fra server!');
+			//jQuery(document).trigger('innslag.resetBody', response.innslag_id );
+			console.log( response );
+		}
+	}).error( function(error) { 
+		console.log("AJAX error: ");
+		console.log(error);
+	});
+});
+
+/**
+ * innslag.renderHeader
+**/
+jQuery(document).on('innslag.renderHeader', function(e, container, server_response ) {
+	console.log("Rendering header...");
+	var header = jQuery(container).find(".header");
+	jQuery(header).html("<p>Vennligst vent...</p>");
+
+	var rendered = eval( 'twigJS'+ server_response.twigJS + '.render( server_response )' );
+	jQuery(header).html( rendered );
+
+	jQuery(container).attr('data-innslag-type', server_response.innslag.type.key );
+	jQuery(container).attr('data-filter', server_response.filter );
 });
 
 /********** BODY CONTAINER FUNCTIONS ***** */

@@ -20,7 +20,7 @@
 			</ol>
 			<div class="clearfix"></div>
 
-			<ol class="list-group innslag_lister">
+			<ol class="list-group innslag_lister" id="innslag_liste_{{ type_innslag.getKey() }}">
 				{% for innslag in monstring.getInnslag().getAllByType( type_innslag ) %}
 					{% embed "list_item.html.twig" %}{% endembed %}
 				{% else %}

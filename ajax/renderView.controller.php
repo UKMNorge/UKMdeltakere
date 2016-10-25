@@ -31,6 +31,9 @@ else {
 		case 'changeContact':
 			require_once('contact_change.controller.php');
 			break;
+		case 'header':
+			require_once('header.controller.php');
+			break;
 		// PERSONER
 		case 'editPerson':
 			require_once('person_edit.controller.php');
