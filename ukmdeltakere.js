@@ -340,6 +340,7 @@ jQuery(document).on('innslag.renderHeader', function(e, container, server_respon
 	jQuery(container).attr('data-filter', server_response.filter );
 
 	// Utvid skjema:
+	jQuery(document).trigger('innslag.resetBody', server_response.innslag_id);
 	jQuery(document).trigger('innslag.toggleBody', server_response.innslag_id);
 });
 
