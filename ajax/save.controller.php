@@ -32,6 +32,11 @@ switch( $_POST['doSave'] ) {
 		require_once( plugin_dir_path( __FILE__ ) .'../delete/innslag.save.php' );
 		break;
 
+	#### ADD NEW INNSLAG
+	case 'nyttInnslag':
+		require_once( plugin_dir_path( __FILE__ ) .'../save/nytt_innslag.save.php' );
+		break;
+
 	#### SAVE AND UPDATE
 	case 'innslag':
 		require_once( plugin_dir_path( __FILE__ ) .'../save/innslag.save.php' );

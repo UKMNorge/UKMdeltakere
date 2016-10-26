@@ -1,0 +1,38 @@
+<div class="col-xs-8">
+	{{ innslag.navn }}
+	<br />
+	<small>
+		{% if innslag.type.harTitler %}
+			{% if innslag.harPersonAdvarsler %}
+				<span class="label label-outline label-warning">
+					{{ innslag.personer|length }}
+					person{{ innslag.personer|length != 1 ? 'er' : '' }}
+				</span>
+			{% else %}
+				{{ innslag.personer|length }}
+				person{{ innslag.personer|length != 1 ? 'er' : '' }}
+			{% endif %}
+		{% else %}
+			{{ innslag.personer[0].rolle }}
+		{% endif %}
+	</small>
+</div>
+<div class="col-xs-3 col-xs-offset-1" style="text-align:right;">
+	{% if innslag.type.harTitler %}
+		{% if innslag.advarsler.titler|length > 0 %}
+			<span class="label label-outline label-warning">
+		{% endif %}
+			{% if 'utstilling' == type_innslag %}
+				{{ innslag.titler|length }} verk
+			{% else %}
+				{{ innslag.varighet_human }}
+			{% endif %}
+		{% if innslag.advarsler.titler|length > 0 %}
+			</span>
+		{% endif %}
+	{% else %}
+		{{ innslag.personer[0].alder }}
+	{% endif %}
+	<br />
+	<small>{{ innslag.kommune }}</small>
+</div>

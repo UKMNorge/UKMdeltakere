@@ -44,16 +44,21 @@ function data_innslag( $innslag, $monstring ) {
 	$data->type->id 	= $innslag->getType()->getId();
 	$data->type->key 	= $innslag->getType()->getKey();
 	$data->type->navn 	= $innslag->getType()->getNavn();
+	$data->type->harTitler = $innslag->getType()->harTitler();
 	
 	$data->advarsler = [];
+	$data->harPersonAdvarsler = false;
 	foreach( $innslag->getAdvarsler( $monstring ) as $advarsel ) {
 		$data->advarsler[] = data_advarsel( $advarsel );
+		if ($advarsel->kategori == 'personer') {
+			$data->harPersonAdvarsler = true;
+		}
 	}
 	
 	if( $innslag->getType()->harTitler() ) {
 		$data->varighet		= $innslag->getTitler( $monstring )->getVarighet();
 		$data->varighet_human= $innslag->getTitler( $monstring )->getVarighet()->getHumanShort();
-	}
+	} 
 	
 	$data->hendelser	= [];
 	
