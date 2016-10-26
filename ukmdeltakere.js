@@ -107,6 +107,15 @@ jQuery(document).on('click', '.innslagResetAndReloadBody', function(e){
 	e.preventDefault();
 	jQuery(document).trigger('innslag.resetBody', [jQuery(this).attr('data-innslag-id'), true]);
 });
+jQuery(document).on('innslag.goToView', function(e, innslag_id) {
+	var pos = jQuery("#innslag_"+innslag_id).offset().top;
+	console.log("Position of new box: "+pos);
+	pos = pos - 175; // Gi oss 175 px margin fra toppen.
+	console.log("Scrolling to "+pos);
+    jQuery('html, body').animate({
+        scrollTop: pos + 'px'
+    }, 'fast');
+});
 
 /* Legg til i hendelse */
 jQuery(document).on('click', '.actionEventAdd', function(e){
@@ -338,6 +347,8 @@ jQuery(document).on('innslag.renderHeader', function(e, container, server_respon
 	jQuery(container).attr('data-innslag-id', server_response.innslag.id );
 	jQuery(container).attr('data-innslag-type', server_response.innslag.type.key );
 	jQuery(container).attr('data-filter', server_response.filter );
+
+	jQuery(document).trigger('innslag.goToView', server_response.innslag_id);
 
 	// Utvid skjema:
 	jQuery(document).trigger('innslag.resetBody', server_response.innslag_id);
