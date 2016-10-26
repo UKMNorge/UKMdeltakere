@@ -33,6 +33,10 @@ jQuery(document).on('click', '.action', function( e ) {
 			jQuery(document).trigger('innslag.loadView', ['editPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 			break;
 		case 'showNewPerson':
+			// TODO: Flytt til en funksjon, og støtt både fornavn og etternavn, eller mobil hvis det er bare tall?
+			var form = jQuery(e.target).closest("form");
+			var first_name = jQuery("#" + form.attr('id') + " #fornavn_sok").val();
+			jQuery("#" + form.attr('id') + " #fornavn").val(first_name);
 			jQuery('#'+ jQuery(this).attr('data-target')).fadeIn();
 			break;
 		case 'editContact':
