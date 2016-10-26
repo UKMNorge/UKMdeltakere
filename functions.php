@@ -101,6 +101,7 @@ function data_person( $person ) {
 	$data->kommune_id			= $person->getKommune()->getId();
 	$data->kommune_navn			= $person->getKommune()->getNavn();
 	$data->valgte_funksjoner	= $person->getRolleObject();
+	$data->rolle				= $person->getRolle();
 	return $data;
 }
 
