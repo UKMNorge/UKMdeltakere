@@ -14,13 +14,19 @@ if(null == $DATA['kontakt']) {
 $kommune = new kommune( $DATA['kommune'] );
 $monstring = new monstring_v2( get_option('pl_id') );
 $type = innslag_typer::getByName($DATA['type']);
-$navn = $DATA['navn'];
-$sjanger = $DATA['sjanger'];
-$beskrivelse = $DATA['beskrivelse'];
 
-$kontaktpersonSomDeltaker = false;
-if( isset($DATA['kontaktpersonErMed']) && 'on' == $DATA['kontaktpersonErMed']) {
-	$kontaktpersonSomDeltaker = true;
+if( $type->harTitler() ) {
+	$navn = $DATA['navn'];
+	$kontaktpersonSomDeltaker = false;
+	if( isset($DATA['kontaktpersonErMed']) && 'on' == $DATA['kontaktpersonErMed']) {
+		$kontaktpersonSomDeltaker = true;
+	}
+	$sjanger = $DATA['sjanger'];
+	$beskrivelse = $DATA['beskrivelse'];
+} 
+else {
+	$navn = $kontaktperson->getNavn();
+	$beskrivelse = $DATA['erfaring'];
 }
 
 $id = write_innslag::create($kommune, $monstring, $type, $navn, $kontaktperson );
@@ -29,15 +35,41 @@ if( !is_numeric($id) ) {
 }
 
 $innslag = new write_innslag($id);
-$innslag->setSjanger($sjanger);
 $innslag->setBeskrivelse($beskrivelse);
-if( true == $kontaktpersonSomDeltaker ) {
-	if( !$innslag->getPersoner()->leggTil( $kontaktperson ) ) {
-		// Lagre innslaget før feilmelding, sånn at sjanger og beskrivelse ikke forsvinner.
-		$innslag->save();
-		throw new Exception("Klarte ikke å legge til kontaktpersonen i innslaget!");
+
+if( $type->harTitler() ) {
+	$innslag->setSjanger($sjanger);
+	
+	if( true == $kontaktpersonSomDeltaker ) {
+		if( !$innslag->getPersoner()->leggTil( $kontaktperson ) ) {
+			// Lagre innslaget før feilmelding, sånn at sjanger og beskrivelse ikke forsvinner.
+			$innslag->save();
+			throw new Exception("Klarte ikke å legge til kontaktpersonen i innslaget!");
+		}
 	}
 }
+// Tittelløs, ie. konferansier, arrangør eller UKM Media:
+else {
+	if( 'konferansier' == $type->getKey() ) {
+		$innslag->setRolle( $kontaktperson, $type->getNavn() );
+	} 
+	else {
+		// UKM Media eller arrangør:
+		// STYGG HACK: DATA BURDE SENDE MED ARRAYET.
+		$funksjoner = array();
+		$mulige = $innslag->getType()->getFunksjoner();
+		foreach($_POST['formData'] as $element) {
+			if($element['name'] == 'funksjoner[]') {
+				$funksjoner[$element['value']] = $mulige[$element['value']];
+			}
+		}
+
+		$innslag->setRolle($kontaktperson, $funksjoner);
+	}
+	
+	$innslag->getPersoner()->leggTil( $kontaktperson );
+}
+
 $innslag->save();
 
 $JSON->innslag_id = $id;

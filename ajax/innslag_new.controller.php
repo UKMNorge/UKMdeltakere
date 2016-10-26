@@ -10,6 +10,7 @@ $JSON->innslag_type = $type;
 
 // TODO: Fix this:
 // $JSON->personer = $monstring->getPersoner();
+// $JSON->personer = $monstring->getPersoner()->getAll();
 // WORKAROUND:
 $sql = new SQL("SELECT * FROM `smartukm_participant`
 				WHERE `p_kommune` IN('#kommuner')",
@@ -32,8 +33,25 @@ switch( $type ) {
 	case 'dans':
 	case 'teater':
 	case 'litteratur':
-		$JSON->twigJS = 'twigJSinnslagscene';
-	break;
+	case 'film':
+	case 'video':
+	case 'utstilling':
+		$JSON->twigJS = 'twigJSinnslagtittel';
+		break;
+	case 'konferansier':
+	// Mulig vi også må ha sceneteknikk her
+		$JSON->twigJS = 'twigJSinnslagkonferansier';
+		break;
+	case 'nettredaksjon':
+	case 'arrangor':
+		$JSON->twigJS = 'twigJSinnslagtittellos';
+		$iType = innslag_typer::getByName($type);
+		$funksjoner = $iType->getFunksjoner();
+
+		$JSON->type_nicename = $iType->getNavn();
+		$JSON->funksjoner = array_keys($funksjoner);
+		$JSON->funksjonsnavn = $funksjoner;
+		break;
 	default:
 		throw new Exception("Fant ikke rett skjema for ".$type);
 }
