@@ -1,4 +1,4 @@
-<form id="nyttInnslagContainer">
+<form id="nyttInnslagContainer_{{ innslag_type }}">
 	<div class="row">
 		<div class="col-xs-12">
 			<h3>Legg til nytt innslag</h3>
@@ -153,7 +153,7 @@
 	<p>&nbsp;</p>
 	
 	<div class="clearfix"></div>
-	<button type="submit" class="action btn btn-success" data-action="saveNyttInnslag">Opprett innslag</button>
+	<button type="submit" class="action btn btn-success" data-action="saveNyttInnslag" data-type="{{ innslag_type }}">Opprett innslag</button>
 	&nbsp; &nbsp; eller 
 	<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="closeNyttInnslag" data-target="#newInnslagBox_{{ innslag_type }}">avbryt</a>
 	

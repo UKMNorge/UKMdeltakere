@@ -56,10 +56,12 @@ jQuery(document).on('click', '.action', function( e ) {
 			jQuery(document).trigger('innslag.addKontaktperson', btn);
 			break;
 		case 'resetKontaktperson':
-			jQuery(document).trigger('innslag.resetKontaktperson');
+			var form = jQuery(e.target).closest('form');
+			jQuery(document).trigger('innslag.resetKontaktperson', form);
 			break;
 		case 'saveNyttInnslag':
-			var form = jQuery("#nyttInnslagContainer");
+			var type = jQuery(this).attr('data-type');
+			var form = jQuery("#nyttInnslagContainer_"+type);
 			jQuery(document).trigger('innslag.saveNew', form);
 			break;
 		case 'closeNyttInnslag':
@@ -109,9 +111,7 @@ jQuery(document).on('click', '.innslagResetAndReloadBody', function(e){
 });
 jQuery(document).on('innslag.goToView', function(e, innslag_id) {
 	var pos = jQuery("#innslag_"+innslag_id).offset().top;
-	console.log("Position of new box: "+pos);
 	pos = pos - 175; // Gi oss 175 px margin fra toppen.
-	console.log("Scrolling to "+pos);
     jQuery('html, body').animate({
         scrollTop: pos + 'px'
     }, 'fast');
@@ -215,23 +215,27 @@ jQuery(document).on('innslag.resetNew', function(e, container) {
 });
 
 jQuery(document).on('innslag.addKontaktperson', function(e, sel) {
+	var form = jQuery(sel).closest("form");
+	var formID = jQuery(form).attr('id');
 	var person_id = jQuery(sel).attr('data-person-id');
 	var person = jQuery(sel).html();
 
-	jQuery("#kontaktperson_felt").show();
-	jQuery("#kontaktperson_id").val(person_id);
-	jQuery("#kontaktperson_info").html(person);
-	jQuery(document).trigger('innslag.lukkPersonliste');
+	jQuery("#"+formID + " #kontaktperson_felt").show();
+	jQuery("#"+formID + " #kontaktperson_id").val(person_id);
+	jQuery("#"+formID + " #kontaktperson_info").html(person);
+	jQuery(document).trigger('innslag.lukkPersonliste', form);
 });
 
-jQuery(document).on('innslag.resetKontaktperson', function() {
-	jQuery("#kontaktperson_id").val('');
-	jQuery("#kontaktperson_info").html('');
-	jQuery("#kontaktperson_felt").hide();
-	jQuery("#sokefelt").show();
+jQuery(document).on('innslag.resetKontaktperson', function(e, form) {
+	var formID = jQuery(form).attr('id');
+	jQuery("#"+formID + " #kontaktperson_id").val('');
+	jQuery("#"+formID + " #kontaktperson_info").html('');
+	jQuery("#"+formID + " #kontaktperson_felt").hide();
+	jQuery("#"+formID + " #sokefelt").show();
 });
-jQuery(document).on('innslag.lukkPersonliste', function() {
-	jQuery("#sokefelt").hide();
+jQuery(document).on('innslag.lukkPersonliste', function(e, form) {
+	var formID = jQuery(form).attr('id');
+	jQuery("#"+formID + " #sokefelt").hide();
 });
 
 jQuery(document).on('innslag.saveNew', function(e, container) {

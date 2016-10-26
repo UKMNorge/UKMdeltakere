@@ -27,8 +27,12 @@ $JSON->personer = $personer;
 
 
 switch( $type ) {
+	case 'scene':
 	case 'musikk':
-		$JSON->twigJS = 'twigJSinnslagmusikk';
+	case 'dans':
+	case 'teater':
+	case 'litteratur':
+		$JSON->twigJS = 'twigJSinnslagscene';
 	break;
 	default:
 		throw new Exception("Fant ikke rett skjema for ".$type);
