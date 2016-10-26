@@ -8,19 +8,17 @@ require_once('UKM/person.class.php');
 #$JSON->innslag = data_innslag( $innslag, $monstring);
 #$JSON->innslag_id = $innslag->getId();
 
+### BYGG FILTER-verdier
+$data[] = $innslag->getNavn();
+
 $JSON->innslag->personer = array();
 foreach($innslag->getPersoner()->getAll() as $person) {
 	$JSON->innslag->personer[] = data_person( $person );	
+	$data[] = $person->getFornavn().' '.$person->getEtternavn(); 
 }
 
 $JSON->type_innslag = $innslag->getType()->getKey();
 $JSON->innslag->kommune = $innslag->getKommune()->getNavn();
-
-### BYGG FILTER-verdier
-$data[] = $innslag->getNavn();
-foreach($innslag->getPersoner()->getAll() as $person) {
-	$data[] = $person->getFornavn().' '.$person->getEtternavn(); 
-}
 
 if( $innslag->getType()->harTitler() ) {
 	foreach( $innslag->getTitler( $monstring )->getAll() as $tittel ) {
