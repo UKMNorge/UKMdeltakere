@@ -40,9 +40,9 @@
 			<div id="sokefelt">
 				<div class="form-group">
 					<label for="fornavn_sok">SØK:</label>
-					<input name="fornavn_sok" data-results="filter_persons_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." />
+					<input name="fornavn_sok" data-results="filter_persons_results_{{ innslag_type }}" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." />
 				</div>
-				<ol class="list-group" id="filter_persons_results">
+				<ol class="list-group" id="filter_persons_results_{{ innslag_type }}">
 					{% for person in personer %}
 						<li class="list-group-item action clickable" data-action="addKontaktperson" data-person-id="{{ person.id }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
 							{{ person.fornavn }} {{ person.etternavn }} <small>{{ person.mobil }}</small>
