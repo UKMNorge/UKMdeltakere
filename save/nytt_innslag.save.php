@@ -31,12 +31,7 @@ else {
 	$beskrivelse = $DATA['erfaring'];
 }
 
-$id = write_innslag::create($kommune, $monstring, $type, $navn, $kontaktperson );
-if( !is_numeric($id) ) {
-	throw new Exception("Klarte ikke å opprette nytt innslag.");
-}
-
-$innslag = new write_innslag($id);
+$innslag = write_innslag::create($kommune, $monstring, $type, $navn, $kontaktperson );
 $innslag->setBeskrivelse($beskrivelse);
 
 if( $type->harTitler() ) {
