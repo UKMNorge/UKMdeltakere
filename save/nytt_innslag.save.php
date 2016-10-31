@@ -6,7 +6,9 @@ require_once('UKM/write_innslag.class.php');
 #var_dump($_POST);
 #var_dump($DATA);
 if(null == $DATA['kontakt']) {
-	throw new Exception("Oppretting av kontaktperson er ikke implementert. Data:" . var_export($DATA, true) );
+	$kontaktperson = write_person::create($DATA['fornavn'], $DATA['etternavn'], $DATA['mobil'], write_person::fodselsdatoFraAlder($DATA['alder']), $DATA['kommune'] );
+	$kontaktperson->setEpost($DATA['epost']);
+	$kontaktperson->save();
 } else {
 	$kontaktperson = new write_person($DATA['kontakt']);
 }
