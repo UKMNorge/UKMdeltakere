@@ -43,6 +43,7 @@ if( $type->harTitler() ) {
 			$innslag->save();
 			throw new Exception("Klarte ikke å legge til kontaktpersonen i innslaget!");
 		}
+		$innslag->setRolle($kontaktperson, $DATA['rolle']);
 	}
 }
 // Tittelløs, ie. konferansier, arrangør eller UKM Media:
