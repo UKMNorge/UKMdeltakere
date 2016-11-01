@@ -6,8 +6,15 @@
 				<h3 style="display:inline;">Legg til nytt innslag</h3> 
 				&nbsp;
 				<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="closeNyttInnslag" data-target="#newInnslagBox_{{ innslag_type }}">eller avbryt</a>
+				<br />
 			</div>
-			<br />
+			
+			{# INFO-FELT #}
+			{% if innslag_type == 'litteratur' %}
+				<div>
+					<p>OBS: Dette er litteratur som skal leses opp fra scena og settes opp i forestillinger. Andre tekstbidrag bør legges til i "Utstilling" under.</p>
+				</div>
+			{% endif %}
 			<p>Røde felt (merket *) er obligatoriske!</p>
 		</div>
 
