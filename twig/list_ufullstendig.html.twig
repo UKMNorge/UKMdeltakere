@@ -15,7 +15,8 @@
 				{% for innslag in monstring.getInnslag().filterByStatus([7,6,5], monstring.getInnslag().filterByType( type_innslag, monstring.getInnslag().getAllUfullstendige() ) )  %}
 					{% embed "list_item.html.twig" %}{% endembed %}
 				{% else %}
-					<li class="list-group-item">Ingen ufullstendige påmeldinger i {{ type_innslag|lower }}</li>
+					{# Fjernet etter Stine-test - folk skjønner at det ikke er noen i denne typen når antall står like over. .#}
+					{# <li class="list-group-item">Ingen ufullstendige påmeldinger i {{ type_innslag|lower }}</li> #}
 				{% endfor %}
 			</ol>
 		</div>
