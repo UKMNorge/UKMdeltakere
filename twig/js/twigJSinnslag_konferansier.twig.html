@@ -1,7 +1,12 @@
 <form id="nyttInnslagContainer_{{ innslag_type }}">
 	<div class="row">
 		<div class="col-xs-12">
-			<h3>Legg til ny konferansier</h3>
+			<div>
+				<br />
+				<h3 style="display:inline;">Legg til ny konferansier</h3>
+				&nbsp;
+				<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="closeNyttInnslag" data-target="#newInnslagBox_{{ innslag_type }}">eller avbryt</a>
+			</div>
 			<p>Røde felt (merket *) er obligatoriske!</p>
 		</div>
 
@@ -10,7 +15,7 @@
 		<div class="col-xs-12">
 
 			<label>Velg person</label>
-			<p>Søk på fornavn, etternavn eller mobil og trykk på rett person. Hvis du ikke finner den du leter etter i listen kan du legge til en ny person manuelt.</p>
+			<p>Skriv fornavn, etternavn eller mobil i boksen og trykk på rett person. Hvis du ikke finner den du leter etter i listen kan du legge til en ny person manuelt.</p>
 			<input type="hidden" id="kontaktperson_id" name="kontakt" value="" />
 			<div id="kontaktperson_felt" class="form-group" style="display:none;">
 				<ol class="list-group">
@@ -21,7 +26,6 @@
 			</div>
 			<div id="sokefelt">
 				<div class="form-group">
-					<label for="fornavn_sok">SØK:</label>
 					<input name="fornavn_sok" id="fornavn_sok" data-results="filter_persons_results_{{ innslag_type }}" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." />
 				</div>
 				<ol class="list-group" id="filter_persons_results_{{ innslag_type }}">
