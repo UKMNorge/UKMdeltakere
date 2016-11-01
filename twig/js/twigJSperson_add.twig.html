@@ -3,11 +3,9 @@
 			
 		<div class="col-xs-12">
 			<h4>Søk etter person</h4>
-			<p>Søk på fornavn, etternavn eller mobil. Hvis du ikke finner den du leter etter kan du legge til manuelt</p>
-			
+			<p>Skriv fornavn, etternavn eller mobil i boksen, og trykk på riktig person. Hvis du ikke finner den du leter etter kan du legge til en ny person manuelt.</p>
 			<div class="form-group">
-				<label for="fornavn">SØK:</label>
-				<input name="fornavn" id="filter_persons_innslag_{{ innslag.id }}" data-results="filter_persons_innslag_{{ innslag.id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." />
+				<input name="fornavn" id="filter_persons_innslag_{{ innslag.id }}" data-results="filter_persons_innslag_{{ innslag.id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
 			</div>
 			<ol class="list-group" id="filter_persons_innslag_{{ innslag.id }}_results">
 				{% for person in personer %}
@@ -18,11 +16,9 @@
 					<li class="list-group-item nonefound">Vi finner ingen personer for din mønstring</li>
 				{% endfor %}
 			</ol>
-
+			<br />
 			<p>
-				<small>
-					Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" data-target="filter_persons_innslag_{{ innslag.id }}_create" class="action">Legg til ny person.</a>
-				</small>
+				Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" data-target="filter_persons_innslag_{{ innslag.id }}_create" class="action">Legg til ny person.</a>
 			</p>
 
 			

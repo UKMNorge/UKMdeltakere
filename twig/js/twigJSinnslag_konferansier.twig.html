@@ -26,7 +26,7 @@
 			</div>
 			<div id="sokefelt">
 				<div class="form-group">
-					<input name="fornavn_sok" id="fornavn_sok" data-results="filter_persons_results_{{ innslag_type }}" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." />
+					<input name="fornavn_sok" id="fornavn_sok" data-results="filter_persons_results_{{ innslag_type }}" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
 				</div>
 				<ol class="list-group" id="filter_persons_results_{{ innslag_type }}">
 					{% for person in personer %}
@@ -38,10 +38,9 @@
 					{% endfor %}
 				</ol>
 
+				<br />
 				<p>
-					<small>
-						Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" data-target="filter_persons_innslag_{{ innslag_type }}_create" class="action">Legg til ny person.</a>
-					</small>
+					Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" data-target="filter_persons_innslag_{{ innslag_type }}_create" class="action">Legg til ny person.</a>
 				</p>
 			</div>
 		</div>
