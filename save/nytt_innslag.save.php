@@ -70,5 +70,5 @@ else {
 
 $innslag->save();
 
-$JSON->innslag_id = $id;
+$JSON->innslag_id = $innslag->getId();
 $JSON->type = $type;
