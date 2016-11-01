@@ -71,6 +71,7 @@ jQuery(document).on('click', '.action', function( e ) {
 		case 'closeNyttInnslag':
 			var container = jQuery(e.target).attr('data-target');
 			jQuery(document).trigger('innslag.resetNew', container);
+			break;
 
 		// INNSLAG
 		case 'close':
@@ -181,6 +182,10 @@ jQuery(document).on('innslag.showNew', function(e, button) {
 
 	jQuery(document).trigger('innslag.loadNew', [type, body]);
 	
+});
+jQuery(document).on('click', '#kontaktpersonErMed', function(e) {
+	var form = jQuery(e.target).closest("form");
+	jQuery("#"+form.attr('id') + " #rolle_box").slideToggle();
 });
 
 jQuery(document).on('innslag.loadNew', function(e, type, body) {
