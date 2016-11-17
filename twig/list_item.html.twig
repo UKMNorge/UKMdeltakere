@@ -4,6 +4,7 @@
 			{{ innslag.getNavn() }}
 			<br />
 			<small>
+				{# PERSON-advarsler #}
 				{% if innslag.getType().harTitler() %}
 					{% if innslag.getAdvarsler( monstring ).har('personer') %}
 						<span class="label label-outline label-warning">
@@ -17,6 +18,21 @@
 				{% else %}
 					{{ innslag.getPersoner().getSingle().getRolle() }}
 				{% endif %}
+				{# TITTEL-advarsler #}
+				{% if innslag.getType().harTitler() %}
+					{% if innslag.getAdvarsler( monstring ).har('titler') %}
+						&nbsp;|&nbsp;
+						<span class="label label-outline label-warning">
+						{% if 'utstilling' == type_innslag.getKey() %}
+							{{ innslag.getTitler( monstring ).getAll()|length }} verk
+						{% else %}
+							{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
+						{% endif %}
+						</span>
+					{% endif %}
+				{% endif %}
+
+
 			</small>
 		</div>
 		
@@ -26,7 +42,7 @@
 					<span class="label label-outline label-warning">
 				{% endif %}
 					{% if 'utstilling' == type_innslag.getKey() %}
-						{{ innslag.getTitler( monstring )|length }} verk
+						{{ innslag.getTitler( monstring ).getAll()|length }} verk
 					{% else %}
 						{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
 					{% endif %}
