@@ -24,8 +24,7 @@
 				{% for innslag in monstring.getInnslag().getAllByType( type_innslag ) %}
 					{% embed "list_item.html.twig" %}{% endembed %}
 				{% else %}
-					{# Fjernet etter Stine-test. #}
-					{# <li class="list-group-item">Ingen påmeldte i {{ type_innslag }}</li> #}
+					<li class="list-group-item">Ingen påmeldte i {{ type_innslag }}</li>
 				{% endfor %}
 			</ol>
 		</div>
