@@ -32,6 +32,7 @@
 
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 		<legend><small>Handlinger</small></legend>
+
 		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
 		
 		<a href="#innslag_{{ innslag_id }}" class="actionEventAdd btn btn-block btn-success btn-outline">Legg til i hendelse</a>
@@ -46,8 +47,7 @@
 			<p>
 				Innslaget startet påmeldingen for kort tid siden ({{ innslag.subscription.date|dato('d.M H:i') }}). Vi anbefaler at du venter til {{ innslag.avmeldlas|dato('d.M H:i') }} før du melder av innslaget!
 			</p>
-			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger btn-xs" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?');">Meld av UKM</a>
-
+			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?');">Meld av UKM</a>
 		{% endif %}
 		<div class="clearfix"></div>
 		<br />
