@@ -21,13 +21,15 @@
 				{# TITTEL-advarsler #}
 				{% if innslag.getType().harTitler() %}
 					{% if innslag.getAdvarsler( monstring ).har('titler') %}
-						&nbsp;|&nbsp;
-						<span class="label label-outline label-warning">
-						{% if 'utstilling' == type_innslag.getKey() %}
-							{{ innslag.getTitler( monstring ).getAll()|length }} verk
-						{% else %}
-							{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
-						{% endif %}
+						<span class="hidden-xs" style="display:inline-block!important">
+							&nbsp;|&nbsp;
+							<span class="label label-outline label-warning">
+							{% if 'utstilling' == type_innslag.getKey() %}
+								{{ innslag.getTitler( monstring ).getAll()|length }} verk
+							{% else %}
+								{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
+							{% endif %}
+							</span>
 						</span>
 					{% endif %}
 				{% endif %}
