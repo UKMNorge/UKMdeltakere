@@ -182,15 +182,17 @@
 	<fieldset class="col-xs-12 col-sm-6 col-lg-12">
 		<legend><small>Handlinger</small></legend>
 
-		{% if innslag.status != 8 %}
-			<a href="#innslag_{{ innslag_id }}" class="action btn btn-success col-xs-12 col-sm-4 col-lg-3" data-action="meldPa">Meld på UKM</a>
-		{% endif %}
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+			{% if innslag.status != 8 %}
+				<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success col-xs-12 col-sm-4 col-lg-3" data-action="meldPa">Meld på UKM</a>
+			{% endif %}
 
-		{% if innslag.avmeldbar %}
-			<a href="#innslag_{{ innslag_id }}" class="action btn btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
-		{% else %}
-			<a href="#innslag_{{ innslag_id }}" class="action btn btn-danger btn-xs col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?');">Meld av UKM</a>
-		{% endif %}
+			{% if innslag.avmeldbar %}
+				<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
+			{% else %}
+				<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?');">Meld av UKM</a>
+			{% endif %}
+		</div>
 		<div class="clearfix"></div>
 		
 		<p>&nbsp;</p>
