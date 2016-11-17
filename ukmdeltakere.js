@@ -76,6 +76,7 @@ jQuery(document).on('click', '.action', function( e ) {
 		// INNSLAG
 		case 'close':
 			jQuery(document).trigger('innslag.hideBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+			jQuery(document).trigger('innslag.goToView', jQuery(this).parents('li.innslag').attr('data-innslag-id'));
 			break;
 		case 'meldPa':
 			jQuery(document).trigger('innslag.loadView', ['meldPa', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
