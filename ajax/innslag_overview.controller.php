@@ -60,7 +60,7 @@ if( 8 > $innslag->getStatus() ) {
 		similar_text($innslag->getNavn(),$sammenlign_innslag->getNavn(), $likhet);
 		if($likhet > 60) {
 			$data = data_innslag( $sammenlign_innslag, $monstring );
-			$data->grunnlag = 'Lignende navn ('. $likhet .'%)';
+			$data->grunnlag = 'det finnes et innslag med et navn som ligner f '. $likhet .'%';
 			$JSON->alle_lignende[ $sammenlign_innslag->getId() ] = $data;
 		}
 		
