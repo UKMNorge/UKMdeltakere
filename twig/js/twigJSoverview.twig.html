@@ -63,7 +63,11 @@
 
 					<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe">{{ person.fornavn }} {{ person.etternavn}}</a>
 					<br />
-					<small>{{ person.rolle }}</small>
+					{% if person.rolle %}
+						<small>{{ person.rolle }}</small>
+					{% else %}
+						<div class="clearfix"></div>
+					{% endif %}
 				</li>
 			{% else %}
 				<li class="list-group-item">

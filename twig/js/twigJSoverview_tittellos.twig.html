@@ -17,7 +17,7 @@
 				<li class="list-group-item">
 					Nr {{ hendelse.rekkefolge }} i <a href="admin.php?page=UKMprogram_admin&c_id={{ hendelse.id }}">{{ hendelse.navn }}</a>
 					<a href="#innslag_{{ innslag_id }}" class="action btn btn-danger btn-xs pull-right" data-action="simpleSave" data-handle="deleteFromEvent" data-object-id="{{ hendelse.id }}" data-warning="Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?">Fjern</a>
-					<br /><small>&nbsp;</small>
+					<div class="clearfix"></div>
 				</li>
 			{% else %}
 				<li class="list-group-item">
