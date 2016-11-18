@@ -16,7 +16,7 @@
 			{% for hendelse in innslag.hendelser %}
 				<li class="list-group-item">
 					Nr {{ hendelse.rekkefolge }} i <a href="admin.php?page=UKMprogram_admin&c_id={{ hendelse.id }}">{{ hendelse.navn }}</a>
-					<a href="#innslag_{{ innslag_id }}" class="action btn btn-danger btn-xs pull-right" data-action="simpleSave" data-handle="deleteFromEvent" data-object-id="{{ hendelse.id }}" onclick="return confirm('Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?');">Fjern</a>
+					<a href="#innslag_{{ innslag_id }}" class="action btn btn-danger btn-xs pull-right" data-action="simpleSave" data-handle="deleteFromEvent" data-object-id="{{ hendelse.id }}" data-warning="Sikker på at du vil fjerne {{ person.fornavn }} fra {{ hendelse.navn }}?">Fjern</a>
 				</li>
 			{% else %}
 				<li class="list-group-item">
@@ -42,12 +42,12 @@
 		{% endif %}
 		
 		{% if innslag.avmeldbar == false %}
-			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM?');">Meld av UKM</a>
+			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM?">Meld av UKM</a>
 		{% else %}
 			<p>
 				Innslaget startet påmeldingen for kort tid siden ({{ innslag.subscription.date|dato('d.M H:i') }}). Vi anbefaler at du venter til {{ innslag.avmeldlas|dato('d.M H:i') }} før du melder av innslaget!
 			</p>
-			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" onclick="return confirm('Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?');">Meld av UKM</a>
+			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?">Meld av UKM</a>
 		{% endif %}
 		<div class="clearfix"></div>
 		<br />

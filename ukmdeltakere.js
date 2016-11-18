@@ -421,7 +421,14 @@ jQuery(document).on('innslag.showBody', function(e, innslag_id) {
  * Simple save for deleting stuff etc
  *
  */
-jQuery(document).on('simpleSave', function(e, innslag_id, clicked){
+jQuery(document).on('simpleSave', function(e, innslag_id, clicked) {
+	var warning = clicked.attr('data-warning');
+	if( null != warning) {
+		if( !confirm(warning) ) {
+			return;
+		}	
+	}
+	
 	var innslag = jQuery('#innslag_'+ innslag_id);
 	var body = innslag.find('.body');
 	var data = {
