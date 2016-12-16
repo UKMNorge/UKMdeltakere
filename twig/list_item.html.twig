@@ -27,7 +27,7 @@
 							{% if 'utstilling' == type_innslag.getKey() %}
 								{{ innslag.getTitler( monstring ).getAll()|length }} verk
 							{% else %}
-								{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
+								{{ innslag.getTitler( monstring ).getVarighet().getHuman() }}
 							{% endif %}
 							</span>
 						</span>
