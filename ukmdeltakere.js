@@ -35,9 +35,32 @@ jQuery(document).on('click', '.action', function( e ) {
 		case 'showNewPerson':
 			// TODO: Flytt til en funksjon, og støtt både fornavn og etternavn, eller mobil hvis det er bare tall?
 			var form = jQuery(e.target).closest("form");
-			var first_name = jQuery("#" + form.attr('id') + " #fornavn_sok").val();
-			jQuery("#" + form.attr('id') + " #fornavn").val(first_name);
-			jQuery('#'+ jQuery(this).attr('data-target')).fadeIn();
+			// Først trigge visning av skjema:
+			jQuery(document).trigger('innslag.showTittellosForm', form);
+
+			var input = jQuery("#" + form.attr('id') + " #fornavn_sok").val();
+			// Er det mobilnummer eller navn vi søker på?
+			if( jQuery.isNumeric( input ) ) {
+				jQuery("#"+ form.attr('id') + " #mobil").val(input);
+			}
+			else {
+				var name = input.split(" ");
+				var first_name = '';
+				var last_name = '';
+				if( name.length == 3 ) {
+					first_name = name[0];
+					last_name = name.splice(1,2).join(" ");
+				} else {
+					console.log("Math.floor(name.length/2)= "+Math.floor(name.length/2));
+					first_name = name.splice(0, Math.floor(name.length/2)).join(" ");
+					last_name = name.splice(Math.floor(name.length/2), name.length).join(" ");
+					console.log("Lastname: "+last_name);
+				}
+				jQuery("#" + form.attr('id') + " #fornavn").val(first_name);
+				jQuery("#" + form.attr('id') + " #etternavn").val(last_name);
+				
+			}
+			jQuery('#'+ jQuery(this).attr('data-target')).fadeIn();	
 			break;
 		case 'editContact':
 			jQuery(document).trigger('innslag.loadView', ['changeContact', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
