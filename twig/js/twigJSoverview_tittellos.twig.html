@@ -8,6 +8,11 @@
 			<br />
 			<label>Erfaring: </label> {{ erfaring }}
 		</p>
+		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
+		<br />
+		<p class="hidden-xs">
+			<a href="#innslag_{{ innslag_id }}" class="action" data-action="close">avbryt</a>
+		</p>
 	</fieldset>
 	
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
@@ -24,8 +29,10 @@
 					<small>Ikke lagt til i noen programhendelser</small>
 				</li>
 			{% endif %}
+			<li class="list-group-item">
+				<a href="#innslag_{{ innslag_id }}" class="actionEventAdd">+ Legg til i program</a>
+			</li>
 		</ol>
-	
 	</fieldset>
 	
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
@@ -33,10 +40,6 @@
 
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 		<legend><small>Handlinger</small></legend>
-
-		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
-		
-		<a href="#innslag_{{ innslag_id }}" class="actionEventAdd btn btn-block btn-success btn-outline">Legg til i hendelse</a>
 		
 		{% if innslag.status != 8 %}
 			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success" data-action="meldPa">Meld på UKM</a>
@@ -52,7 +55,7 @@
 		{% endif %}
 		<div class="clearfix"></div>
 		<br />
-		<p>
+		<p class="visible-xs">
 			<a href="#innslag_{{ innslag_id }}" class="action" data-action="close">avbryt</a>
 		</p>
 	</fieldset>
