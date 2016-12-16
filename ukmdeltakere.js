@@ -182,8 +182,33 @@ jQuery(document).on('innslag.showNew', function(e, button) {
 	body.slideDown();
 
 	jQuery(document).trigger('innslag.loadNew', [type, body]);
-	
 });
+
+jQuery(document).on('innslag.showTittellosForm', function(e, sel) {
+	if( !jQuery(sel).is('ol') ) {
+		sel = sel.closest('ol');
+	}
+
+	// Finn ut om vi er i arrangør eller media-modus:
+	var id = jQuery(sel).attr('id').split("_");
+	var type = id[id.length-1];
+	
+	jQuery("#newInnslagForm_"+type).slideDown();
+});
+
+jQuery(document).on('innslag.hideTittellosForm', function(e, sel) {
+	if( !jQuery(sel).is('form') ) {
+		sel = sel.closest('form');
+	}
+
+	console.log(sel);
+
+	// Finn ut om vi er i arrangør eller media-modus:
+	var id = jQuery(sel).attr('id').split("_");
+	var type = id[id.length-1];
+	jQuery("#newInnslagForm_"+type).hide();
+});
+
 jQuery(document).on('click', '#kontaktpersonErMed', function(e) {
 	var form = jQuery(e.target).closest("form");
 	jQuery("#"+form.attr('id') + " #rolle_box").slideToggle();
@@ -234,6 +259,7 @@ jQuery(document).on('innslag.addKontaktperson', function(e, sel) {
 	jQuery("#"+formID + " #kontaktperson_id").val(person_id);
 	jQuery("#"+formID + " #kontaktperson_info").html(person);
 	jQuery(document).trigger('innslag.lukkPersonliste', form);
+	jQuery(document).trigger('innslag.showTittellosForm', sel);
 });
 
 jQuery(document).on('innslag.resetKontaktperson', function(e, form) {
@@ -242,6 +268,8 @@ jQuery(document).on('innslag.resetKontaktperson', function(e, form) {
 	jQuery("#"+formID + " #kontaktperson_info").html('');
 	jQuery("#"+formID + " #kontaktperson_felt").hide();
 	jQuery("#"+formID + " #sokefelt").show();
+
+	jQuery(document).trigger('innslag.hideTittellosForm', form);
 });
 jQuery(document).on('innslag.lukkPersonliste', function(e, form) {
 	var formID = jQuery(form).attr('id');
