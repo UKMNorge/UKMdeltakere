@@ -56,7 +56,7 @@
 				</div>
 				<ol class="list-group" id="filter_persons_results_{{ innslag_type }}">
 					{% for person in personer %}
-						<li class="list-group-item action clickable" data-action="addKontaktperson" data-person-id="{{ person.id }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
+						<li class="list-group-item action clickable" data-action="addKontaktperson" data-person-id="{{ person.id }}" data-type="{{ innslag_type }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
 							{{ person.fornavn }} {{ person.etternavn }} <small>{{ person.mobil }}</small>
 						</li>
 					{% else %}

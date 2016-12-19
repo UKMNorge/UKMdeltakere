@@ -277,12 +277,17 @@ jQuery(document).on('innslag.addKontaktperson', function(e, sel) {
 	var formID = jQuery(form).attr('id');
 	var person_id = jQuery(sel).attr('data-person-id');
 	var person = jQuery(sel).html();
+	var type = jQuery(sel).attr('data-type');
+	// Skjul skjema for ny person om det er synlig
+	console.log("Skjuler: #filter_persons_innslag_"+type+"_create");
+	jQuery("#filter_persons_innslag_"+type+"_create").slideUp();
 
 	jQuery("#"+formID + " #kontaktperson_felt").show();
 	jQuery("#"+formID + " #kontaktperson_id").val(person_id);
 	jQuery("#"+formID + " #kontaktperson_info").html(person);
 	jQuery(document).trigger('innslag.lukkPersonliste', form);
 	jQuery(document).trigger('innslag.showTittellosForm', sel);
+
 });
 
 jQuery(document).on('innslag.resetKontaktperson', function(e, form) {
