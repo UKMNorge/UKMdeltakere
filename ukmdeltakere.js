@@ -33,7 +33,8 @@ jQuery(document).on('click', '.action', function( e ) {
 			jQuery(document).trigger('innslag.loadView', ['editPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 			break;
 		case 'showNewPerson':
-			// TODO: Flytt til en funksjon, og støtt både fornavn og etternavn, eller mobil hvis det er bare tall?
+			/*console.log("showNewPerson:");*/
+			// TODO: Flytt til en funksjon
 			var form = jQuery(e.target).closest("form");
 			// Først trigge visning av skjema:
 			jQuery(document).trigger('innslag.showTittellosForm', form);
@@ -50,11 +51,14 @@ jQuery(document).on('click', '.action', function( e ) {
 				if( name.length == 3 ) {
 					first_name = name[0];
 					last_name = name.splice(1,2).join(" ");
+					/*console.log("First name: "+first_name);
+					console.log("Lastname: "+last_name);*/
 				} else {
 					console.log("Math.floor(name.length/2)= "+Math.floor(name.length/2));
 					first_name = name.splice(0, Math.floor(name.length/2)).join(" ");
 					last_name = name.splice(Math.floor(name.length/2), name.length).join(" ");
-					console.log("Lastname: "+last_name);
+					/*console.log("First name: "+first_name);
+					console.log("Lastname: "+last_name);*/
 				}
 				jQuery("#" + form.attr('id') + " #fornavn").val(first_name);
 				jQuery("#" + form.attr('id') + " #etternavn").val(last_name);
