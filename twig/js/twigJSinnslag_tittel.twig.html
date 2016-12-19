@@ -141,12 +141,11 @@
 					</select>
 				</div>
 			{% else %}
-				{# TODO: Bytt til hidden når debug er done #}
-				<input type="text" name="kommune" value="{{ person.kommune_id }}" />
+				<input type="hidden" name="kommune" value="{{ person.kommune_id }}" />
 			{% endif %}
 
 			{% if 1 == innslag.type.id %}
-				<div class="form-group">
+				<div class="form-group hidden">
 					<label for="kategori">Kategori</label>
 					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ kategori }}"/>
 				</div>

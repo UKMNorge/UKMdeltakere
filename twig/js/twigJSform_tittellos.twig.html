@@ -50,8 +50,7 @@
 					</select>
 				</div>
 			{% else %}
-				{# TODO: Bytt til hidden når debug er done #}
-				<input type="text" name="kommune" value="{{ innslag.kommune_id }}" />
+				<input type="hidden" name="kommune" value="{{ innslag.kommune_id }}" />
 			{% endif %}
 		
 		</div>
