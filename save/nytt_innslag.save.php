@@ -2,9 +2,6 @@
 
 require_once('UKM/write_innslag.class.php');
 
-// TODO: Sjekk for påkrevd data:
-#var_dump($_POST);
-#var_dump($DATA);
 if(null == $DATA['kontakt']) {
 	$kontaktperson = write_person::create($DATA['fornavn'], $DATA['etternavn'], $DATA['mobil'], write_person::fodselsdatoFraAlder($DATA['alder']), $DATA['kommune'] );
 	$kontaktperson->setEpost($DATA['epost']);
@@ -31,7 +28,15 @@ else {
 	$beskrivelse = $DATA['erfaring'];
 }
 
-$innslag = write_innslag::create($kommune, $monstring, $type, $navn, $kontaktperson );
+if( 'fylke' == $monstring->getType() ) {
+	$innslag_monstring = $kommune->getMonstring();
+} elseif( 'land' == $monstring->getType() ) {
+
+} else {
+	$innslag_monstring = $monstring;
+}
+
+$innslag = write_innslag::create($kommune, $innslag_monstring, $type, $navn, $kontaktperson );
 $innslag->setBeskrivelse($beskrivelse);
 
 if( $type->harTitler() ) {
