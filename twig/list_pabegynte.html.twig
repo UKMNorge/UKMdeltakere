@@ -6,7 +6,7 @@
 		{% if monstring.getInnslag().filterbyStatus([0,1,2,3,4], monstring.getInnslag().filterByType( type_innslag, monstring.getInnslag().getAllUfullstendige() ) )|length > 0 %}
 			<div class="innslagBlock col-xs-12">
 				<div class="innslagTypeHeader">
-					<a href="#" class="pull-right btn btn-xs btn-default">Legg til nytt innslag</a>
+					<a href="?page=UKMdeltakere&create=add-new-{{ type_innslag.getKey() }}#add-new-{{ type_innslag.getKey() }}" class="pull-right btn btn-xs btn-default">Legg til nytt innslag</a>
 					
 					<img src="{{ type_innslag.getIcon() }}" height="45" />
 					<h3>{{ type_innslag }}</h3>
