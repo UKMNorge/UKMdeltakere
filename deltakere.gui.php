@@ -66,7 +66,7 @@ function UKMdeltakere_list() {
 
 </div>
 <style>
-.ui-widget-overlay .ui-front {
+.ui-widget-overlay.ui-front {
 	z-index: -1 !important;
 }
 </style>
