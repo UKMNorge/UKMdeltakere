@@ -65,12 +65,9 @@ function UKMdeltakere_list() {
 	<script>jQuery('#deltaker_filter').bind('keyup', filter_list)</script>
 
 </div>
-<style>
-.ui-widget-overlay, 
-.ui-front,
-.ui-widget-overlay.ui-front,
-{
-	z-index: -1 !important;
+<style type="text/css">
+.ui-widget-overlay.ui-front {
+    z-index: -1 !important;
 }
 </style>
 <h1>Deltakere i <?= $place->g('pl_name')?></h1>
