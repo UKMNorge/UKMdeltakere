@@ -65,6 +65,11 @@ function UKMdeltakere_list() {
 	<script>jQuery('#deltaker_filter').bind('keyup', filter_list)</script>
 
 </div>
+<style>
+.ui-widget-overlay .ui-front {
+	z-index: -1 !important;
+}
+</style>
 <h1>Deltakere i <?= $place->g('pl_name')?></h1>
 Her redigerer du dine påmeldinger. Via <a href="?page=UKMrapport_admin">rapportsenteret</a> kan du hente ut forskjellige<br />
  rapporter for å skaffe deg oversikt over din mønstring
