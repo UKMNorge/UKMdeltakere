@@ -13,11 +13,10 @@
 					<div class="clearfix"></div>
 				</div>
 				<ol class="list-group innslag_lister">
-					{% for innslag in monstring.getInnslag().filterByStatus([0,1,2,3,4], monstring.getInnslag().filterByType( type_innslag, monstring.getInnslag().getAllUfullstendige() ) )  %}
+					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 						{% embed "list_item.html.twig" %}{% endembed %}
 					{% else %}
-						{# Fjernet etter Stine-test - folk skjønner at det ikke er noen i denne typen når antall står like over. .#}
-						{# <li class="list-group-item">Ingen ufullstendige påmeldinger i {{ type_innslag|lower }}</li> #}
+						<li class="list-group-item">Ingen ufullstendige påmeldinger i {{ type_innslag|lower }}</li>
 					{% endfor %}
 				</ol>
 			</div>

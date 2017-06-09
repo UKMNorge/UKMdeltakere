@@ -15,13 +15,20 @@ if( null == $JSON->innslag_id) {
 }
 else {	
 	// Mer info om kontekst og innslag
-	$innslag = new innslag_v2( $JSON->innslag_id, true );
+	if( is_numeric( $JSON->innslag_id ) ) {
+		$innslag = new innslag_v2( $JSON->innslag_id, true );
 
-	// Mer info for retur
-	$JSON->innslag = data_innslag( $innslag, $monstring );
+		// Mer info for retur
+		$JSON->innslag = data_innslag( $innslag, $monstring );
+	} else {
+		$innslag = null;
+	}
 	$JSON->twigJS = 'twigJSunsupported';
 	switch( $_POST['view'] ) {
 		// INNSLAG
+		case 'innslag_new':
+			require_once('innslag_new.controller.php');
+			break;
 		case 'overview':
 			require_once('innslag_overview.controller.php');
 			break;

@@ -1,62 +1,6 @@
 <li id="innslag_{{ innslag.getId() }}" class="list-group-item innslag" data-innslag-id="{{ innslag.getId() }}" data-innslag-type="{{ innslag.getType().getKey() }}" data-filter="{{ innslag.getNavn() }} {% for person in innslag.getPersoner().getAll() %}{{ person.getFornavn() }} {{ person.getEtternavn() }} {% endfor %}{% if innslag.getType().harTitler() %}{% for tittel in innslag.getTitler( monstring ).getAll() %}{{ tittel.getTittel() }} {% endfor %}{% endif %} {{ innslag.getKontaktperson().getFornavn() }} {{ innslag.getKontaktperson().getEtternavn() }}">
 	<div class="header clickable row">
-		<div class="col-xs-8">
-			{{ innslag.getNavn() }}
-			<br />
-			<small>
-				{# PERSON-advarsler #}
-				{% if innslag.getType().harTitler() %}
-					{% if innslag.getAdvarsler( monstring ).har('personer') %}
-						<span class="label label-outline label-warning">
-							{{ innslag.getPersoner().getAntall() }}					
-							person{{ innslag.getPersoner().getAntall() != 1 ? 'er' : '' }}
-						</span>
-					{% else %}
-						{{ innslag.getPersoner().getAntall() }}					
-						person{{ innslag.getPersoner().getAntall() != 1 ? 'er' : '' }}
-					{% endif %}
-				{% else %}
-					{{ innslag.getPersoner().getSingle().getRolle() }}
-				{% endif %}
-				{# TITTEL-advarsler #}
-				{% if innslag.getType().harTitler() %}
-					{% if innslag.getAdvarsler( monstring ).har('titler') %}
-						<span class="hidden-xs" style="display:inline-block!important">
-							&nbsp;|&nbsp;
-							<span class="label label-outline label-warning">
-							{% if 'utstilling' == type_innslag.getKey() %}
-								{{ innslag.getTitler( monstring ).getAll()|length }} verk
-							{% else %}
-								{{ innslag.getTitler( monstring ).getVarighet().getHuman() }}
-							{% endif %}
-							</span>
-						</span>
-					{% endif %}
-				{% endif %}
-
-
-			</small>
-		</div>
-		
-		<div class="col-xs-3 col-xs-offset-1" style="text-align:right;">
-			{% if innslag.getType().harTitler() %}
-				{% if innslag.getAdvarsler( monstring ).har('titler') %}
-					<span class="label label-outline label-warning">
-				{% endif %}
-					{% if 'utstilling' == type_innslag.getKey() %}
-						{{ innslag.getTitler( monstring ).getAll()|length }} verk
-					{% else %}
-						{{ innslag.getTitler( monstring ).getVarighet().getHumanShort() }}
-					{% endif %}
-				{% if innslag.getAdvarsler( monstring ).har('titler') %}
-					</span>
-				{% endif %}
-			{% else %}
-				{{ innslag.getPersoner().getSingle().getAlder() }}
-			{% endif %}
-			<br />
-			<small>{{ innslag.getKommune }}</small>
-		</div>
+		{% embed "js/twigJSoverview_listItem.twig.html" with {'gotObjects': true} %}{% endembed %}
 	</div>
 	<div class="body" data-load-state="false" style="display:none;">
 		Vennligst vent

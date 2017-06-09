@@ -27,7 +27,7 @@
 				<label class="radio-inline"><input type="radio" name="leseopp" value="0" {{ tittel.lese_opp ? '' : 'checked="checked"' }}>nei</label>
 			</div>
 			
-			<div class="form-group leseopp-true">
+			<div class="form-group text-danger leseopp-true" {{ tittel.lese_opp ? '' : 'style="display:none;"' }}>
 				<label for="lengde">Varighet *</label>
 				<select name="lengde" required="required" class="form-control">
 					<option value="" disabled="disabled" {{ tittel.varighet_sek == 0 ? 'selected="selected"' : }}>Velg varighet</option>

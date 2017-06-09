@@ -35,9 +35,9 @@ function UKMdeltakere_ajax() {
 		}
 	}
 
-	#var_dump($JSON);
-	$test = json_encode($JSON);
-	if( false == $test ) {
+	$json_encoded = json_encode($JSON);
+	if( false == $json_encoded ) {
+		$_JSON = $JSON; // failed json data
 		$JSON = null;
 		$JSON = new stdClass();
 		$JSON->innslag_id = $_POST['innslag'];
@@ -47,16 +47,39 @@ function UKMdeltakere_ajax() {
 				$JSON->message = "JSON har syntaks-feil! Dette er en systemfeil, kontakt UKM Norge.";
 				break;
 			case JSON_ERROR_UTF8:
-				$JSON->message = "En UTF8/JSON-feil oppsto. Dette er en systemfeil, kontakt UKM Norge.";
+				// Try to convert to utf8 by traversing
+				$re_encode = convert_array_to_utf8( $_JSON );
+				// Try to re-encode
+				$json_encoded = json_encode( $re_encode );
+				// If still error, fail hard
+				if( false == $json_encoded ) {
+					$JSON->message = "En UTF8/JSON-feil oppsto. Dette er en systemfeil, kontakt UKM Norge.";
+				}
+				// Restore original JSON data for encoding.
+				else {
+					$JSON = $_JSON;
+				}
 				break;
 			default:
 				$JSON->message = "En ukjent feil oppsto med JSON-enkodingen. Dette er en systemfeil, kontakt UKM Norge. JSON-feil: ".json_last_error();
 		}
+		$json_encoded = json_encode($JSON);
 	}
 	header('Content-Type: application/json');
-	echo json_encode( $JSON );
+	echo $json_encoded;
 	wp_die(); // this is required to terminate immediately and return a proper response
 	die(); // nødvendig?
+}
+
+function convert_array_to_utf8($mixed) {
+    if (is_array($mixed)) {
+        foreach ($mixed as $key => $value) {
+            $mixed[$key] = convert_array_to_utf8($value);
+        }
+    } else if (is_string ($mixed)) {
+        return utf8_encode($mixed);
+    }
+    return $mixed;
 }
 
 function UKMdeltakere_dash_shortcut( $shortcuts ) {	

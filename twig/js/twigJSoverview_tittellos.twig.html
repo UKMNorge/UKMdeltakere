@@ -45,7 +45,7 @@
 			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success" data-action="meldPa">Meld på UKM</a>
 		{% endif %}
 		
-		{% if innslag.avmeldbar == false %}
+		{% if innslag.avmeldbar %}
 			<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM?">Meld av UKM</a>
 		{% else %}
 			<p>

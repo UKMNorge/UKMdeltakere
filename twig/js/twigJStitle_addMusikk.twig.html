@@ -51,7 +51,7 @@
 		</div>
 
 		<div class="col-xs-12 col-sm-6 col-lg-4">
-			<div class="form-group" id="tekst-rad">
+			<div class="form-group" id="tekst-rad" {{ tittel.instrumental == 1 ? 'style="display:none;"' : '' }}>
 				<label>Hvem har skrevet teksten?</label>
 				<input type="text" name="tekstforfatter" class="form-control" value="{{ tittel.tekst_av }}" />
 			</div>

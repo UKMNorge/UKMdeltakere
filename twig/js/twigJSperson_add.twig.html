@@ -17,33 +17,34 @@
 				{% endfor %}
 			</ol>
 			<br />
-			<p>
+			<p id="filter_persons_innslag_{{ innslag.id }}_notInList">
 				Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" data-target="filter_persons_innslag_{{ innslag.id }}_create" class="action">Legg til ny person.</a>
 			</p>
-
-			
 		</div>
 			
 		
 		<div id="filter_persons_innslag_{{ innslag.id }}_create" style="display:none">
 			<div class="col-xs-12">
-				<h4 style="margin-bottom: 0px;">Opprett ny person</h4>
+				<h4 style="margin-bottom: 0px;">
+					<span id="filter_persons_innslag_{{ innslag.id }}_noResults">Fant ingen personer. </span>
+					Opprett ny person
+				</h4>
 				<p>Røde felt (merket *) er obligatoriske!</p>
 			</div>
 			
 			<div class="col-xs-12 col-sm-6 col-lg-4">
 				<div class="form-group text-danger">
 					<label for="fornavn">Fornavn *</label>
-					<input name="fornavn" type="text" class="form-control" value="{{ person.fornavn }}" required />
+					<input name="fornavn" type="text" class="form-control inputfornavn" value="{{ person.fornavn }}" required />
 				</div>
 				<div class="form-group text-danger">
 					<label for="etternavn">Etternavn *</label>
-					<input name="etternavn" type="text" class="form-control" value="{{ person.etternavn }}" required />
+					<input name="etternavn" type="text" class="form-control inputetternavn" value="{{ person.etternavn }}" required />
 				</div>
 				
 				<div class="form-group text-danger">
 					<label>Mobil *</label>
-					<input name="mobil" type="tel" class="form-control" value="{{ person.mobil }}" required />
+					<input name="mobil" type="tel" class="form-control inputmobil" value="{{ person.mobil }}" required />
 				</div>
 			</div>
 		

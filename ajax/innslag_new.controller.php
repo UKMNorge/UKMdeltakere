@@ -3,7 +3,7 @@
 require_once('UKM/monstring.class.php');
 require_once('UKM/sql.class.php');
 
-$type = $_POST['view'];
+$type = $_POST['type'];
 $monstring = new monstring_v2(get_option('pl_id'));
 
 $JSON->innslag_type = $type;

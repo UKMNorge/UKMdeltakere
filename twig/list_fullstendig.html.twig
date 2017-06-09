@@ -11,17 +11,12 @@
 				<h3>{{ type_innslag }}</h3>
 				<div class="clearfix"></div>
 			</div>
-			<ol class="list-group" style="display: none;" id="newInnslagBox_{{ type_innslag.getKey() }}">
-				<li class="list-group-item">
+			<ol class="list-group innslag_lister" id="innslag_liste_{{ type_innslag.getKey() }}">
+				<li class="list-group-item innslag" data-innslag-id="new_{{ type_innslag.getKey() }}" id="innslag_new_{{ type_innslag.getKey() }}" style="display: none;">
 					<div class="body">
 					</div>
 				</li>
-				<p>&nbsp;</p>
-			</ol>
-			<div class="clearfix"></div>
-
-			<ol class="list-group innslag_lister" id="innslag_liste_{{ type_innslag.getKey() }}">
-				{% for innslag in monstring.getInnslag().getAllByType( type_innslag ) %}
+				{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 					{% embed "list_item.html.twig" %}{% endembed %}
 				{% else %}
 					<li class="list-group-item">Ingen påmeldte i {{ type_innslag }}</li>
@@ -35,13 +30,16 @@
 	{% endfor %}
 </div>
 
-
-	{% if doAdd is defined %}
-	<script>
-	$(document).ready(function(){
-		var btn = jQuery('#{{ doAdd }}');
-		jQuery(document).trigger('innslag.showNew', btn);
-	});
-	</script>
-	{% endif %}
+<script>
+		$(document).ready(function(){
+			{% if doAdd is defined %}
+				var btn = jQuery('#{{ doAdd }}');
+				jQuery(document).trigger('innslag.showNew', btn);
+			{% endif %}
+			{% if doEdit is defined %}
+				jQuery(document).trigger('innslag.showBody', {{ doEdit }});
+				jQuery(document).trigger('innslag.goToView', {{ doEdit }});
+			{% endif %}
+		});
+</script>
 {% endblock %}
