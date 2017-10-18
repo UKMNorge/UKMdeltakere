@@ -74,9 +74,9 @@ function UKMdeltakere_list() {
 Her redigerer du dine påmeldinger. Via <a href="?page=UKMrapport_admin">rapportsenteret</a> kan du hente ut forskjellige<br />
  rapporter for å skaffe deg oversikt over din mønstring
 <div class="ukmdeltakere_tabs">
-	<a href="?page=<?=$_GET['page']?>&stat=8" <?=((!isset($_GET['stat'])||$_GET['stat']=='8')?' class="active"':'')?>><div><span class="tab_header">Påmeldte innslag</span><img src="//ico.ukm.no/smiley-smile-256.png" width="32" /><br><span class="tab_description">Kun små korrigeringer nødvendig</span></div></a>
-	<a href="?page=<?=$_GET['page']?>&stat=5-6" <?=($_GET['stat']=='5-6'?' class="active"':'')?>><div><span class="tab_header">Ufullstendige påmeldinger</span><img src="//ico.ukm.no/emblem-important-256.png" width="32" /><br><span class="tab_description">Krever din oppmerksomhet</span></div></a>
-	<a href="?page=<?=$_GET['page']?>&stat=1-4" <?=($_GET['stat']=='1-4'?' class="active"':'')?>><div><span class="tab_header">Så vidt påbegynte påmeldinger</span><img src="//ico.ukm.no/tools-256.png" width="32" /><br><span class="tab_description">Muligens duplikat, slettes?</span></div></a>
+	<a href="?page=<?=$_GET['page']?>&stat=8" <?=((!isset($_GET['stat'])||$_GET['stat']=='8')?' class="active"':'')?>><div><span class="tab_header">Påmeldte innslag</span><img src="//ico.ukm.no/smiley-smile-256.png" width="25" /><br><span class="tab_description">Kun små korrigeringer nødvendig</span></div></a>
+	<a href="?page=<?=$_GET['page']?>&stat=5-6" <?=($_GET['stat']=='5-6'?' class="active"':'')?>><div><span class="tab_header">Ufullstendige påmeldinger</span><img src="//ico.ukm.no/emblem-important-256.png" width="25" /><br><span class="tab_description">Krever din oppmerksomhet</span></div></a>
+	<a href="?page=<?=$_GET['page']?>&stat=1-4" <?=($_GET['stat']=='1-4'?' class="active"':'')?>><div><span class="tab_header">Så vidt påbegynte påmeldinger</span><img src="//ico.ukm.no/tools-256.png" width="25" /><br><span class="tab_description">Muligens duplikat, slettes?</span></div></a>
 </div>
 <div class="ukmdeltakere_tabs_desc">
 	<span>
