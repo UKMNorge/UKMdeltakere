@@ -118,7 +118,7 @@ function UKMdeltakere_dash_shortcut( $shortcuts ) {
 	$shortcut = new stdClass();
 	$shortcut->url = 'admin.php?page=UKMdeltakere';
 	$shortcut->title = 'Deltakere';
-	$shortcut->icon = 'http://ico.ukm.no/people-menu.png';
+	$shortcut->icon = '//ico.ukm.no/people-menu.png';
 	$shortcuts[] = $shortcut;
 	
 	return $shortcuts;
@@ -127,7 +127,7 @@ function UKMdeltakere_dash_shortcut( $shortcuts ) {
 ## CREATE A MENU
 function UKMdeltakere_menu() {
 	global $UKMN;
-	UKM_add_menu_page('monstring','Deltakere', 'Deltakere', 'editor', 'UKMdeltakere', 'UKMdeltakere', 'http://ico.ukm.no/people-menu.png',5);
+	UKM_add_menu_page('monstring','Deltakere', 'Deltakere', 'editor', 'UKMdeltakere', 'UKMdeltakere', '//ico.ukm.no/people-menu.png',5);
 
 	UKM_add_scripts_and_styles('UKMdeltakere', 'UKMdeltakere_scriptsandstyles' );
 }
@@ -137,7 +137,7 @@ function UKMdeltakere_scriptsandstyles() {
 	wp_enqueue_style( 'jquery-ui-stylefont', WP_PLUGIN_URL .'/UKMdeltakere/deltakere.style.css');
 
 	wp_enqueue_script('jquery');
-	wp_enqueue_script('jqueryGoogleUI', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
+	wp_enqueue_script('jqueryGoogleUI', '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js');
 	/*
 wp_enqueue_script('jquery-ui-core');
 	

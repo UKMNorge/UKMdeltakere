@@ -606,7 +606,7 @@ function doAdvarsler( data,container ) {
 		} 
 		else {		
 			jQuery('li.innslag#'+data.b_id).find('div.detaljer').find('div.error_wrapper').html('<h3>Advarsler</h3>'+html);
-			jQuery('li.innslag#'+data.b_id).find('div.ikon_alert').html('<div align="center" style="font-size: 9px;"><img src="http://ico.ukm.no/emblem-important-256.png" width="18" alt="&lt;p&gt;krever oppmerksomhet&lt;/p&gt;" style="border: 0px none; margin: 2px; margin-bottom: -2px; padding: 0px;" border="0"><br clear="all"><p>krever oppmerksomhet</p></div>');
+			jQuery('li.innslag#'+data.b_id).find('div.ikon_alert').html('<div align="center" style="font-size: 9px;"><img src="//ico.ukm.no/emblem-important-256.png" width="18" alt="&lt;p&gt;krever oppmerksomhet&lt;/p&gt;" style="border: 0px none; margin: 2px; margin-bottom: -2px; padding: 0px;" border="0"><br clear="all"><p>krever oppmerksomhet</p></div>');
 		}
 	}
 	else {

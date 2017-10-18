@@ -60,7 +60,7 @@ function UKMdeltakere_list() {
 	<?= UKMdeltakere_kategorivelger($kategorier,$innslag) ?>
 	<div class="ukmdeltakere_filtrer">
 		<input id="deltaker_filter" type="text" placeholder="søk i listen" data-slide="true" data-children="li.innslag" data-parent=".kategori_wrapper" />
-		<!--<img class="empty_search_box" alt="Fjern filter" src="http://ico.ukm.no/delete-256.png" onclick="clear_filter('.ukmdeltakere_filtrer input')" >-->
+		<!--<img class="empty_search_box" alt="Fjern filter" src="//ico.ukm.no/delete-256.png" onclick="clear_filter('.ukmdeltakere_filtrer input')" >-->
 	</div>
 	<script>jQuery('#deltaker_filter').bind('keyup', filter_list)</script>
 
@@ -108,7 +108,7 @@ $viste_kategorier = array();
 			$viste_kategorier[] = $kategorier[$kategori_san]['bt_id'];
 			?>
 			<div class="kategori_wrapper">
-				<img src="http://ico.ukm.no/subscription/<?= UKMN_btico($kategori_san,'musikk')?>.png" class="kategori_image" /><a name="kategori_<?=$kategori_san?>"></a>
+				<img src="//ico.ukm.no/subscription/<?= UKMN_btico($kategori_san,'musikk')?>.png" class="kategori_image" /><a name="kategori_<?=$kategori_san?>"></a>
 				<h1><?=$kategorier[$kategori_san]['bt_name']?>
 					<a href="admin.php?page=UKMdeltakere&addnew=<?= $kategorier[$kategori_san]['bt_id']?>" class="add-new-h2">Legg til nytt <?= strtolower($kategorier[$kategori_san]['bt_name'])?>-innslag</a>
 				</h1>	
@@ -151,7 +151,7 @@ $viste_kategorier = array();
 	foreach($alle_kategorier as $btinfo) {
 		if(!in_array($btinfo['bt_id'], $viste_kategorier)) { ?>
 			<div class="missing_type">
-			<img src="http://ico.ukm.no/subscription/<?= UKMN_btico($btinfo['bt_id'],'musikk')?>.png" class="kategori_image" /><a name="kategori_<?=$btinfo['bt_name']?>"></a>
+			<img src="//ico.ukm.no/subscription/<?= UKMN_btico($btinfo['bt_id'],'musikk')?>.png" class="kategori_image" /><a name="kategori_<?=$btinfo['bt_name']?>"></a>
 				<h3><?=$btinfo['bt_name']?></h3>
 				<a href="admin.php?page=UKMdeltakere&addnew=<?= $btinfo['bt_id']?>" class="add-new-h2">Legg til nytt <?= strtolower($btinfo['bt_name'])?>-innslag</a>
 			</div>
