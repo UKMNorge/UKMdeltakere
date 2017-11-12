@@ -1,4 +1,4 @@
 <?php
 
-$JSON->twigJS = 'twigJStitleadd'.ucfirst( $innslag->getType()->getKey() );
+$JSON->twigJS = 'titleadd'.ucfirst( $innslag->getType()->getKey() );
 

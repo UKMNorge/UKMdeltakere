@@ -1,5 +1,5 @@
 <?php
-$JSON->twigJS = 'twigJSpersonadd';
+$JSON->twigJS = 'personadd';
 
 $sql = new SQL("SELECT * FROM `smartukm_participant`
 				WHERE `p_kommune` IN('#kommuner')",

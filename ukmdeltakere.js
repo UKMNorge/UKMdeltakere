@@ -65,6 +65,41 @@
 			case 'showNewPerson':
 				var sokefeltId = 'filter_persons_innslag_' + jQuery(this).parents('li.innslag').attr('data-innslag-id');
 				jQuery(document).trigger('person.create.show', [sokefeltId, false]);
+				var input = jQuery("#" + form.attr('id') + " input.filter_personer").val();
+				// Er det mobilnummer eller navn vi søker på?
+				if( jQuery.isNumeric( input ) ) {
+					jQuery("#"+ form.attr('id') + " #mobil").val(input);
+				}
+				else {
+					console.log( form );
+					var name = input.split(" ");
+					var first_name = '';
+					var last_name = '';
+					if( name.length == 1 ) {
+						first_name = name[0];
+					} else if( name.length == 3 ) {
+						first_name = name[0];
+						last_name = name.splice(1,2).join(" ");
+						/*console.log("First name: "+first_name);
+						console.log("Lastname: "+last_name);*/
+					} else {
+						console.log("Math.floor(name.length/2)= "+Math.floor(name.length/2));
+						first_name = name.splice(0, Math.floor(name.length/2)).join(" ");
+						last_name = name.splice(Math.floor(name.length/2), name.length).join(" ");
+						/*console.log("First name: "+first_name);
+						console.log("Lastname: "+last_name);*/
+					}
+					jQuery("#" + form.attr('id') + " #fornavn").val(first_name);
+					jQuery("#" + form.attr('id') + " #etternavn").val(last_name);
+					
+				}
+				jQuery('#'+ jQuery(this).attr('data-target')).fadeIn();	
+				break;
+			case 'editContact':
+				jQuery(document).trigger('innslag.loadView', ['changeContact', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
+				break;
+			case 'addExistingPerson':
+				jQuery(document).trigger('innslag.loadView', ['addExistingPerson', jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this).attr('data-person-id')] );
 				break;
 		
 			// LUKK INNSLAGSBOKSEN
@@ -118,18 +153,24 @@
 		jQuery(document).trigger('innslag.resetBody', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), true]);
 	});
 
-/********** FILTER-LISTS ***************** */
-	// LEGG TIL PERSON (SØK)
-	jQuery(document).on('loadedView.twigJSpersonadd', function(){
-		jQuery('.filter_personer').each(function() {
-			jQuery(this).fastLiveFilter(jQuery('#' + jQuery(this).attr('data-results')), {
-													callback: function(total, id) { 
+/********** FILTER LISTS ***************** */
+jQuery(document).on('loadedView.personadd', function(){
+	jQuery('.filter_personer').each(function() {
+		jQuery(this).fastLiveFilter(jQuery('#' + jQuery(this).attr('data-results')), {
+												callback: function(total, id) { 
+													if( 0 == total ) {
+														jQuery('#'+ id +'_create').fadeIn();
+													} else {
+														jQuery('#'+ id +'_create').fadeOut();
+													}
+													/**
+														ALTERNATIV
 														if( 0 == total ) {
 															jQuery(document).trigger('person.create.show', [id, true]);
 														} else {
 															jQuery(document).trigger('person.create.hide', [id, true]);
 														}
-													}
+													*/
 												  }
 												);
 										});
@@ -209,7 +250,40 @@
 		console.warn('Should find and click .momClickMe');
 		return true;
 	});*/
+	}).error( function(error) { 
+		console.log("AJAX error: ");
+		console.log(error);
+		jQuery(document).trigger('innslag.resetNew', container);
+		alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + error.responseText );
+	});
+});
 
+/**
+ * innslag.renderBody
+**/
+jQuery(document).on('innslag.renderNewForm', function(e, body, server_response ) {
+	if( undefined == server_response.view || null == server_response.view ) {
+		alert('Beklager, en feil har oppstått. Ukjent view '+ server_response.view );
+	}
+	
+	var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
+
+	jQuery(body).find('.body').html( rendered );
+});
+
+/********** HEADER CONTAINER FUNCTIONS ***** */
+jQuery(document).on('innslag.resetHeader', function(e, innslag_id ) {
+	var container = jQuery("#innslag_" + innslag_id);
+});
+
+jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
+	//console.log('Adding new header...');
+	var list = jQuery("#innslag_liste_"+type.key);
+	var li = '<li id="innslag_'+innslag_id+'" class="list-group-item innslag">';
+	li += '<div class="header clickable row"></div>';
+	li += '<div class="body" data-load-state="false" style="display:none;">Vennligst vent... </div>';
+	li += '<div class="clearfix"></div></div></li>';
+});
 
 
 /*** INNSLAG BODY-CONTAINER FUNKSJONER *** */
@@ -270,10 +344,10 @@
 			alert('Beklager, en feil har oppstått. Ukjent innslag '+ server_response.innslag_id );
 		}
 		
-		var rendered = eval( 'twigJS'+ server_response.twigJS + '.render( server_response )' );
+		var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
 		jQuery('#innslag_'+ server_response.innslag_id).find('.body').attr('data-load-state','true').html( rendered );
 		jQuery(document).trigger('loadedView.'+ server_response.twigJS );
-	});
+	});	
 	
 	/**
 	 * innslag.reloadHeader
@@ -294,6 +368,23 @@
 		
 	});	
 
+	/**
+	 * innslag.renderHeader
+	**/
+	jQuery(document).on('innslag.renderHeader', function(e, container, server_response ) {
+		var header = jQuery(container).find(".header");
+		jQuery(header).html("<p>Vennligst vent...</p>");
+	
+		var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
+		jQuery(header).html( rendered );
+	
+		jQuery(container).attr('data-innslag-id', server_response.innslag.id );
+		jQuery(container).attr('data-innslag-type', server_response.innslag.type.key );
+		jQuery(container).attr('data-filter', server_response.filter );
+	
+		jQuery(document).trigger('innslag.goToView', server_response.innslag_id);
+	});
+	
 
 /******** INNSLAG VIEW-FUNKSJONER ******** */
 	/**
@@ -509,10 +600,4 @@
 			innslag.find('.kontaktpersonRolle').slideUp();
 		}
 	});
-	
-	
-	
-	
-	
-	
-	
+

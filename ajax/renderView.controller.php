@@ -17,13 +17,13 @@ else {
 	// Mer info om kontekst og innslag
 	if( is_numeric( $JSON->innslag_id ) ) {
 		$innslag = new innslag_v2( $JSON->innslag_id, true );
-
 		// Mer info for retur
 		$JSON->innslag = data_innslag( $innslag, $monstring );
 	} else {
 		$innslag = null;
 	}
-	$JSON->twigJS = 'twigJSunsupported';
+	$JSON->twigJS = 'unsupported';
+
 	switch( $_POST['view'] ) {
 		// INNSLAG
 		case 'innslag_new':

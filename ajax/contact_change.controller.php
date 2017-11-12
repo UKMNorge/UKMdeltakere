@@ -1,6 +1,6 @@
 <?php
 
-$JSON->twigJS = 'twigJScontactchange';
+$JSON->twigJS = 'contactchange';
 
 $JSON->personer = [];
 $ids = [];

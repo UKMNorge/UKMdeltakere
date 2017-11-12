@@ -1,3 +1,3 @@
 <?php
 
-$JSON->twigJS = 'twigJSinnslagmeldPa';
+$JSON->twigJS = 'innslagmeldPa';

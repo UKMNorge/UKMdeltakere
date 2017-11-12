@@ -1,6 +1,6 @@
 <?php
 
-$JSON->twigJS = 'twigJSaddToEvent';
+$JSON->twigJS = 'addToEvent';
 
 $JSON->monstring->hendelser = [];
 foreach( $monstring->getProgram()->getAllInkludertSkjulte() as $hendelse ) {

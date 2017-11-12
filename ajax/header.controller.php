@@ -1,6 +1,6 @@
 <?php
 
-$JSON->twigJS = 'twigJSoverviewlistItem';
+$JSON->twigJS = 'innslagheader';
 require_once('UKM/person.class.php');
 // Innslag og mønstring er allerede definert her.
 #$innslag = new innslag_v2( $_POST['innslag_id'] );

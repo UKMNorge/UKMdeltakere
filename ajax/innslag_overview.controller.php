@@ -3,7 +3,7 @@
 // HENT UT INFORMASJON OM TITLER HVIS INNSLAGET HAR DET
 if( $innslag->getType()->harTitler() ) {
 
-	$JSON->twigJS = 'twigJSoverview';
+	$JSON->twigJS = 'overview';
 	
 	// INFO OM INNSLAGET
 	$JSON->innslag->kontaktperson 	= $innslag->getKontaktperson();
@@ -30,7 +30,7 @@ if( $innslag->getType()->harTitler() ) {
 	}
 	$JSON->innslag->snittalder	= round( $snittalder / ($innslag->getPersoner()->getAntall() > 0 ? $innslag->getPersoner()->getAntall() : 1 ), 1);
 } else {
-	$JSON->twigJS	 	= 'twigJSoverviewtittellos';
+	$JSON->twigJS	 	= 'overviewtittellos';
 	$person 			= $innslag->getPersoner()->getSingle();
 	$JSON->person 		= data_person( $person );
 	$JSON->erfaring		= $innslag->getBeskrivelse();

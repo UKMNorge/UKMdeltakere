@@ -36,15 +36,15 @@ switch( $type ) {
 	case 'film':
 	case 'video':
 	case 'utstilling':
-		$JSON->twigJS = 'twigJSinnslagtittel';
+		$JSON->twigJS = 'innslagtittel';
 		break;
 	case 'konferansier':
 	// Mulig vi også må ha sceneteknikk her
-		$JSON->twigJS = 'twigJSinnslagkonferansier';
+		$JSON->twigJS = 'innslagkonferansier';
 		break;
 	case 'nettredaksjon':
 	case 'arrangor':
-		$JSON->twigJS = 'twigJSinnslagtittellos';
+		$JSON->twigJS = 'innslagtittellos';
 		$iType = innslag_typer::getByName($type);
 		$funksjoner = $iType->getFunksjoner();
 

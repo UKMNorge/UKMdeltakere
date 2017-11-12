@@ -19,7 +19,7 @@
 				{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 					{% embed "list_item.html.twig" %}{% endembed %}
 				{% else %}
-					<li class="list-group-item">Ingen påmeldte i {{ type_innslag }}</li>
+					<li class="list-group-item ingen-pameldte">Ingen påmeldte i {{ type_innslag }}</li>
 				{% endfor %}
 			</ol>
 		</div>

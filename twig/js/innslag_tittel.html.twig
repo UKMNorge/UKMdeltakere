@@ -146,6 +146,31 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
+
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			{% if monstring.erFellesmonstring %}
+				<div class="form-group text-danger">
+					<label for="kommune">Kommune/bydel *</label>
+					<select name="kommune" class="form-control" required>
+						{% for id, navn in monstring.kommuner %}
+							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ navn }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			{% else %}
+				{% for id, navn in monstring.kommuner %}
+					<label>DEBUG: kommune</label>
+					<input type="test" name="kommune" value="{{ id }}" />
+				{% endfor %}
+			{% endif %}
+
+			{% if 1 == innslag.type.id %}
+				<div class="form-group hidden">
+					<label for="kategori">Kategori</label>
+					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ kategori }}"/>
+				</div>
+			{% endif %}
+		</div>
 	</div>
 
 	<div class="clearfix"></div>

@@ -1,11 +1,11 @@
 <?php
 	
 if( $innslag->getType()->harTitler() ) {
-	$JSON->twigJS = 'twigJSform';
+	$JSON->twigJS = 'form';
 	// Kommune hvor innslaget er meldt på:
 	$JSON->innslag->kommune_id = $innslag->getKommune()->getId();
 } else {
-	$JSON->twigJS = 'twigJSformtittellos';
+	$JSON->twigJS = 'formtittellos';
 	
 	$person 			= $innslag->getPersoner()->getSingle();
 	$JSON->person 		= data_person( $person );
