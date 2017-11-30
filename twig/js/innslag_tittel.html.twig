@@ -62,9 +62,9 @@
 			<p>Alle innslag må ha en kontaktperson. Skriv inn fornavn, etternavn eller mobil og trykk på rett person. Hvis du ikke finner den du leter etter i listen kan du legge til en ny person manuelt.</p>
 			<div id="sokefelt">
 				<div class="form-group">
-					<input name="kontaktperson_sokefelt" id="fornavn_sok" data-results="filter_persons_results_{{ innslag_type }}" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
+					<input name="kontaktperson_sokefelt" id="filter_persons_innslag_{{ innslag_id }}" data-results="filter_persons_innslag_{{ innslag_id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
 				</div>
-				<ol class="list-group" id="filter_persons_results_{{ innslag_type }}">
+				<ol class="list-group" id="filter_persons_innslag_{{ innslag_id }}_results">
 					{% for person in personer %}
 						<li class="list-group-item action clickable" data-action="addKontaktperson" data-person-id="{{ person.id }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
 							{{ person.fornavn }} {{ person.etternavn }} <small>{{ person.mobil }}</small>
@@ -80,7 +80,7 @@
 		</div>
 			
 
-		<div class="createPerson col-xs-12" id="filter_persons_innslag_{{ innslag_type }}_create" style="display:none">
+		<div class="createPerson col-xs-12" id="filter_persons_innslag_{{ innslag_id }}_create" style="display:none">
 			<div class="col-xs-12 well">
 				<div class="col-xs-12">
 					<h4 style="margin-bottom: 0px;">Opprett ny kontaktperson</h4>

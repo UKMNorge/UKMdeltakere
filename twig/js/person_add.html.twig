@@ -62,7 +62,7 @@
 						{% for i in 10..25 %}
 							<option value="{{ i }}" {{ person.alder_tall == i ? 'selected' : '' }}>{{ i }} år</option> 
 						{% endfor %}
-						<option value="0"{{ person.alder_tall == '25+' ? 'selected' : '' }}>Over 25 år</option>
+						<option value="0"{{ person.alder_tall == '25+' or person.alder_tall >= 25 ? 'selected' : '' }}>Over 25 år</option>
 					</select>
 				</div>
 

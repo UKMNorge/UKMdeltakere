@@ -65,35 +65,6 @@
 			case 'showNewPerson':
 				var sokefeltId = 'filter_persons_innslag_' + jQuery(this).parents('li.innslag').attr('data-innslag-id');
 				jQuery(document).trigger('person.create.show', [sokefeltId, false]);
-				var input = jQuery("#" + form.attr('id') + " input.filter_personer").val();
-				// Er det mobilnummer eller navn vi søker på?
-				if( jQuery.isNumeric( input ) ) {
-					jQuery("#"+ form.attr('id') + " #mobil").val(input);
-				}
-				else {
-					console.log( form );
-					var name = input.split(" ");
-					var first_name = '';
-					var last_name = '';
-					if( name.length == 1 ) {
-						first_name = name[0];
-					} else if( name.length == 3 ) {
-						first_name = name[0];
-						last_name = name.splice(1,2).join(" ");
-						/*console.log("First name: "+first_name);
-						console.log("Lastname: "+last_name);*/
-					} else {
-						console.log("Math.floor(name.length/2)= "+Math.floor(name.length/2));
-						first_name = name.splice(0, Math.floor(name.length/2)).join(" ");
-						last_name = name.splice(Math.floor(name.length/2), name.length).join(" ");
-						/*console.log("First name: "+first_name);
-						console.log("Lastname: "+last_name);*/
-					}
-					jQuery("#" + form.attr('id') + " #fornavn").val(first_name);
-					jQuery("#" + form.attr('id') + " #etternavn").val(last_name);
-					
-				}
-				jQuery('#'+ jQuery(this).attr('data-target')).fadeIn();	
 				break;
 			case 'editContact':
 				jQuery(document).trigger('innslag.loadView', ['changeContact', jQuery(this).parents('li.innslag').attr('data-innslag-id')] );
@@ -132,6 +103,7 @@
 				jQuery(document).trigger('innslag.resetKontaktperson', jQuery(this).parents('li.innslag').attr('data-innslag-id'));
 				break;
 			case 'saveNyttInnslag':
+				console.error('DEVELOPER DEBUG: Denne skal nok ikke brukes (bruk save i stedet?)');
 				var type = jQuery(this).attr('data-type');
 				var form = jQuery("#nyttInnslagContainer_"+type);
 				jQuery(document).trigger('innslag.saveNew', form);
@@ -154,23 +126,18 @@
 	});
 
 /********** FILTER LISTS ***************** */
-jQuery(document).on('loadedView.personadd', function(){
-	jQuery('.filter_personer').each(function() {
-		jQuery(this).fastLiveFilter(jQuery('#' + jQuery(this).attr('data-results')), {
-												callback: function(total, id) { 
-													if( 0 == total ) {
-														jQuery('#'+ id +'_create').fadeIn();
-													} else {
-														jQuery('#'+ id +'_create').fadeOut();
-													}
-													/**
-														ALTERNATIV
+	// LEGG TIL PERSON (SØK)
+	jQuery(document).on('loadedView.personadd', function(){
+		jQuery('.filter_personer').each(function() {
+			jQuery(this).fastLiveFilter(jQuery('#' + jQuery(this).attr('data-results')), {
+													callback: function(total, id) { 
+														console.log(id + ':TOTAL: '+ total);
 														if( 0 == total ) {
 															jQuery(document).trigger('person.create.show', [id, true]);
 														} else {
 															jQuery(document).trigger('person.create.hide', [id, true]);
 														}
-													*/
+													}
 												  }
 												);
 										});
@@ -188,6 +155,7 @@ jQuery(document).on('loadedView.personadd', function(){
 	});
 	
 	jQuery(document).on('person.create.show', function(e, id, noResults) {
+		console.info('person.create.show: '+ id);
 		if( noResults ) {
 			jQuery('#'+ id +'_noResults').show();
 		}
@@ -222,6 +190,7 @@ jQuery(document).on('loadedView.personadd', function(){
 	});	
 	
 	jQuery(document).on('person.create.hide', function(e, id, noResults) {
+		console.info('person.create.hide: '+ id);
 		jQuery('#'+ id +'_noResults').hide();
 		jQuery('#'+ id +'_create').fadeOut();
 		jQuery('#'+ id +'_notInList').fadeIn();
@@ -250,40 +219,33 @@ jQuery(document).on('loadedView.personadd', function(){
 		console.warn('Should find and click .momClickMe');
 		return true;
 	});*/
-	}).error( function(error) { 
-		console.log("AJAX error: ");
-		console.log(error);
-		jQuery(document).trigger('innslag.resetNew', container);
-		alert('Beklager, en feil oppsto på serveren! ' +"\r\n" + error.responseText );
-	});
-});
 
-/**
- * innslag.renderBody
-**/
-jQuery(document).on('innslag.renderNewForm', function(e, body, server_response ) {
-	if( undefined == server_response.view || null == server_response.view ) {
-		alert('Beklager, en feil har oppstått. Ukjent view '+ server_response.view );
-	}
+	/**
+	 * innslag.renderBody
+	**/
+	jQuery(document).on('innslag.renderNewForm', function(e, body, server_response ) {
+		if( undefined == server_response.view || null == server_response.view ) {
+			alert('Beklager, en feil har oppstått. Ukjent view '+ server_response.view );
+		}
+		
+		var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
 	
-	var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
-
-	jQuery(body).find('.body').html( rendered );
-});
+		jQuery(body).find('.body').html( rendered );
+	});
 
 /********** HEADER CONTAINER FUNCTIONS ***** */
-jQuery(document).on('innslag.resetHeader', function(e, innslag_id ) {
-	var container = jQuery("#innslag_" + innslag_id);
-});
-
-jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
-	//console.log('Adding new header...');
-	var list = jQuery("#innslag_liste_"+type.key);
-	var li = '<li id="innslag_'+innslag_id+'" class="list-group-item innslag">';
-	li += '<div class="header clickable row"></div>';
-	li += '<div class="body" data-load-state="false" style="display:none;">Vennligst vent... </div>';
-	li += '<div class="clearfix"></div></div></li>';
-});
+	jQuery(document).on('innslag.resetHeader', function(e, innslag_id ) {
+		var container = jQuery("#innslag_" + innslag_id);
+	});
+	
+	jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
+		//console.log('Adding new header...');
+		var list = jQuery("#innslag_liste_"+type.key);
+		var li = '<li id="innslag_'+innslag_id+'" class="list-group-item innslag">';
+		li += '<div class="header clickable row"></div>';
+		li += '<div class="body" data-load-state="false" style="display:none;">Vennligst vent... </div>';
+		li += '<div class="clearfix"></div></div></li>';
+	});
 
 
 /*** INNSLAG BODY-CONTAINER FUNKSJONER *** */
@@ -361,8 +323,8 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 					}	
 		jQuery.post(ajaxurl, data, function(response) {
 			if(response.success) {
-				console.log(response);
-				// TODO: RENDER VIEW IN CONTAINER HEADER
+				response.twigJS = 'innslagheader';
+				jQuery(document).trigger('innslag.renderHeader', [response.innslag_id,response]);
 			}
 		});
 		
@@ -371,8 +333,10 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 	/**
 	 * innslag.renderHeader
 	**/
-	jQuery(document).on('innslag.renderHeader', function(e, container, server_response ) {
-		var header = jQuery(container).find(".header");
+	jQuery(document).on('innslag.renderHeader', function(e, innslag_id, server_response ) {
+		console.log( server_response );
+		var container = jQuery('#innslag_' + innslag_id);
+		var header = container.find(".header");
 		jQuery(header).html("<p>Vennligst vent...</p>");
 	
 		var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
@@ -415,7 +379,6 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 			else {
 				alert('Beklager, klarte ikke å hente informasjon fra server!');
 				jQuery(document).trigger('innslag.resetBody', response.innslag_id );
-				console.log( response );
 			}
 		});
 	});
@@ -426,7 +389,6 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 	 * Håndterer lagring av skjema
 	**/
 	jQuery(document).on('save', function(e, innslag_id){
-		console.info( innslag_id );
 		var form = jQuery('#innslag_'+ innslag_id).find('.body').find('form');
 		var data = {
 						'action':'UKMdeltakere_ajax',
@@ -481,10 +443,10 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 				}
 				// Hvis dette er skjema for et nytt innslag
 				if( response.innslag_id.substring(0,4) ==  'new_' ) {
-					var rendered = eval( 'twigJS'+ response.twigJS + '.render( response )' );
+					var rendered = eval( 'twigJS_'+ response.twigJS + '.render( response )' );
 					jQuery('#innslag_'+ response.innslag_id).find('.body').html( rendered );
 					jQuery('#innslag_'+ response.innslag_id).find('.body').slideDown();
-					jQuery(document).trigger('loadedView.twigJSpersonadd'); // Start filter-funksjonen
+					jQuery(document).trigger('loadedView.personadd', [response.innslag_id]); // Start filter-funksjonen
 				} else {
 					// Hvis dette var en avmeldingsforespørsel som gikk i orden, skjul hele elementet fra listen
 					if( null != response.meldtAv ) {
@@ -497,7 +459,6 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 			else {
 				alert('Beklager, klarte ikke å hente informasjon fra server!');
 				jQuery(document).trigger('innslag.resetBody', response.innslag_id );
-				console.log( response );
 			}
 		});
 	});
@@ -532,6 +493,7 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 	jQuery(document).on('innslag.addKontaktperson', function(e, selected) {
 		var innslag = jQuery( selected ).parents("li.innslag");
 		var person = jQuery( selected );
+		console.log( innslag );
 		
 		// Sett verdier
 		innslag.find('.kontaktperson').val( person.attr('data-person-id') );
@@ -565,6 +527,7 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 	 * Opprett en kontaktperson
 	**/
 	jQuery(document).on('innslag.createPerson', function(e, innslag_id) {
+		console.info('innslag.createPerson: '+ innslag_id)
 		var innslag = jQuery('#innslag_'+ innslag_id );
 
 		innslag.find('.searchPerson').slideUp();

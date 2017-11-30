@@ -61,6 +61,6 @@ if( is_object( $innslag ) ) {
 		}
 	} else {
 		$JSON->person_rolle = $innslag->getPersoner()->getSingle()->getRolle();
-		$JSON->person_alder = $innslag->getPersoner()->getSingle()->geAlder();
+		$JSON->person_alder = $innslag->getPersoner()->getSingle()->getAlder();
 	}
 }

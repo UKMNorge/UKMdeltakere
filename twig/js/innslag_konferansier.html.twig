@@ -1,19 +1,18 @@
-<form id="nyttInnslagContainer_{{ innslag_type }}">
+<form action="nyttInnslag" id="nyttInnslagContainer_{{ innslag_type }}">
 	<div class="row">
 		<div class="col-xs-12">
 			<div>
 				<br />
 				<h3 style="display:inline;">Legg til ny konferansier</h3>
 				&nbsp;
-				<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="closeNyttInnslag" data-target="#newInnslagBox_{{ innslag_type }}">eller avbryt</a>
+				<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="close" data-target="#newInnslagBox_{{ innslag_type }}">eller avbryt</a>
 			</div>
 			<p>Røde felt (merket *) er obligatoriske!</p>
 		</div>
 
 		<input type="hidden" name="type" value="{{ innslag_type }}" />
 
-		<div class="col-xs-12">
-
+		<div class="searchPerson col-xs-12">
 			<label>Velg person</label>
 			<p>Skriv fornavn, etternavn eller mobil i boksen og trykk på rett person. Hvis du ikke finner den du leter etter i listen kan du legge til en ny person manuelt.</p>
 			<input type="hidden" id="kontaktperson_id" name="kontakt" value="" />
@@ -26,9 +25,9 @@
 			</div>
 			<div id="sokefelt">
 				<div class="form-group">
-					<input name="fornavn_sok" id="fornavn_sok" data-results="filter_persons_results_{{ innslag_type }}" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
+					<input name="fornavn_sok" id="filter_persons_innslag_{{ innslag_id }}" data-results="filter_persons_innslag_{{ innslag_id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
 				</div>
-				<ol class="list-group" id="filter_persons_results_{{ innslag_type }}">
+				<ol class="list-group" id="filter_persons_innslag_{{ innslag_id }}_results">
 					{% for person in personer %}
 						<li class="list-group-item action clickable" data-action="addKontaktperson" data-person-id="{{ person.id }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
 							{{ person.fornavn }} {{ person.etternavn }} <small>{{ person.mobil }}</small>
@@ -46,7 +45,7 @@
 		</div>
 			
 		<div class="clearfix"></div>
-		<div id="filter_persons_innslag_{{ innslag_type }}_create" class="col-xs-12" style="display:none">
+		<div class="createPerson" id="filter_persons_innslag_{{ innslag_id }}_create" class="col-xs-12" style="display:none">
 			<div class="col-xs-12 well">
 				<div class="col-xs-12">
 					<h4 style="margin-bottom: 0px;">Ny person</h4>
@@ -104,6 +103,17 @@
 			</div>
 		</div>
 
+		<div class="selectedPerson col-xs-12">
+			<div class="form-group">
+				<label for="kontaktperson" class="text-danger">Kontaktperson *</label>
+				<div class="kontaktpersonNavn"></div>
+				<small><a href="#" class="action" data-action="resetKontaktperson">Ikke riktig person? Trykk her for å velge på nytt.</a></small>
+				<input class="kontaktperson" type="hidden" name="kontakt" value="" />
+			</div>
+		</div>
+		<div class="clearfix"></div>
+
+
 		<div class="clearfix"></div>
 		<div class="col-xs-12 col-sm-6 col-lg-4">		
 			<div class="form-group">
@@ -124,14 +134,9 @@
 				</div>
 			{% else %}
 				{# TODO: Bytt til hidden når debug er done #}
-				<input type="text" name="kommune" value="{{ person.kommune_id }}" />
-			{% endif %}
-
-			{% if 1 == innslag.type.id %}
-				<div class="form-group">
-					<label for="kategori">Kategori</label>
-					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ kategori }}"/>
-				</div>
+				{% for id, navn in monstring.kommuner %}
+					<input type="text" name="kommune" value="{{ id }}" />
+				{% endfor %}
 			{% endif %}
 		</div>
 	</div>
@@ -140,9 +145,9 @@
 	<p>&nbsp;</p>
 	
 	<div class="clearfix"></div>
-	<button type="submit" class="action btn btn-success" data-action="saveNyttInnslag" data-type="{{ innslag_type }}">Opprett konferansier</button>
+	<button type="submit" class="action btn btn-success" data-action="save" data-type="{{ innslag_type }}">Opprett konferansier</button>
 	&nbsp; &nbsp; eller 
-	<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="closeNyttInnslag" data-target="#newInnslagBox_{{ innslag_type }}">avbryt</a>
+	<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="close" data-target="#newInnslagBox_{{ innslag_type }}">avbryt</a>
 	
 	<div class="clearfix"></div>
 </form>

@@ -17,12 +17,15 @@
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
 						{% for id, navn in monstring.kommuner %}
-							<option value="{{ id }}">{{ navn }}</option>
+							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ navn }}</option>
 						{% endfor %}
 					</select>
 				</div>
 			{% else %}
-				<input type="hidden" name="kommune" value="{{ monstring.kommuner[0].id }}" />
+				{% for id, navn in monstring.kommuner %}
+					<label>DEBUG: kommune</label>
+					<input type="test" name="kommune" value="{{ id }}" />
+				{% endfor %}
 			{% endif %}
 		</div>
 
@@ -32,9 +35,9 @@
 			<p>Alle innslag må ha en kontaktperson. Skriv inn fornavn, etternavn eller mobil og trykk på rett person. Hvis du ikke finner den du leter etter i listen kan du legge til en ny person manuelt.</p>
 			<div id="sokefelt">
 				<div class="form-group">
-					<input name="kontaktperson_sokefelt" id="fornavn_sok" data-results="filter_persons_results_{{ innslag_type }}" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
+					<input name="kontaktperson_sokefelt" id="filter_persons_innslag_{{ innslag_id }}" data-results="filter_persons_innslag_{{ innslag_id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
 				</div>
-				<ol class="list-group" id="filter_persons_results_{{ innslag_type }}">
+				<ol class="list-group" id="filter_persons_innslag_{{ innslag_id }}_results">
 					{% for person in personer %}
 						<li class="list-group-item action clickable" data-action="addKontaktperson" data-person-id="{{ person.id }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
 							{{ person.fornavn }} {{ person.etternavn }} <small>{{ person.mobil }}</small>
@@ -50,7 +53,7 @@
 		</div>
 			
 
-		<div class="createPerson col-xs-12" id="filter_persons_innslag_{{ innslag_type }}_create" style="display:none">
+		<div class="createPerson col-xs-12" id="filter_persons_innslag_{{ innslag_id }}_create" style="display:none">
 			<div class="col-xs-12 well">
 				<div class="col-xs-12">
 					<h4 style="margin-bottom: 0px;">Opprett ny kontaktperson</h4>
@@ -79,7 +82,7 @@
 							{% for i in 10..25 %}
 								<option value="{{ i }}" {{ person.alder_tall == i ? 'selected' : '' }}>{{ i }} år</option> 
 							{% endfor %}
-							<option value="0"{{ person.alder_tall == '25+' ? 'selected' : '' }}>Over 25 år</option>
+							<option value="0"{{ person.alder_tall == '25+' or person.alder_tall >= 25 ? 'selected' : '' }}>Over 25 år</option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -124,9 +127,9 @@
 
 			<div class="clearfix"></div>
 			<div class="col-xs-12">
-				<button type="submit" class="action btn btn-success" data-action="saveNyttInnslag" data-type="{{ innslag_type }}">Opprett {{ type_nicename|lower }}-deltaker</button>
+				<button type="submit" class="action btn btn-success" data-action="save" data-type="{{ innslag_type }}">Opprett {{ type_nicename|lower }}-deltaker</button>
 				&nbsp; &nbsp; eller 
-				<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="closeNyttInnslag" data-target="#newInnslagBox_{{ innslag_type }}">avbryt</a>
+				<a href="#newInnslagBox_{{ innslag_type }}" class="action" data-action="close" data-target="#newInnslagBox_{{ innslag_type }}">avbryt</a>
 			</div>
 		</div>
 	</div>

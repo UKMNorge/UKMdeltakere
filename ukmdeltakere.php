@@ -122,7 +122,6 @@ function UKMdeltakere() {
 	require_once('controller/list_'. $TWIGdata['tab_active'] .'.controller.php' );
 	
 	echo TWIG( 'list_'. $TWIGdata['tab_active']. '.html.twig', $TWIGdata, dirname(__FILE__), true);
-	echo 'HEI MARIUS';
 	echo TWIGjs_simple( dirname(__FILE__) );
 
 }
