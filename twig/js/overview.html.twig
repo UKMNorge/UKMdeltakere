@@ -50,39 +50,74 @@
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 		<legend><small>Personer</small></legend>
 		<p class="explain">Snittalder: {{ innslag.snittalder }} år</p>
-		<ol class="list-group list-group-compact">
-			{% for person in innslag.personer %}
-				<li class="list-group-item person clickChildLink" data-person-id="{{ person.id }}">
-					<div class="pull-right">
-						{% if person.id == innslag.kontaktperson.id %}
-							<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" data-warning="{{ person.fornavn }} er kontaktperson for {{ innslag.navn }}. Selv om du fjerner {{ person.fornavn }} fra innslaget, vil han/hun fortsatt stå som kontaktperson. Er du sikker på at du vil fjerne {{ person.fornavn }}?">Fjern</a>
-						{% else %}
-							<a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" data-warning="Er du sikker på at du vil fjerne {{ person.fornavn }} fra {{ innslag.navn }}?">Fjern</a>	
-						{% endif %}
-					</div>
-
-					<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe">{{ person.fornavn }} {{ person.etternavn}}</a>
-					<br />
-					{% if person.rolle %}
-						<small>{{ person.rolle }}</small>
-					{% else %}
-						<div class="clearfix"></div>
-					{% endif %}
-				</li>
-			{% else %}
-				<li class="list-group-item">
-					Det er ikke lagt til noen personer
-				</li>
-			{% endfor %}
-			<li class="list-group-item">
-				<a href="#innslag_{{ innslag_id }}" data-action="addPerson" class="action">+ Legg til person</a>
-			</li>
-		</ol>
-		{% if 'kommune' != site_type %}
-			<p class="explain">Personer som ikke er videresendt</p>
-			<ol class="list-group list-group-compact">
-			</ol>
+		
+		{# Avgjør om siden skal vise personer i grupper (deltar/deltar ikke) eller som én felles liste (lokalmønstringer) #}
+		{% if monstring.type != 'kommune' %}
+			{% set grupper = {'Deltar på din festival': true, 'Deltar ikke på din festival': false} %}
+		{% else %}
+			{% set grupper = {' ': true} %}
 		{% endif %}
+		
+		{# LOOP GRUPPER MED PERSONER #}
+		{% for navn, status in grupper %}
+			{% if monstring.type != 'kommune' %}
+				<label class="b uppercase small mt-2">{{ navn }}</label>
+			{% endif %}
+			<ol class="list-group list-group-compact">
+				{% for person in innslag.personer if person.videresendt == status %}
+					{% set msgDelPerson = 'Er du sikker på at du vil fjerne '~ person.fornavn ~'?' %}
+	
+					{% set msgDelIsContact = person.fornavn ~' er kontaktperson for '~ innslag.navn ~'. Selv om du fjerner '~ person.fornavn ~' fra innslaget, vil '~ person.kjonnspronomen ~' fortsatt stå som kontaktperson. '~ '\\r\\n\\r\\n'|escape %}
+					
+					{% set msgDelPersonHard = 'OBS: '~ person.fornavn ~' deltar ikke på din festival! Sletter du '~ person.fornavn ~' nå fjernes '~ person.kjonnspronomen ~' fra innslaget, ikke '~ ( innslag.type.id == 1 ? 'bare ' : '' ) ~'festivalen din. ' %}
+					
+					{% set msgDelIsBand = msgDelPersonHard ~ 'Dette fordi alle personer i scene-innslag videresendes.'~ '\\r\\n\\r\\n'|escape %}
+	
+					
+					<li class="list-group-item person clickChildLink" data-person-id="{{ person.id }}">
+						<div class="pull-right">
+							{% if monstring.type == 'kommune' %}
+								{# HVIS KOMMUNE: fjern = slett fra innslaget #}
+								<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" data-warning="{{ monstring.type == 'fylke' and innslag.type.id == 1 ? msgDelIsBand : '' }}{{ person.id == innslag.kontaktperson.id ? msgDelIsContact : '' }}{{ msgDelPerson }}">Fjern</a>
+							{% else %}
+								{# HVIS FYLKE ELLER FESTIVAL #}
+								{% if not person.videresendt %}
+									{# IKKE VIDERESENDT PERSON #}
+									{# legg til = videresend til min festival #}
+									<a href="#" class="action btn btn-success btn-xs" data-action="simpleSave" data-handle="personForward" data-object-id="{{ person.id }}" data-warning="{{ person.fornavn }} var en del av {{ innslag.navn }} på lokalmønstringen, men er ikke videresendt. Vil du videresende {{ person.fornavn }} til din festival?">Skal delta</a>
+								{% endif %}
+								
+								{% if person.videresendt and innslag.type.id != 1 %}
+									{# VIDERESENDT PERSON #}
+									{# fjern = fjern videresending til min festival #}
+									<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="personUnforward" data-object-id="{{ person.id }}" data-warning="{{ monstring.type == 'fylke' and innslag.type.id == 1 ? msgDelIsBand : '' }}{{ person.id == innslag.kontaktperson.id ? msgDelIsContact : '' }}{{ msgDelPerson }}">Skal ikke delta</a>
+								{% else %}
+									{# slett = slett fra innslaget (kommunens fjern) #}
+									<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" data-warning="{{ msgDelPersonHard }}">Fjern</a>
+								{% endif %}
+							{% endif %}
+						</div>
+	
+						<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe {% if not person.videresendt %}text-muted{% endif %}">{{ person.fornavn }} {{ person.etternavn}}</a>
+						<br />
+						{% if person.rolle %}
+							<small>{{ person.rolle }}</small>
+						{% else %}
+							<div class="clearfix"></div>
+						{% endif %}
+					</li>
+				{% else %}
+					<li class="list-group-item">
+						Det er ikke lagt til noen personer
+					</li>
+				{% endfor %}
+				{% if status == true %}
+					<li class="list-group-item">
+						<a href="#innslag_{{ innslag_id }}" data-action="addPerson" class="action">+ Legg til person</a>
+					</li>
+				{% endif %}
+			</ol>
+		{% endfor %}
 	</fieldset>
 
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">

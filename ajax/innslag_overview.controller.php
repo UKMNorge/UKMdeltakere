@@ -26,6 +26,11 @@ if( $innslag->getType()->harTitler() ) {
 		$tmp 			= data_person( $person );
 		$tmp->rolle 	= $person->getRolle();
 		$snittalder 	+= ( ($tmp->alder_tall == '25+') ? 0 : $tmp->alder_tall );
+		if( $monstring->getType() == 'kommune' ) {
+			$tmp->videresendt = true;
+		} else {
+			$tmp->videresendt = $person->erVideresendt( $monstring->getId() );
+		}
 		$JSON->innslag->personer[] = $tmp;
 	}
 	$JSON->innslag->snittalder	= round( $snittalder / ($innslag->getPersoner()->getAntall() > 0 ? $innslag->getPersoner()->getAntall() : 1 ), 1);

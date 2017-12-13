@@ -45,3 +45,16 @@ p.explain {
 .innslagTypeHeader a {
 	margin-top: 8px;
 }
+
+.b, .bold {
+	font-weight: bold;
+}
+
+.caps,
+.uppercase {
+	text-transform: uppercase;
+}
+
+.mt-2 {
+	margin-top: .75em;
+}

@@ -76,6 +76,22 @@ else {
 
 $innslag->save();
 
+// Hvis vi legger til innslaget på fylkesmønstring - videresend det!
+if( $monstring->getType() == 'fylke' ) {
+	$monstring->getInnslag()->leggTil( $innslag );
+	
+	$monstring_w_til = new write_monstring( get_option('pl_id') );
+	if( get_option('site_type') == 'fylke' ) {
+		$monstring_fra = monstringer_v2::kommune( $kommune, $monstring_w_til->getSesong() );
+	} elseif( get_option('site_type') == 'land' ) {
+		$monstring_fra = monstringer_v2::fylke( $kommune->getFylke(), $monstring_w_til->getSesong() );
+	}
+	$monstring_w_fra = new write_monstring( $monstring_fra->getId() );
+
+	
+	$innslag->getPersoner()->videresend( $kontaktperson );
+}
+
 $JSON->innslag_id = $innslag->getId();
 $JSON->type = $type;
 

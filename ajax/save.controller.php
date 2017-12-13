@@ -50,8 +50,11 @@ switch( $_POST['doSave'] ) {
 	case 'personAddExisting':
 		require_once( plugin_dir_path( __FILE__ ). '../save/personAddExisting.save.php');
 		break;
-	case 'person':
-		require_once( plugin_dir_path( __FILE__ ). '../save/person.save.php' );
+	case 'personForward':
+		require_once( plugin_dir_path( __FILE__ ) .'../save/personForward.save.php');
+		break;
+	case 'personUnforward':
+		require_once( plugin_dir_path( __FILE__ ) .'../save/personUnforward.save.php');
 		break;
 	case 'person':
 		require_once( plugin_dir_path( __FILE__ ). '../save/person.save.php' );
