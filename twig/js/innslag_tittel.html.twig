@@ -1,43 +1,51 @@
 <form action="nyttInnslag" id="nyttInnslagContainer_{{ innslag_type }}">
+	<input type="hidden" name="type" value="{{ innslag_type }}" />
+
 	<div class="row">
-		<div class="col-xs-12">
-			<div>
-				<br />
-				<h3 style="display:inline;">Legg til nytt innslag</h3> 
-				&nbsp;
-				<a href="#innslag_{{ innslag_id }}" class="action" data-action="close">avbryt</a>
-				<br />
-			</div>
-			
-			{# INFO-FELT #}
-			{% if innslag_type == 'litteratur' %}
-				<div class="alert alert-info">
-					<p>OBS: Dette er litteratur som skal leses opp fra scenen og settes opp i forestillinger. Andre tekstbidrag bør meldes på som "Utstilling".</p>
-				</div>
-			{% endif %}
+		<div class="col-xs-12" style="margin-bottom: 1em;">
+			<h3 style="display:inline;">Legg til nytt innslag</h3> 
+			&nbsp;
+			<a href="#innslag_{{ innslag_id }}" class="action" data-action="close">avbryt</a>
 			<p>Røde felt (merket *) er obligatoriske!</p>
 		</div>
 
-		<input type="hidden" name="type" value="{{ innslag_type }}" />
-		<div class="col-xs-12 col-sm-6 col-lg-4">
-			{% if monstring.erFellesmonstring %}
+		<div class="col-xs-12 col-sm-6 col-lg-6">
+			<div class="form-group text-danger">
+				<label for="navn">Navn *</label>
+				<input type="text" class="form-control" required name="navn" />
+			</div>
+
+			{% if monstring.erFellesmonstring() or monstring.type == 'fylke' %}
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
 						{% for id, navn in monstring.kommuner %}
-							<option value="{{ id }}">{{ navn }}</option>
+							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ navn }}</option>
 						{% endfor %}
 					</select>
 				</div>
 			{% else %}
-				<input type="hidden" name="kommune" value="{{ person.kommune_id }}" />
+				<div class="form-group">
+					{% for id, navn in monstring.kommuner %}
+						<label>DEBUG: kommune</label>
+						<input type="test" name="kommune" value="{{ id }}" />
+					{% endfor %}
+				</div>
 			{% endif %}
+		
+			{# INFO-FELT #}
+			{% if innslag_type == 'litteratur' %}
+				<div class="alert alert-info">
+					<p>
+						OBS: Innslaget meldes på som litteratur som skal leses opp fra scenen og settes opp i forestillinger. 
+						<br />
+						Andre tekstbidrag bør meldes på som "Utstilling".
+					</p>
+				</div>
+			{% endif %}
+		</div>
 
-			<div class="form-group text-danger">
-				<label for="navn">Navn *</label>
-				<input type="text" class="form-control" required name="navn" />
-			</div>		
-
+		<div class="col-xs-12 col-sm-6 col-lg-4">
 			{% if 1 == innslag.type.id %}
 				<div class="form-group hidden">
 					<label for="kategori">Kategori</label>
@@ -56,10 +64,16 @@
 				<textarea type="text" class="form-control" required name="beskrivelse"></textarea>
 			</div>
 		</div>
-
+	</div>
+	<div class="row">
 		<div class="searchPerson col-xs-12">
 			<label class="text-danger">Søk etter kontaktperson *</label>
-			<p>Alle innslag må ha en kontaktperson. Skriv inn fornavn, etternavn eller mobil og trykk på rett person. Hvis du ikke finner den du leter etter i listen kan du legge til en ny person manuelt.</p>
+			<p>
+				Alle innslag må ha en kontaktperson. Skriv inn fornavn, etternavn eller mobil og trykk på rett person. 
+				<br />
+				Hvis du ikke finner den du leter etter i listen kan du legge til en ny person manuelt.
+			</p>
+			
 			<div id="sokefelt">
 				<div class="form-group">
 					<input name="kontaktperson_sokefelt" id="filter_persons_innslag_{{ innslag_id }}" data-results="filter_persons_innslag_{{ innslag_id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
@@ -132,45 +146,20 @@
 		</div>
 		<div class="clearfix"></div>
 		
-		<div class="col-xs-12 col-sm-6 col-lg-4 kontaktpersonRolleValg">
+		<div class="col-xs-12 kontaktpersonRolleValg">
 			<div class="form-check">
-				<label for="kontaktpersonErMed">
-					<input type="checkbox" class="form-check-input kontaktpersonErMed" name="kontaktpersonErMed" checked="true" />
+				<label for="kontaktpersonErMed" style="font-weight: normal;">
+					<input type="checkbox" class="form-check-input kontaktpersonErMed" name="kontaktpersonErMed" id="kontaktpersonErMed" checked="true" />
 					Kontaktpersonen er også deltaker i innslaget.
 				</label>
 			</div>
 			<br />
 			<div class="form-group kontaktpersonRolle">
-				<label for="rolle" class="text-danger">Rolle / funksjon / instrument *</label>
+				<label for="rolle" class="text-danger">Kontaktpersonens rolle / funksjon / instrument *</label>
 				<input type="text" class="form-control" name="rolle" id="rolle" required />
 			</div>
 		</div>
 		<div class="clearfix"></div>
-
-		<div class="col-xs-12 col-sm-6 col-lg-4">
-			{% if monstring.erFellesmonstring or monstring.type == 'fylke' %}
-				<div class="form-group text-danger">
-					<label for="kommune">Kommune/bydel *</label>
-					<select name="kommune" class="form-control" required>
-						{% for id, navn in monstring.kommuner %}
-							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ navn }}</option>
-						{% endfor %}
-					</select>
-				</div>
-			{% else %}
-				{% for id, navn in monstring.kommuner %}
-					<label>DEBUG: kommune</label>
-					<input type="test" name="kommune" value="{{ id }}" />
-				{% endfor %}
-			{% endif %}
-
-			{% if 1 == innslag.type.id %}
-				<div class="form-group hidden">
-					<label for="kategori">Kategori</label>
-					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ kategori }}"/>
-				</div>
-			{% endif %}
-		</div>
 	</div>
 
 	<div class="clearfix"></div>
