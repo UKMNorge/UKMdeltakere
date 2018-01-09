@@ -52,6 +52,8 @@ switch( $type ) {
 		$JSON->funksjoner = array_keys($funksjoner);
 		$JSON->funksjonsnavn = $funksjoner;
 		break;
+	case 'matkultur':
+		throw new Exception("Matkultur må midlertidig meldes på av deltakerne selv. Dette vil bli mulig også herfra så fort vi har fått rettet feilen.");
 	default:
 		throw new Exception("Fant ikke rett skjema for ".$type);
 }
