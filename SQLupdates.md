@@ -23,4 +23,12 @@ VALUES
 	(515, 'endret', 'navn', 'text', 'smartukm_titles_exhibition|t_e_title', 1),
 	(516, 'endret', 'type og teknikk', 'text', 'smartukm_titles_exhibtion|t_e_type', 1),
 	(517, 'endret', 'beskrivelse', 'text', 'smartukm_titles_exhibition|t_e_comments', 1);
+
+	(218,'endret','lenke','text','smartukm_place|pl_link',1),
+	(111,'lagt til','kontaktperson','text','smartukm_rel_pl_ab|new',1),
+	(112,'lagt til','kommune','text','smartukm_rel_pl_k|new',1),
+	(113,'lagt til','skjema for videresending','text','smartukm_place|pl_form',0),
+	(114,'fjernet','kommune','text','smartukm_rel_pl_k|delete',1),
+	(115,'avlyste','mønstringen','text','smartukm_rel_pl|delete',0);
+
 ```
