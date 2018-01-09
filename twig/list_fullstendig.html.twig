@@ -1,0 +1,45 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+	<div class="row">
+		{% for type_innslag in monstring.getInnslagTyper() %}
+			<div class="innslagBlock col-xs-12">
+				<div class="innslagTypeHeader">
+					<a href="#" class="action pull-right btn btn-xs btn-success" data-action="nyttInnslag" data-type="{{ type_innslag.getKey() }}" id="add-new-{{ type_innslag.getKey() }}">Legg til nytt innslag</a>
+					
+					<img src="{{ type_innslag.getIcon() }}" height="45" />
+					<h3>{{ type_innslag }}</h3>
+					<div class="clearfix"></div>
+				</div>
+				<ol class="list-group innslag_lister" id="innslag_liste_{{ type_innslag.getKey() }}">
+					<li class="list-group-item innslag" data-innslag-id="new_{{ type_innslag.getKey() }}" id="innslag_new_{{ type_innslag.getKey() }}" style="display: none;">
+						<div class="body">
+						</div>
+					</li>
+					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
+						{% embed "list_item.html.twig" %}{% endembed %}
+					{% else %}
+						<li class="list-group-item ingen-pameldte">Ingen påmeldte i {{ type_innslag }}</li>
+					{% endfor %}
+				</ol>
+			</div>
+		{% endfor %}
+		{# Legg til tomrom i bunn: #}
+		{% for i in 0..14 %}
+			<p>&nbsp;</p>
+		{% endfor %}
+	</div>
+
+<script>
+		$(document).ready(function(){
+			{% if doAdd is defined %}
+				var btn = jQuery('#{{ doAdd }}');
+				jQuery(document).trigger('innslag.showNew', btn);
+			{% endif %}
+			{% if doEdit is defined %}
+				jQuery(document).trigger('innslag.showBody', {{ doEdit }});
+				jQuery(document).trigger('innslag.goToView', {{ doEdit }});
+			{% endif %}
+		});
+</script>
+{% endblock %}

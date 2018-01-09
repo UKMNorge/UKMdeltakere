@@ -1,0 +1,243 @@
+<div class="row">
+	{% if innslag.avmeldbar == false %}
+		<div class="col-xs-12">
+			<div class="alert alert-info">
+				<b>OBS:</b>
+				<p>
+				Innslaget startet påmeldingen for kort tid siden ({{ innslag.subscription.date|dato('d.M H:i') }}), og det er derfor mulig at de fortsatt jobber med påmeldingen sin. 
+				Vi anbefaler at du venter til {{ innslag.avmeldlas|dato('d.M H:i') }} før du gjør endringer eller melder av innslaget!
+				</p>
+			</div>
+		</div>
+	{% endif %}
+	{% if innslag.advarsler|length > 0 %}
+		<div class="col-xs-12">
+			<div class="alert alert-warning">
+				<p>
+					<b>Innslaget har blitt flagget for følgende advarsler:</b>
+				</p>
+				<ul class="list-group list-group-compact">
+				{% for advarsel in innslag.advarsler %}
+					<li class="list-group-item">{{ advarsel.melding }}</li>
+				{% endfor %}
+				</ul>
+				<p>Du trenger ikke å gjøre noe med dette, da dette bare er et hint fra systemet om at innslaget kan by på en overraskelse i gjennomføringen</p>
+			</div>
+		</div>
+	{% endif %}	
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend class="hidden-xs">Informasjon</legend>
+		<p>
+			<label>Kontaktperson: </label> {{ innslag.kontaktperson.fornavn }} {{ innslag.kontaktperson.etternavn }}
+			<br />
+			<label>Mobil: </label> <a href="#innslag_{{ innslag_id }}" class="UKMSMS">{{ innslag.kontaktperson.mobil }}</a>
+			<br />
+			<label>E-post: </label> <a href="mailto:{{ innslag.kontaktperson.epost }}">{{ innslag.kontaktperson.epost }}</a>
+			<br />
+			{# Bruker samme sjekk som i edit #}
+			{% if 1 == innslag.type.id %} 
+				<label>Sjanger: </label> {{ innslag.sjanger }}
+				<br />
+			{% endif %}
+			<label>Beskrivelse: </label> {{ innslag.beskrivelse }}
+		</p>
+		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
+
+		<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-primary btn-outline" data-action="changeContact">Bytt kontaktperson</a>
+		
+	</fieldset>
+
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Personer</small></legend>
+		<p class="explain">Snittalder: {{ innslag.snittalder }} år</p>
+		
+		{# Avgjør om siden skal vise personer i grupper (deltar/deltar ikke) eller som én felles liste (lokalmønstringer) #}
+		{% if monstring.type != 'kommune' %}
+			{% set grupper = {'Deltar på din festival': true, 'Deltar ikke på din festival': false} %}
+		{% else %}
+			{% set grupper = {' ': true} %}
+		{% endif %}
+		
+		{# LOOP GRUPPER MED PERSONER #}
+		{% for navn, status in grupper %}
+			{% if monstring.type != 'kommune' %}
+				<label class="b uppercase small mt-2">{{ navn }}</label>
+			{% endif %}
+			<ol class="list-group list-group-compact">
+				{% for person in innslag.personer if person.videresendt == status %}
+					{% set msgDelPerson = 'Er du sikker på at du vil fjerne '~ person.fornavn ~'?' %}
+	
+					{% set msgDelIsContact = person.fornavn ~' er kontaktperson for '~ innslag.navn ~'. Selv om du fjerner '~ person.fornavn ~' fra innslaget, vil '~ person.kjonnspronomen ~' fortsatt stå som kontaktperson. '~ '\\r\\n\\r\\n'|escape %}
+					
+					{% set msgDelPersonHard = 'OBS: '~ person.fornavn ~' deltar ikke på din festival! Sletter du '~ person.fornavn ~' nå fjernes '~ person.kjonnspronomen ~' fra innslaget, ikke '~ ( innslag.type.id == 1 ? 'bare ' : '' ) ~'festivalen din. ' %}
+					
+					{% set msgDelIsBand = msgDelPersonHard ~ 'Dette fordi alle personer i scene-innslag videresendes.'~ '\\r\\n\\r\\n'|escape %}
+	
+					
+					<li class="list-group-item person clickChildLink" data-person-id="{{ person.id }}">
+						<div class="pull-right">
+							{% if monstring.type == 'kommune' %}
+								{# HVIS KOMMUNE: fjern = slett fra innslaget #}
+								<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" data-warning="{{ monstring.type == 'fylke' and innslag.type.id == 1 ? msgDelIsBand : '' }}{{ person.id == innslag.kontaktperson.id ? msgDelIsContact : '' }}{{ msgDelPerson }}">Fjern</a>
+							{% else %}
+								{# HVIS FYLKE ELLER FESTIVAL #}
+								{% if not person.videresendt %}
+									{# IKKE VIDERESENDT PERSON #}
+									{# legg til = videresend til min festival #}
+									<a href="#" class="action btn btn-success btn-xs" data-action="simpleSave" data-handle="personForward" data-object-id="{{ person.id }}" data-warning="{{ person.fornavn }} var en del av {{ innslag.navn }} på lokalmønstringen, men er ikke videresendt. Vil du videresende {{ person.fornavn }} til din festival?">Skal delta</a>
+								{% endif %}
+								
+								{% if person.videresendt and innslag.type.id != 1 %}
+									{# VIDERESENDT PERSON #}
+									{# fjern = fjern videresending til min festival #}
+									<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="personUnforward" data-object-id="{{ person.id }}" data-warning="{{ monstring.type == 'fylke' and innslag.type.id == 1 ? msgDelIsBand : '' }}{{ person.id == innslag.kontaktperson.id ? msgDelIsContact : '' }}{{ msgDelPerson }}">Skal ikke delta</a>
+								{% else %}
+									{# slett = slett fra innslaget (kommunens fjern) #}
+									<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" data-warning="{{ msgDelPersonHard }}">Fjern</a>
+								{% endif %}
+							{% endif %}
+						</div>
+	
+						<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe {% if not person.videresendt %}text-muted{% endif %}">{{ person.fornavn }} {{ person.etternavn}}</a>
+						<br />
+						{% if person.rolle %}
+							<small>{{ person.rolle }}</small>
+						{% else %}
+							<div class="clearfix"></div>
+						{% endif %}
+					</li>
+				{% else %}
+					<li class="list-group-item">
+						Det er ikke lagt til noen personer
+					</li>
+				{% endfor %}
+				{% if status == true %}
+					<li class="list-group-item">
+						<a href="#innslag_{{ innslag_id }}" data-action="addPerson" class="action">+ Legg til person</a>
+					</li>
+				{% endif %}
+			</ol>
+		{% endfor %}
+	</fieldset>
+
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
+		<legend><small>Titler</small></legend>
+		<p class="explain">
+			{% if 'utstilling' == innslag.type.key %}
+				&nbsp;
+			{% else %}
+				Varighet: {{ innslag.varighet_human }}
+			{% endif %}
+		</p>
+	
+		<ol class="list-group list-group-compact">
+			{% for tittel in innslag.titler %}
+				<li class="list-group-item person clickChildLink" data-tittel-id="{{ tittel.id }}">
+					<div class="pull-right">
+						<a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" data-warning="Er du sikker på at du vil fjerne {{ tittel.tittel }} fra {{ innslag.navn }}?" data-action="simpleSave" data-handle="deleteTitle" data-object-id="{{ tittel.id }}" >Fjern</a>	
+					</div>
+
+					<a href="#" class="action momClickMe" data-action="editTitle" data-title-id="{{ tittel.id }}">{{ tittel.tittel }}</a>
+					<br />
+					<small>
+						{% if 'utstilling' == innslag.type.key %}
+							&nbsp;
+						{% else %}
+							{{ tittel.varighet_human }}
+						{% endif %}
+					</small>
+				</li>
+			{% else %}
+				<li class="list-group-item">
+					Det er ikke lagt til noen titler
+				</li>
+			{% endfor %}
+			<li class="list-group-item">
+				<a href="#innslag_{{ innslag_id }}" class="action" data-action="addTitle">+ Legg til tittel</a>
+			</li>
+		</ol>
+	</fieldset>
+	
+	<fieldset class="col-xs-12 col-sm-6 col-lg-3 pull-right">
+		<legend><small>Program</small></legend>
+		<p class="explain">
+				&nbsp;
+		</p>
+
+		<ol class="list-group list-group-compact">
+			{% for hendelse in innslag.hendelser %}
+				<li class="list-group-item">
+					Nr {{ hendelse.rekkefolge }} i <a href="admin.php?page=UKMprogram_admin&c_id={{ hendelse.id }}">{{ hendelse.navn }}</a>
+					<a href="#innslag_{{ innslag_id }}" class="action btn btn-danger btn-xs pull-right" data-action="simpleSave" data-handle="deleteFromEvent" data-object-id="{{ hendelse.id }}" data-warning="Sikker på at du vil fjerne {{ innslag.navn }} fra {{ hendelse.navn }}?">Fjern</a>
+					<div class="clearfix"></div>
+				</li>
+			{% else %}
+				<li class="list-group-item">
+					<small>Ikke lagt til i noen programhendelser</small>
+				</li>
+			{% endif %}
+			<li class="list-group-item">
+				<a href="#innslag_{{ innslag_id }}" class="actionEventAdd">+ Legg til i program</a>
+			</li>
+
+		</ol>
+	
+	</fieldset>
+	
+	{% if lignende is defined %}
+		<div class="clearfix"></div>
+		<fieldset class="col-xs-12">
+			<legend><small>Lignende innslag</small></legend>
+			<p class="explain">
+				Ofte er ufullstendige påmeldinger et duplikat av en fullført påmelding, eller så har kontaktpersonen meldt på et annet innslag.
+				Listen over lignende innslag viser deg innslag med lignende navn, eller andre innslag hvor noen av personene er med.
+			</p>
+			
+			<p>
+				<b>{{ alle_lignende|length }} innslag på din mønstring ligner på {{ innslag.navn }}</b>:
+			</p>
+			<ol class="list-group list-group-compact">
+				{% for lignende in alle_lignende %}
+					<li class="list-group-item">
+						<div class="col-xs-12 col-sm-6">
+							<i class="label label-xs label-{{ lignende.status == 8 ? 'success' : 'warning' }}">{{ lignende.status == 8 ? 'Påmeldt' : 'Ufullstendig påmelding' }}</i>
+							&nbsp; <b>{{ lignende.navn }}</b>
+						</div>
+						<div class="col-xs-12 col-sm-6 small">
+							Fordi {{ lignende.grunnlag }}
+						</div>
+						<div class="clearfix"></div>
+					</li>
+				{% else %}
+					<li class="list-group-item">Fant ingen lignende innslag</li>
+				{% endif %}
+			</ol>
+		</fieldset>
+		<div class="clearfix"></div>
+	{% endif %}
+	
+	<div class="clearfix visible-lg"></div>
+	
+	<fieldset class="col-xs-12 col-sm-6 col-lg-12">
+		<legend><small>Handlinger</small></legend>
+
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+			{% if innslag.status != 8 %}
+				<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success col-xs-12 col-sm-4 col-lg-3" data-action="meldPa">Meld på UKM</a>
+			{% endif %}
+
+			{% if innslag.avmeldbar %}
+				<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM?">Meld av UKM</a>
+			{% else %}
+				<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?">Meld av UKM</a>
+			{% endif %}
+		</div>
+		<div class="clearfix"></div>
+		
+		<p>&nbsp;</p>
+		<div class="clearfix"></div>
+		<p>
+			<a href="#innslag_{{ innslag_id }}" class="action" data-action="close">lukk</a>
+		</p>
+	</fieldset>
+</div>
