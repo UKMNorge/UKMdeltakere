@@ -1,0 +1,94 @@
+<div style="width: 95%">
+	<h2>Dine {% if tab_active == 'pabegynte' %}såvidt påbegynte påmeldinger{% elseif tab_active == 'ufullstendig' %}nesten påmeldte innslag{% else %}deltakere{% endif %}</h2>
+	
+	<div class="row">
+		{% if 'kommune' == site_type %}
+			<div class="col-xs-12 col-sm-6">
+				<ol class="list-group">
+					<li class="list-group-item">
+						<div class="pull-right">
+							{% if tab_active == 'fullstendig' %}
+								vises nå
+							{% else %}
+								<a href="?page=UKMdeltakere&list=fullstendig" class="btn btn-default btn-sm pull-right">VIS</a>
+							{% endif %}
+						</div>
+						<h3 style="margin:0px;" class="text-success">
+							{{ stat.fullstendige }} <small class="text-success">Påmeldte innslag</small>
+						</h3>
+					</li>
+					<li class="list-group-item">
+						<div class="pull-right">
+							{% if tab_active == 'ufullstendig' %}
+								vises nå
+							{% else %}
+								<a href="?page=UKMdeltakere&list=ufullstendig" class="btn btn-default btn-sm pull-right">VIS</a>
+							{% endif %}
+						</div>
+						<h3 style="margin:0px;" class="text-danger">
+							{{ stat.ufullstendige }} <small class="text-danger">Nesten påmeldte innslag</small>
+						</h3>
+					</li>
+					
+					<li class="list-group-item">
+						<div class="pull-right">
+							{% if tab_active == 'pabegynte' %}
+								vises nå
+							{% else %}
+								<a href="?page=UKMdeltakere&list=pabegynte" class="btn btn-default btn-sm pull-right">VIS</a>
+							{% endif %}
+						</div>
+						<h3 style="margin:0px;" class="text-info">
+							{{ stat.pabegynte }} <small class="text-info">Såvidt påbegynte påmeldinger</small>
+						</h3>
+					</li>
+				</ol>
+			</div>
+			
+			<div class="visible-xs">
+				<div class="clearfix"></div>
+				<p>&nbsp;</p>
+				<div class="clearfix"></div>
+			</div>
+		{% endif %}
+	
+		<div class="col-xs-12 col-sm-6">
+			<div>
+				<b>Begynn å skrive her for å søke blant påmeldte innslag.</b>
+			</div>
+			<form>
+				<div class="form-group">
+					<input id="filter_innslag" class="form-control" type="search" placeholder="Du kan søke etter navn på personer, innslag og titler" />
+				</div>
+				<div style="display:none;" data-todo="TODO: fix empty list == 20">
+					<p class="explain" id="filter_innslag_counter" style="margin-top: -10px; margin-left:4px; display:none;"></p>
+				</div>
+			</form>
+		</div>
+		
+		{% if 'kommune' != site_type %}
+			<div class="hidden-xs" style="margin-top:46px;"></div>
+			
+			<div class="col-xs-12 col-sm-4 col-sm-offset-1">
+				<ol class="list-group">
+					<li class="list-group-item">
+						<div class="visible-xs pull-right">Vises nå</div>
+						<h3 style="margin:0px;" class="text-success">
+							{{ stat.fullstendige }} <small class="text-success">Påmeldte innslag</small>
+						</h3>
+					</li>
+				</ol>
+			</div>
+			<div class="clearfix"></div>
+			<p>&nbsp;</p>
+			<div class="clearfix"></div>
+		{% endif %}
+	</div>
+	
+	<div class="clearfix"></div>
+	
+	{% block content %}
+	{% endblock %}
+	
+	<div class="clearfix"></div>
+</div>

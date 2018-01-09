@@ -1,0 +1,60 @@
+fieldset {
+	margin-top:18px !important;
+}
+.row .list-group {
+    margin: 0px;
+}
+
+.row {
+    padding-right: 10px !important;
+}
+
+p.explain {
+	margin-top: -20px;
+	font-style: italic;
+}
+
+.list-group.list-group-compact li.list-group-item {
+	padding: 7px;
+	margin: 0px;
+	line-height: 14px;
+	font-size: 13px;
+}
+
+.innslagBlock {
+	margin-bottom: 25px;
+}
+.innslag.selected {
+	background-color: #f3f3f3;
+}
+
+.innslag .body {
+	margin-top: 8px;
+}
+
+.innslagTypeHeader {
+	margin-bottom: 4px;
+}
+.innslagTypeHeader img {
+	float:left;
+	height: 45px;
+	margin-top: -10px;
+	margin-right: 7px;
+}
+
+.innslagTypeHeader a {
+	margin-top: 8px;
+}
+
+.b, .bold {
+	font-weight: bold;
+}
+
+.caps,
+.uppercase {
+	text-transform: uppercase;
+}
+
+.mt-2 {
+	margin-top: .75em;
+}

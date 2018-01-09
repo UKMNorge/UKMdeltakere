@@ -1,0 +1,3 @@
+<?php
+
+$JSON->twigJS = 'innslagmeldPa';

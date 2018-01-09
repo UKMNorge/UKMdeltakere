@@ -1,0 +1,91 @@
+{% if gotObjects %}
+	{% set innslag_navn = innslag.getNavn() %}
+	{% set innslag_kommune = innslag.getKommune() %}
+	{% set innslag_type = innslag.getType().getKey() %}
+	{% set innslag_har_titler = innslag.getType().harTitler() %}
+	
+	{% if innslag_har_titler %}
+		{% set innslag_personer_antall = innslag.getPersoner().getAntall() %}
+
+		{% if 'utstilling' == innslag_type %}
+			{% set titler_antall = innslag.getTitler( monstring ).getAll()|length %}
+		{% else %}
+			{% set titler_varighet = innslag.getTitler( monstring ).getVarighet().getHumanShort() %}
+		{% endif %}
+
+		{% set innslag_advarsel_personer_har = innslag.getAdvarsler( monstring ).har('personer') %}
+		{% set innslag_advarsel_titler_har = innslag.getAdvarsler( monstring ).har('titler') %}
+		
+		{% set advarsler_personer = [] %}
+		{% set advarsler_titler = [] %}
+		{% for advarsel in innslag.getAdvarsler( monstring ).getAll() %}
+			{% if advarsel.getKategori() == 'personer' %}
+				{% set advarsler_personer = advarsler_personer|merge([ advarsel.getMelding() ]) %}
+			{% endif %}
+
+			{% if advarsel.getKategori() == 'titler' %}
+				{% set advarsler_titler = advarsler_titler|merge([ advarsel.getMelding() ]) %}
+			{% endif %}
+		{% endfor %}
+
+	{% else %}
+		{% set person_rolle = innslag.getPersoner().getSingle().getRolle() %}
+		{% set person_alder = innslag.getPersoner().getSingle().getAlder() %}
+	{% endif %}	
+{% endif %}
+<div class="col-xs-8">
+	{{ innslag_navn }}
+	<br />
+	<small>
+		{% if innslag_har_titler %}
+			<div class="pull-left">
+				{{ innslag_personer_antall }}					
+				person{{ innslag_personer_antall != 1 ? 'er' : '' }}
+			</div>
+
+			{# PERSON-advarsler #}
+			<div class="hidden-xs pull-left">
+				{% if innslag_advarsel_personer_har %}
+					<span class="label label-outline label-warning" style="margin-left: 4px;">
+						{% for advarsel in advarsler_personer %}
+							{{ advarsel }}
+						{% endfor %}
+					</span>
+				{% endif %}
+				{# TITTEL-advarsler #}
+				{% if innslag_advarsel_titler_har %}
+					<span class="label label-outline label-warning" style="margin-left: 4px;">
+						{% for advarsel in advarsler_titler %}
+							{{ advarsel.melding is defined ? advarsel.melding : advarsel }}
+						{% endfor %}
+					</span>
+				{% endif %}
+			</div>
+		{% else %}
+			{{ person_rolle }}
+		{% endif %}
+	</small>
+	<div class="clearfix"></div>
+</div>
+
+<div class="col-xs-3 col-xs-offset-1" style="text-align:right;">
+	{% if innslag_har_titler %}
+		{% if innslag_advarsel_titler_har %}
+			<span class="label label-outline label-warning">
+		{% endif %}
+
+		{% if 'utstilling' == innslag_type %}
+			{{ titler_antall }} verk
+		{% else %}
+			{{ titler_varighet }}
+		{% endif %}
+
+		{% if innslag_advarsel_titler_har %}
+			</span>
+		{% endif %}
+	{% else %}
+		{{ person_alder }}
+	{% endif %}
+	<br />
+	<small>{{ innslag_kommune }}</small>
+</div>

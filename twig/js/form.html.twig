@@ -1,0 +1,60 @@
+<form action="innslag" data-object-id="{{ innslag.id }}">
+	<div class="row">
+		<div class="col-xs-12">
+			<h4 style="margin-bottom: 0px;">Rediger informasjon</h4>
+			<p>Røde felt (merket *) er obligatoriske!</p>
+		</div>
+		
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="form-group text-danger">
+				<label for="navn">Navn *</label>
+				<input name="navn" type="text" class="form-control" value="{{ innslag.navn }}" />
+			</div>
+
+			{% if 'utstilling' != innslag.type.key %}
+				<div class="form-group">
+					<label for="sjanger">Sjanger</label>
+					<input name="sjanger" type="text" class="form-control" value="{{ innslag.sjanger }}" />
+				</div>
+			{% endif %}
+			
+			<div class="form-group">
+				<label>Beskrivelse</label>
+				<textarea name="beskrivelse" class="form-control">{{ innslag.beskrivelse }}</textarea>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-lg-4">
+			{% if monstring.erFellesmonstring %}
+				<div class="form-group text-danger">
+					<label for="kommune">Kommune/bydel *</label>
+					<select name="kommune" class="form-control" required>
+						{% for id, navn in monstring.kommuner %}
+							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ navn }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			{% else %}
+				{# TODO: Bytt til hidden når debug er done #}
+				<label for="kommune">DEBUG: Kommune/bydel *</label>
+				<input type="text" name="kommune" value="{{ innslag.kommune_id }}" />
+			{% endif %}
+
+			{% if 1 == innslag.type.id %}
+				<div class="form-group">
+					<label for="kategori">Kategori</label>
+					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ innslag.kategori }}" />
+				</div>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+	<p>&nbsp;</p>
+	
+	<div class="clearfix"></div>
+	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>
+	&nbsp; &nbsp; eller 
+	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
+	
+	<div class="clearfix"></div>
+</form>

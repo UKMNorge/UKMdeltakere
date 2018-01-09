@@ -1,0 +1,104 @@
+<form action="personAdd" id="form_legg_til_person_{{ innslag.id }}">
+	<div class="row">
+			
+		<div class="col-xs-12">
+			<h4>Søk etter person</h4>
+			<p>Skriv fornavn, etternavn eller mobil i boksen, og trykk på riktig person. Hvis du ikke finner den du leter etter kan du legge til en ny person manuelt.</p>
+			<div class="form-group">
+				<input name="fornavn" id="filter_persons_innslag_{{ innslag.id }}" data-results="filter_persons_innslag_{{ innslag.id }}_results" type="search" class="filter_personer form-control" placeholder="Skriv fornavn, etternavn eller mobilnummer..." autocomplete="off" />
+			</div>
+			<ol class="list-group" id="filter_persons_innslag_{{ innslag.id }}_results">
+				{% for person in personer %}
+					<li class="list-group-item action clickable" data-action="addExistingPerson" data-person-id="{{ person.id }}" data-filter="{{ person.fornavn }} {{ person.etternavn }} {{ person.mobil }}">
+						{{ person.fornavn }} {{ person.etternavn }} <small>{{ person.mobil }}</small>
+					</li>
+				{% else %}
+					<li class="list-group-item nonefound">Vi finner ingen personer for din mønstring</li>
+				{% endfor %}
+			</ol>
+			<br />
+			<p id="filter_persons_innslag_{{ innslag.id }}_notInList">
+				Ligger ikke personen i listen? <a href="#" data-action="showNewPerson" data-target="filter_persons_innslag_{{ innslag.id }}_create" class="action">Legg til ny person.</a>
+			</p>
+		</div>
+			
+		
+		<div id="filter_persons_innslag_{{ innslag.id }}_create" style="display:none">
+			<div class="col-xs-12">
+				<h4 style="margin-bottom: 0px;">
+					<span id="filter_persons_innslag_{{ innslag.id }}_noResults">Fant ingen personer. </span>
+					Opprett ny person
+				</h4>
+				<p>Røde felt (merket *) er obligatoriske!</p>
+			</div>
+			
+			<div class="col-xs-12 col-sm-6 col-lg-4">
+				<div class="form-group text-danger">
+					<label for="fornavn">Fornavn *</label>
+					<input name="fornavn" type="text" class="form-control" value="{{ person.fornavn }}" id="fornavn" required />
+				</div>
+				<div class="form-group text-danger">
+					<label for="etternavn">Etternavn *</label>
+					<input name="etternavn" type="text" class="form-control" value="{{ person.etternavn }}" id="etternavn" required />
+				</div>
+				
+				<div class="form-group text-danger">
+					<label>Mobil *</label>
+					<input name="mobil" type="tel" class="form-control" value="{{ person.mobil }}" id="mobil" required />
+				</div>
+			</div>
+		
+			
+			<div class="col-xs-12 col-sm-6 col-lg-4">
+				<div class="form-group text-danger">
+					<label for="rolle">Rolle / funksjon / instrument *</label>
+					<input name="rolle" type="text" class="form-control" value="{{ person.rolle }}" required />
+				</div>
+	
+				<div class="form-group text-danger">
+					<label for="alder">Alder *</label>
+					<select name="alder" class="form-control" required>
+						<option value="false" {{ (person.alder_tall < 25) and (person.alder_tall > 9) and (person.alder_tall != '25+') ? '' : 'selected' }} disabled="disabled">Velg alder</option> 
+						{% for i in 10..25 %}
+							<option value="{{ i }}" {{ person.alder_tall == i ? 'selected' : '' }}>{{ i }} år</option> 
+						{% endfor %}
+						<option value="0"{{ person.alder_tall == '25+' or person.alder_tall >= 25 ? 'selected' : '' }}>Over 25 år</option>
+					</select>
+				</div>
+
+				{% if monstring.erFellesmonstring %}
+					<div class="form-group text-danger">
+						<label for="kommune">Kommune/bydel *</label>
+						<select name="kommune" class="form-control" required>
+							{% for id, navn in monstring.kommuner %}
+								<option value="{{ id }}" {{person.kommune_id == id ? 'selected="selected"':''}}>{{ navn }}</option>
+							{% endfor %}
+						</select>
+					</div>
+				{% else %}
+					{% for id, navn in monstring.kommuner %}
+						<input type="text" name="kommune" value="{{ id }}" />
+					{% endfor %}
+				{% endif %}
+	
+				<div class="form-group">
+					<label>E-post</label>
+					<input name="epost" type="text" class="form-control" value="{{ person.epost }}" />
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+	<p>&nbsp;</p>
+
+
+	
+	<div class="clearfix"></div>
+	<button type="submit" class="action btn btn-success" data-action="save">Lagre</button>
+	&nbsp; &nbsp; eller 
+	<a href="#innslag_{{ innslag_id }}" class="innslagResetAndReloadBody" data-innslag-id="{{ innslag_id }}">avbryt</a>
+	
+	<div class="clearfix"></div>
+</form>

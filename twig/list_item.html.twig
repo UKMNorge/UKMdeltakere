@@ -1,0 +1,9 @@
+<li id="innslag_{{ innslag.getId() }}" class="list-group-item innslag" data-innslag-id="{{ innslag.getId() }}" data-innslag-type="{{ innslag.getType().getKey() }}" data-filter="{{ innslag.getNavn() }} {% for person in innslag.getPersoner().getAll() %}{{ person.getFornavn() }} {{ person.getEtternavn() }} {% endfor %}{% if innslag.getType().harTitler() %}{% for tittel in innslag.getTitler( monstring ).getAll() %}{{ tittel.getTittel() }} {% endfor %}{% endif %} {{ innslag.getKontaktperson().getFornavn() }} {{ innslag.getKontaktperson().getEtternavn() }}">
+	<div class="header clickable row">
+		{% embed "js/innslag_header.html.twig" with {'gotObjects': true} %}{% endembed %}
+	</div>
+	<div class="body" data-load-state="false" style="display:none;">
+		Vennligst vent
+	</div>
+	<div class="clearfix"></div>
+</li>
