@@ -135,7 +135,7 @@
 			{% else %}
 				{# TODO: Bytt til hidden når debug er done #}
 				{% for id, navn in monstring.kommuner %}
-					<input type="text" name="kommune" value="{{ id }}" />
+					<input type="hidden" name="kommune" value="{{ id }}" />
 				{% endfor %}
 			{% endif %}
 		</div>

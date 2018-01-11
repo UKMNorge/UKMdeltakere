@@ -27,8 +27,7 @@
 			{% else %}
 				<div class="form-group">
 					{% for id, navn in monstring.kommuner %}
-						<label>DEBUG: kommune</label>
-						<input type="test" name="kommune" value="{{ id }}" />
+						<input type="hidden" name="kommune" value="{{ id }}" />
 					{% endfor %}
 				</div>
 			{% endif %}

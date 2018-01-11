@@ -51,7 +51,7 @@
 				</div>
 			{% else %}
 				{% for id, navn in monstring.kommuner %}
-					DEBUG: Kommune<input type="text" name="kommune" value="{{ id }}" />
+					<input type="hidden" name="kommune" value="{{ id }}" />
 				{% endfor %}
 			{% endif %}
 		

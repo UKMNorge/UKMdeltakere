@@ -35,8 +35,7 @@
 				</div>
 			{% else %}
 				{# TODO: Bytt til hidden når debug er done #}
-				<label for="kommune">DEBUG: Kommune/bydel *</label>
-				<input type="text" name="kommune" value="{{ innslag.kommune_id }}" />
+				<input type="hidden" name="kommune" value="{{ innslag.kommune_id }}" />
 			{% endif %}
 
 			{% if 1 == innslag.type.id %}
