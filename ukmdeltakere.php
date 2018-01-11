@@ -9,6 +9,7 @@ Author URI: http://www.ukm.no
 */
 
 add_action( 'wp_ajax_UKMdeltakere_ajax', 'UKMdeltakere_ajax' );
+add_action('network_admin_menu', 'UKMdeltakere_network_menu');
 
 if( is_admin() && in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
 	require_once('UKM/inc/twig-js.inc.php');
@@ -128,5 +129,26 @@ function UKMdeltakere() {
 	echo TWIG( 'list_'. $TWIGdata['tab_active']. '.html.twig', $TWIGdata, dirname(__FILE__), true);
 	echo TWIGjs_simple( dirname(__FILE__) );
 
+}
+
+function UKMdeltakere_network_menu() {
+	$page = add_menu_page(
+		'Deltakere', 
+		'Deltakere', 
+		'superadmin', 
+		'UKMdeltakere_network_search',
+		'UKMdeltakere_network_search', 
+		'//ico.ukm.no/people-menu.png',
+		24
+	);
+	add_action( 'admin_print_styles-' . $page, 	'UKMdeltakere_scriptsandstyles' );
+
+}
+function UKMdeltakere_network_search() {
+	$TWIGdata = [];
+	
+	require_once('controller/network/search.controller.php');
+
+	echo TWIG( 'network/search.html.twig', $TWIGdata, dirname(__FILE__), true);
 }
 ?>
