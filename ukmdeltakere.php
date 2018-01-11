@@ -73,14 +73,14 @@ function UKMdeltakere_ajax() {
 }
 
 function convert_array_to_utf8($mixed) {
-    if (is_array($mixed)) {
-        foreach ($mixed as $key => $value) {
-            $mixed[$key] = convert_array_to_utf8($value);
-        }
-    } else if (is_string ($mixed)) {
-        return utf8_encode($mixed);
-    }
-    return $mixed;
+		if (is_array($mixed)) {
+		foreach ($mixed as $key => $value) {
+			$mixed[$key] = convert_array_to_utf8($value);
+		}
+	} else if (is_string ($mixed)) {
+		return utf8_encode($mixed);
+	}
+	return $mixed;
 }
 
 function UKMdeltakere_dash_shortcut( $shortcuts ) {	
