@@ -18,28 +18,43 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 		$operand = '=';
 	}
 
-	$query = person_v2::getLoadQry(); // SELECT * FROM `smartukm_participant`
+	if( $_POST['type'] == 'innslag' ) {
+		$key = 'innslag';
+		$query = innslag_v2::getLoadQuery(); 
 	
-	
-	
-	switch( $_POST['type'] ) {
-		default:
-			$query .= "
-			WHERE `p_firstname` $operand '#search'
-			   OR `p_lastname` $operand '#search'";
-			if( is_numeric( $_POST['search'] ) ) {
+		$query .= " WHERE `smartukm_band`.`b_name` $operand '#search'";
+	} else {
+		$key = 'personer';
+		$query = person_v2::getLoadQuery(); // SELECT * FROM `smartukm_participant`
+		switch( $_POST['type'] ) {
+			default:
 				$query .= "
-					OR `p_phone` $operand '#search'";
-			}
+				WHERE `p_firstname` $operand '#search'
+				   OR `p_lastname` $operand '#search'";
+				if( is_numeric( $_POST['search'] ) ) {
+					$query .= "
+						OR `p_phone` $operand '#search'";
+				}
+		}
 	}
 	$sql = new SQL( $query, ['search' => utf8_decode( $_POST['search'] ) ] );
 	$res = $sql->run();
 	
-#	echo $sql->debug();
+	#echo $sql->debug();
 	
 	while( $row = mysql_fetch_assoc( $res ) ) {
-		$person = new person_v2( $row );
+		switch( $key ) {
+			case 'personer':
+				$objekt = new person_v2( $row );
+				break;
+			case 'innslag':
+				$objekt = new innslag_v2( $row );
+				break;
+			default:
+				throw new Exception('Kan ikke søke etter innslag av type '. $key );
+		}
 	
-		$TWIGdata['results']['personer'][] = $person;
+		$TWIGdata['results'][$key][] = $objekt;
 	}
+	$TWIGdata['searchtable'] = $key;
 }

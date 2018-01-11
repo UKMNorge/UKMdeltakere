@@ -6,11 +6,15 @@
 		<div class="form-group">
 			<label for="type">Velg felt å søke i</label>
 			<select name="type" class="form-control">
-				<option {{ search is defined and search.type == 'alle' ? 'selected="selected"' }} value="alle">Alle felt</option>
-				<option {{ search is defined and search.type == 'fornavn' ? 'selected="selected"' }} value="fornavn" disabled="disabled">Fornavn</option>
-				<option {{ search is defined and search.type == 'etternavn' ? 'selected="selected"' }} value="etternavn" disabled="disabled">Etternavn</option>
-				<option {{ search is defined and search.type == 'mobil' ? 'selected="selected"' }} value="mobil" disabled="disabled">Mobil</option>
-				{#<option {{ search is defined and search.type == 'innslag' ? 'selected="selected"' }} value="innslag" disabled="disabled">Innslag</option>#}
+				<optgroup label="Innslag">
+					<option {{ search is defined and search.type == 'innslag' ? 'selected="selected"' }} value="innslag">Navn</option>
+				</optgroup>
+				<optgroup label="Person">
+					<option {{ search is defined and search.type == 'alle' ? 'selected="selected"' }} value="alle">Alle felt</option>
+					<option {{ search is defined and search.type == 'fornavn' ? 'selected="selected"' }} value="fornavn" disabled="disabled">Fornavn</option>
+					<option {{ search is defined and search.type == 'etternavn' ? 'selected="selected"' }} value="etternavn" disabled="disabled">Etternavn</option>
+					<option {{ search is defined and search.type == 'mobil' ? 'selected="selected"' }} value="mobil" disabled="disabled">Mobil</option>
+				</optgroup>
 			</select>
 		</div>
 
@@ -25,7 +29,7 @@
 		</div>
 	</form>
 
-	{% if results is defined %}
+	{% if results.personer is defined %}
 		<h2>Søkeresultat i personer <span class="badge">{{ results.personer|length }}</span></h2>
 		
 		<ol class="list-group">
@@ -52,9 +56,41 @@
 				</li>
 			{% endfor %}
 		</ol>
-
 	{% endif %}
 
+	{% if results.innslag is defined %}
+		<h2>Søkeresultat i innslag <span class="badge">{{ results.innslag|length }}</span></h2>
+		
+		<ol class="list-group">
+			{% for innslag in results.innslag %}
+				<li class="list-group-item">
+					<div style="width: 50%; float:right; text-align: right">
+						{{ innslag.getKommune() }}, {{ innslag.getFylke() }}
+						<br />
+						<small>
+						{% for person in innslag.getPersoner().getAll() %}
+							{{ person.getNavn() }}, 
+						{% endfor %}
+						</small>
+					</div>
+
+					<div style="width: 50%">
+						<b>{{ innslag.getNavn() }}</b>
+						<br />
+						{{  innslag.getKontaktperson().getNavn() }} {{ innslag.getKontaktperson().getMobil() }}
+					</div>
+					
+					
+					<div class="clearfix"></div>
+				</li>
+			{% else %}
+				<li class="list-group-item">
+					Ingen resultat!
+				</li>
+			{% endfor %}
+		</ol>
+
+	{% endif %}
 
 
 </div>
