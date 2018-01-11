@@ -32,7 +32,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 					OR `p_phone` $operand '#search'";
 			}
 	}
-	$sql = new SQL( $query, ['search' => $_POST['search']] );
+	$sql = new SQL( $query, ['search' => utf8_decode( $_POST['search'] ) ] );
 	$res = $sql->run();
 	
 #	echo $sql->debug();
