@@ -10,7 +10,7 @@ $person = new write_person( $_POST['object_id'] );
 $innslag = new write_innslag( $_POST['innslag'] );
 
 // We hope...
-$fodselsdato = mktime(0,0,0,0,1,1, (int)date("Y") - (int)$DATA['alder']);
+$fodselsdato = mktime(0,0,0,1,1, (int)date("Y") - (int)$DATA['alder']);
 
 ### Sett person-data på person-objektet.
 $person->setFornavn( $DATA['fornavn'] );
