@@ -120,12 +120,12 @@ function UKMdeltakere() {
 	
 	require_once('controller/layout.controller.php');
 
-/*
+
 	if( get_option('site_type') != 'kommune' ) {
 		echo TWIG( 'sorry.html.twig', $TWIGdata, dirname(__FILE__), true);
 		return;	
 	}
-*/
+
 	require_once('controller/list_'. $TWIGdata['tab_active'] .'.controller.php' );
 	
 	echo TWIG( 'list_'. $TWIGdata['tab_active']. '.html.twig', $TWIGdata, dirname(__FILE__), true);
