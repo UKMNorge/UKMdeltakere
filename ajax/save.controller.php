@@ -77,25 +77,13 @@ switch( $_POST['doSave'] ) {
 		require_once( plugin_dir_path( __FILE__ ). '../save/innslag_tittellos.save.php');
 		break;
 	case 'musikkTittel':
-		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_musikk.save.php');
-		break;
 	case 'dansTittel':
-		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_dans.save.php');
-		break;
 	case 'teaterTittel':
-		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_teater.save.php');
-		break;
 	case 'litteraturTittel':
-		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_litteratur.save.php');
-		break;
 	case 'sceneTittel':
-		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_scene.save.php');
-		break;
 	case 'filmTittel':
-		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_film.save.php');
-		break;
 	case 'utstillingTittel':
-		require_once( plugin_dir_path( __FILE__ ). '../save/tittel_utstilling.save.php');
+		require_once( plugin_dir_path( __FILE__ ). '../save/tittel.save.php');
 		break;
 	default:
 		throw new Exception("NOT IMPLEMENTED!");
