@@ -40,6 +40,10 @@
 				<br />
 			{% endif %}
 			<label>Beskrivelse: </label> {{ innslag.beskrivelse }}
+			{% if innslag.type.harTekniskeBehov %}
+				<br />
+				<label>Tekniske behov: </label> {{ innslag.tekniske_behov }}
+			{% endif %}
 		</p>
 		<a href="#innslag_{{ innslag_id }}" class="actionEdit btn btn-block btn-primary btn-outline">Rediger informasjon</a>
 

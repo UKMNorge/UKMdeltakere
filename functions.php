@@ -35,6 +35,7 @@ function data_innslag( $innslag, $monstring ) {
 	$data->kategori		= $innslag->getKategori();
 	$data->sjanger		= $innslag->getSjanger();
 	$data->status		= $innslag->getStatus();
+	$data->tekniske_behov= $innslag->getTekniskeBehov();
 	
 	$data->subscription	= $innslag->getSubscriptionTime();
 	$data->avmeldbar	= $innslag->erAvmeldbar();
@@ -45,6 +46,7 @@ function data_innslag( $innslag, $monstring ) {
 	$data->type->key 	= $innslag->getType()->getKey();
 	$data->type->navn 	= $innslag->getType()->getNavn();
 	$data->type->harTitler = $innslag->getType()->harTitler();
+	$data->type->harTekniskeBehov = $innslag->getType()->harTekniskeBehov();
 	
 	$data->advarsler = [];
 	$data->harPersonAdvarsler = false;

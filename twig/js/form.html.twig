@@ -22,6 +22,7 @@
 				<label>Beskrivelse</label>
 				<textarea name="beskrivelse" class="form-control">{{ innslag.beskrivelse }}</textarea>
 			</div>
+			
 		</div>
 		<div class="col-xs-12 col-sm-6 col-lg-4">
 			{% if monstring.erFellesmonstring %}
@@ -44,6 +45,13 @@
 					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ innslag.kategori }}" />
 				</div>
 			{% endif %}
+			{% if innslag.type.harTekniskeBehov %}
+				<div class="form-group">
+					<label>Tekniske behov</label>
+					<textarea name="tekniske_behov" class="form-control">{{ innslag.tekniske_behov }}</textarea>
+				</div>
+			{% endif %}
+
 		</div>
 	</div>
 

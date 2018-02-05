@@ -13,6 +13,10 @@ $innslag->setNavn( $DATA['navn'] );
 if(isset($DATA['sjanger'])) {
 	$innslag->setSjanger( $DATA['sjanger'] );
 }
+
+if( isset($DATA['tekniske_behov'] ) ) {
+	$innslag->setTekniskeBehov( $DATA['tekniske_behov'] );
+}
 $innslag->setBeskrivelse( $DATA['beskrivelse'] );
 $innslag->setKommune( $DATA['kommune'] );
 
