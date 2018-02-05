@@ -8,21 +8,15 @@ require_once('UKM/write_innslag.class.php');
 require_once('UKM/write_monstring.class.php');
 require_once('UKM/monstringer.collection.php');
 
+$monstring = new write_monstring( get_option('pl_id') );
 $innslag = new write_innslag( $_POST['innslag'] );
 
 $person = write_person::create($DATA['fornavn'], $DATA['etternavn'], $DATA['mobil'], write_person::fodselsdatoFraAlder($DATA['alder']), $DATA['kommune']);
-$innslag->getPersoner()->leggTil($person);
+$innslag->getPersoner()->leggTil($person, $monstring);
 
 // VIDERESEND AUTOMATISK TIL AKTIVT NIVÅ HVIS FYLKE ELLER LAND
 if( get_option('site_type') == 'fylke' || get_option('site_type') == 'land' ) {
-	$monstring_w_til = new write_monstring( get_option('pl_id') );
-	if( get_option('site_type') == 'fylke' ) {
-		$monstring_fra = monstringer_v2::kommune( $innslag->getKommune(), $monstring_w_til->getSesong() );
-	} elseif( get_option('site_type') == 'land' ) {
-		$monstring_fra = monstringer_v2::fylke( $innslag->getFylke(), $monstring_w_til->getSesong() );
-	}
-	$monstring_w_fra = new write_monstring( $monstring_fra->getId() );
-	
+	$monstring_w_til = new write_monstring( get_option('pl_id') );	
 	$innslag->getPersoner()->videresend($person, $monstring_w_til, $monstring_w_fra);
 }
 

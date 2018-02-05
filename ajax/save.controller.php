@@ -64,6 +64,12 @@ switch( $_POST['doSave'] ) {
 	case 'person':
 		require_once( plugin_dir_path( __FILE__ ). '../save/person.save.php' );
 		break;
+	case 'tittelForward':
+		require_once( plugin_dir_path( __FILE__ ). '../save/tittelForward.save.php' );
+		break;
+	case 'tittelUnforward':
+		require_once( plugin_dir_path( __FILE__ ). '../save/tittelUnforward.save.php' );
+		break;
 	case 'contact':
 	    require_once( plugin_dir_path( __FILE__ ). '../save/contact.save.php' );
 	    break;

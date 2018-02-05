@@ -11,10 +11,16 @@ if( $innslag->getType()->harTitler() ) {
 	
 	// TITLER OG VARIGHET
 	$JSON->innslag->titler = [];
-	$titler = $innslag->getTitler( $monstring )->getAll();
+	$titler = $innslag->getTitler( $monstring )->getAllInkludertIkkeVideresendt();
 	if( is_array( $titler ) ) {
 		foreach( $titler as $tittel ) {
-			$JSON->innslag->titler[] = data_tittel( $tittel );
+			$tmp = data_tittel( $tittel );
+			if( $monstring->getType() == 'kommune' ) {
+				$tmp->videresendt = true;
+			} else {
+				$tmp->videresendt = $tittel->erVideresendt( $monstring->getId() );
+			}
+			$JSON->innslag->titler[] = $tmp;
 		}
 	}
 	$JSON->innslag->varighet 	= $innslag->getTitler( $monstring )->getVarighet();

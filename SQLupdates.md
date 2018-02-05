@@ -31,4 +31,13 @@ VALUES
 	(114,'fjernet','kommune','text','smartukm_rel_pl_k|delete',1),
 	(115,'avlyste','mønstringen','text','smartukm_rel_pl|delete',0);
 
+	(319,'meldte av','innslaget fra','int','smartukm_forward_band|delete',1),
+	(318,'meldte på','innslaget til','int','smartukm_forward_band|insert',1),
+	(413,'meldte på','tittelen til','int','forward_person|insert',1),
+	(414,'meldte av','tittelen fra','int','forward_person|delete',1),
+	(518,'meldte på','tittelen til','int','forward_title|insert',1),
+	(519,'meldte av','tittelen fra','int','forward_title|delete',1);	
+	(219,'la til','innslag i forestilling','int','concert|add',1),
+	(220,'fjernet','innslag fra forestilling','int','concert|remove',1);
+
 ```

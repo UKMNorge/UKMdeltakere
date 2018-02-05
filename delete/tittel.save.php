@@ -1,5 +1,6 @@
 <?php
 
+require_once('UKM/write_monstring.class.php');
 require_once('UKM/write_innslag.class.php');
 require_once('UKM/write_tittel.class.php');
 require_once('UKM/titler.collection.php'); 

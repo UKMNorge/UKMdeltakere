@@ -81,6 +81,9 @@ function data_monstring( $monstring ) {
 	$data->navn				= $monstring->getNavn();
 	$data->erFellesmonstring= $monstring->erFellesmonstring();
 	$data->kommuner			= $monstring->getKommuner()->getKeyValArray();
+	$data->fylke			= new stdClass();
+	$data->fylke->id		= $monstring->getFylke()->getId();
+	$data->fylke->navn		= $monstring->getFylke()->getNavn();
 	
 	return $data;
 }

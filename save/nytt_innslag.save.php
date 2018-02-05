@@ -1,8 +1,9 @@
 <?php
-
+require_once('UKM/write_monstring.class.php');
 require_once('UKM/write_innslag.class.php');
+
 // Aktiv mønstring
-$monstring = new monstring_v2( get_option('pl_id') );
+$monstring = new write_monstring( get_option('pl_id') );
 
 // Opprett eller velg kontaktperson
 if(null == $DATA['kontakt']) {
@@ -43,7 +44,7 @@ $innslag->setStatus(8);
 // Legg til kontaktperson og håndter evt feilmelding
 // For tittel-innslag hvor kontaktpersonen deltar, eller tittelløse innslag (hvor kontaktpersonen alltid deltar)
 if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
-	if( !$innslag->getPersoner()->leggTil( $kontaktperson ) ) {
+	if( !$innslag->getPersoner()->leggTil( $kontaktperson, $monstring ) ) {
 		$innslag->save(); 		// Lagre innslaget før feilmelding, sånn at sjanger og beskrivelse ikke forsvinner.
 		throw new Exception("Klarte ikke å legge til kontaktpersonen i innslaget!");
 	}
@@ -61,6 +62,7 @@ else {
 	} 
 	else {
 		// UKM Media eller arrangør:
+		// TODO: sjekk denne
 		// STYGG HACK: DATA BURDE SENDE MED ARRAYET.
 		$funksjoner = array();
 		$mulige = $innslag->getType()->getFunksjoner();
@@ -79,17 +81,6 @@ $innslag->save();
 // Hvis vi legger til innslaget på fylkesmønstring - videresend det!
 if( $monstring->getType() == 'fylke' ) {
 	$monstring->getInnslag()->leggTil( $innslag );
-	
-	$monstring_w_til = new write_monstring( get_option('pl_id') );
-	if( get_option('site_type') == 'fylke' ) {
-		$monstring_fra = monstringer_v2::kommune( $kommune, $monstring_w_til->getSesong() );
-	} elseif( get_option('site_type') == 'land' ) {
-		$monstring_fra = monstringer_v2::fylke( $kommune->getFylke(), $monstring_w_til->getSesong() );
-	}
-	$monstring_w_fra = new write_monstring( $monstring_fra->getId() );
-
-	
-	$innslag->getPersoner()->videresend( $kontaktperson );
 }
 
 $JSON->innslag_id = $innslag->getId();
