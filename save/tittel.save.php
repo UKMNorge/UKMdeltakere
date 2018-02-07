@@ -66,8 +66,11 @@ switch( $innslag->getType()->getKey() ) {
 
 write_tittel::save( $tittel );
 
-
-// Skal alltid videresende til "min" mønstring, ikke festivalen e.l.
-// da dette er leggTil, ikke videresending.
-throw new Exception('TODO: legg til tittel i innslaget');
-$innslag->getTitler()->leggTil( $tittel );
+/**
+ * En tittel vil alltid være lagt til på lokalnivå, så
+ * leggTil kjøres kun for mønstringer hvor titler må være videresendt.
+**/
+if( $monstring->getType() != 'kommune' ) {
+	$innslag->getTitler()->leggTil( $tittel );
+	write_innslag::saveTitler( $innslag );
+}

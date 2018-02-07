@@ -3,10 +3,11 @@
 require_once('UKM/write_innslag.class.php');
 require_once('UKM/forestilling.class.php');
 
-$innslag = new write_innslag($_POST['innslag']);
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
 $forestilling = $monstring->getProgram()->get( $DATA['event'] );
 try {
 	$forestilling->getInnslag()->leggTil( $innslag );
+	write_innslag::saveProgram();
 } catch( Exception $e ) {
 	switch( (int) $e->getCode() ) {
 		case 1:

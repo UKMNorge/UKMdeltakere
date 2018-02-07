@@ -5,9 +5,14 @@ require_once('UKM/write_innslag.class.php');
 require_once('UKM/write_tittel.class.php');
 require_once('UKM/titler.collection.php'); 
 
-$innslag = new write_innslag($_POST['innslag']);
-$monstring = new write_monstring(get_option('pl_id'));
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
 
+$tittel = $innslag->getTitler()->get( $_POST['object_id'] );
+
+$innslag->getTitler()->fjern( $tittel );
+
+write_innslag::saveTitler( $innslag );
+/*
 switch($innslag->getType()->getKey()) {
 	case 'musikk':
 	case 'scene':
@@ -28,3 +33,4 @@ switch($innslag->getType()->getKey()) {
 	default:
 		throw new Exception("Tittel-save: Kan kun fjerne titler for scene, video eller utstilling, ikke ". $innslag->getType()->getKey());
 }
+*/

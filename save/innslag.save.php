@@ -7,7 +7,7 @@ if( empty($DATA['navn']) || empty($_POST['innslag']) || empty($DATA['kommune']) 
 	throw new Exception("Innslag.save: Mangler noe data!");
 }
 
-$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
 
 $innslag->setNavn( $DATA['navn'] );
 if(isset($DATA['sjanger'])) {

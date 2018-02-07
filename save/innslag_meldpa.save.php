@@ -7,8 +7,9 @@ if( empty($_POST['innslag']) ) {
 	throw new Exception("Innslag.save: Mangler noe data!");
 }
 
-$innslag = new write_innslag( $_POST['innslag'] );
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
 $innslag->setStatus( 8 );
-$innslag->save();
+
+write_innslag::saveStatus( $innslag );
 
 $JSON->redirect = '?page=UKMdeltakere&list=fullstendig&edit='. $_POST['innslag'] .'#innslag_'. $_POST['innslag'];
