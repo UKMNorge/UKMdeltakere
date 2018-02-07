@@ -221,7 +221,7 @@
 	});*/
 
 	/**
-	 * innslag.renderBody
+	 * innslag.renderNewForm
 	**/
 	jQuery(document).on('innslag.renderNewForm', function(e, body, server_response ) {
 		if( undefined == server_response.view || null == server_response.view ) {
@@ -377,7 +377,7 @@
 				jQuery(document).trigger('innslag.resetBody', response.innslag_id );
 			}
 			else if( response.success ) {
-				jQuery(document).trigger('innslag.renderBody', [response])
+				jQuery(document).trigger('innslag.renderBody', [response]);
 			}
 			else {
 				alert('Beklager, klarte ikke å hente informasjon fra server!');
