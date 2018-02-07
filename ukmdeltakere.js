@@ -546,7 +546,13 @@
 	 * Vis rolle-spørsmål for kontaktperson
 	**/
 	jQuery(document).on('kontaktperson.valgt', function(e, innslag_id){
-		jQuery('.kontaktpersonRolleValg').slideDown();
+		var innslag = jQuery('#innslag_'+ innslag_id );
+
+		jQuery('.kontaktpersonRolleValg').slideDown(function() {
+			jQuery('.kontaktpersonRolleValg').find('input').focus();
+			jQuery(window).scrollTop( innslag.offset().top );
+		});
+
 	});
 	/**
 	 * Skjul rolle-spørsmål for kontaktperson
