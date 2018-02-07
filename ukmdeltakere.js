@@ -307,7 +307,10 @@
 		}
 		
 		var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
-		jQuery('#innslag_'+ server_response.innslag_id).find('.body').attr('data-load-state','true').html( rendered );
+		var innslag = jQuery('#innslag_'+ server_response.innslag_id);
+		innslag.find('.body').attr('data-load-state','true').html( rendered );
+		jQuery(window).scrollTop( (innslag.offset().top - 90) );
+		//console.info( 'Scroll to '+ (innslag.offset().top - 90) );
 		jQuery(document).trigger('loadedView.'+ server_response.twigJS );
 	});	
 	
