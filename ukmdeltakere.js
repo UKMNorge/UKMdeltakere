@@ -454,9 +454,10 @@
 					// Hvis dette var en avmeldingsforespørsel som gikk i orden, skjul hele elementet fra listen
 					if( null != response.meldtAv ) {
 						jQuery('#innslag_'+ response.innslag_id).slideUp();
+					} else {
+						jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true] );
+						jQuery(document).trigger('innslag.reloadHeader', [response.innslag_id]);
 					}
-					jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true] );
-					jQuery(document).trigger('innslag.reloadHeader', [response.innslag_id]);
 				}
 			}
 			else {
