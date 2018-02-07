@@ -4,14 +4,17 @@ require_once('UKM/write_tittel.class.php');
 require_once('UKM/write_innslag.class.php');
 require_once('UKM/write_monstring.class.php');
 
-$innslag = new write_innslag($_POST['innslag']);
-$monstring = new write_monstring( get_option('pl_id') );
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
+
 
 // Skal vi lagre en ny tittel?
 if(null == $DATA['tittel_id']) {
 	$DATA['tittel_id'] = write_tittel::create( $innslag );
 }
-$tittel = new write_tittel( $DATA['tittel_id'], $innslag->getType()->getTabell() );
+// Last inn tittel-objekt fra innslaget
+$tittel = $innslag->getTitler()->get( $DATA['tittel_id'] );
+
+// SETT DATA
 $tittel->setTittel($DATA['tittel']);
 
 switch( $innslag->getType()->getKey() ) {
@@ -61,8 +64,10 @@ switch( $innslag->getType()->getKey() ) {
 		throw new Exception('Kunne ikke sette tittel-egenskaper for ukjent type tittel ('. $innslag->getType()->getKey() .')');
 }
 
-$tittel->save();
+write_tittel::save( $tittel );
+
 
 // Skal alltid videresende til "min" mønstring, ikke festivalen e.l.
 // da dette er leggTil, ikke videresending.
-$innslag->getTitler( $monstring )->leggTil( $tittel, $monstring );
+throw new Exception('TODO: legg til tittel i innslaget');
+$innslag->getTitler()->leggTil( $tittel );

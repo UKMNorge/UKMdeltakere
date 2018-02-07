@@ -1,14 +1,12 @@
 <?php
-/*
- * Bytter kontaktperson på et innslag. 
- *
- *
- */
+
+/**
+ * BYTTER KONTAKTPERSON FOR GITT INNSLAG
+**/
+
 require_once('UKM/write_innslag.class.php');
-require_once('UKM/write_person.class.php');
 
-$innslag = new write_innslag( $_POST['innslag'] );
-$person = new write_person( (int)$DATA['person'] );
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
+$innslag->setKontaktperson( new person_v2( (int)$DATA['person'] ) );
 
-$innslag->setKontaktperson( $person );
-$innslag->save();
+write_innslag::save( $innslag );
