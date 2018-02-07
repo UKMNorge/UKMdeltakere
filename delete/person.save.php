@@ -7,4 +7,4 @@ $monstring = new write_monstring( get_option('pl_id') );
 $innslag = new write_innslag( $_POST['innslag'] );
 $person = new write_person( $_POST['object_id']);
 
-$res = $innslag->getPersoner()->fjern($person, $monstring);
+$res = $innslag->getPersoner()->fjern($person);

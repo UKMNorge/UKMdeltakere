@@ -22,8 +22,6 @@ $innslag = new write_innslag($_POST['innslag']);
 $person = $innslag->getKontaktperson(); // Vi får en write_person fra write_innslag.
 $person->setFornavn( $DATA['fornavn'] );
 $person->setEtternavn( $DATA['etternavn'] );
-#var_dump($DATA['alder']);
-#var_dump( write_person::fodselsdatoFraAlder( $DATA['alder'] ) );
 $person->setFodselsdato( write_person::fodselsdatoFraAlder( $DATA['alder'] ) );
 $person->setMobil( $DATA['mobil'] );
 $person->setEpost( $DATA['epost'] );

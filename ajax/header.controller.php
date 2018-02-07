@@ -1,12 +1,6 @@
 <?php
 
 $JSON->twigJS = 'innslagheader';
-require_once('UKM/person.class.php');
-// Innslag og mønstring er allerede definert her.
-#$innslag = new innslag_v2( $_POST['innslag_id'] );
-#$monstring = new monstring_v2( get_option('pl_id') );
-#$JSON->innslag = data_innslag( $innslag, $monstring);
-#$JSON->innslag_id = $innslag->getId();
 
 // Hvis det er oppretting av innslag vil innslag være lik null
 if( is_object( $innslag ) ) {
@@ -23,7 +17,7 @@ if( is_object( $innslag ) ) {
 	$JSON->innslag->kommune = $innslag->getKommune()->getNavn();
 	
 	if( $innslag->getType()->harTitler() ) {
-		foreach( $innslag->getTitler( $monstring )->getAll() as $tittel ) {
+		foreach( $innslag->getTitler()->getAll() as $tittel ) {
 			$data[] = $tittel->getTittel();
 		}
 	} 
@@ -42,16 +36,16 @@ if( is_object( $innslag ) ) {
 		$JSON->innslag_personer_antall = $innslag->getPersoner()->getAntall();
 		
 		if( 'utstilling' == $innslag->getType()->getKey() ) {
-			$JSON->titler_antall = $innslag->getTitler( $monstring )->getAntall();
+			$JSON->titler_antall = $innslag->getTitler()->getAntall();
 		} else {
-			$JSON->titler_varighet = $innslag->getTitler( $monstring )->getVarighet()->getHumanShort();
+			$JSON->titler_varighet = $innslag->getTitler()->getVarighet()->getHumanShort();
 		}
 		
-		$JSON->innslag_advarsel_personer_har = $innslag->getAdvarsler( $monstring )->har('personer');
-		$JSON->innslag_advarsel_titler_har = $innslag->getAdvarsler( $monstring )->har('titler');
+		$JSON->innslag_advarsel_personer_har = $innslag->getAdvarsler()->har('personer');
+		$JSON->innslag_advarsel_titler_har = $innslag->getAdvarsler()->har('titler');
 		$JSON->advarsler_personer = [];
 		$JSON->advarsler_titler = [];
-		foreach( $innslag->getAdvarsler( $monstring )->getAll() as $advarsel ) {
+		foreach( $innslag->getAdvarsler()->getAll() as $advarsel ) {
 			if( $advarsel->getKategori() == 'personer' ) {
 				$JSON->advarsler_personer[] = $advarsel;
 			}

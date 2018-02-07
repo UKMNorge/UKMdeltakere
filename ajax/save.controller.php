@@ -4,7 +4,6 @@ global $current_user;
 get_currentuserinfo();  
 
 require_once('UKM/logger.class.php'); 
-
 UKMlogger::setID( 'wordpress', $current_user->ID, get_option('pl_id') );
 
 

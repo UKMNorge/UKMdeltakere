@@ -27,7 +27,7 @@ function data_tittel( $tittel ) {
 /**
  * Lag et TWIGjs-objekt av et innslag
  */
-function data_innslag( $innslag, $monstring ) {
+function data_innslag( $innslag ) {
 	$data = new stdClass();
 	$data->id	 		= $innslag->getId();
 	$data->navn			= $innslag->getNavn();
@@ -50,7 +50,7 @@ function data_innslag( $innslag, $monstring ) {
 	
 	$data->advarsler = [];
 	$data->harPersonAdvarsler = false;
-	foreach( $innslag->getAdvarsler( $monstring ) as $advarsel ) {
+	foreach( $innslag->getAdvarsler() as $advarsel ) {
 		$data->advarsler[] = data_advarsel( $advarsel );
 		if ($advarsel->kategori == 'personer') {
 			$data->harPersonAdvarsler = true;
@@ -58,8 +58,8 @@ function data_innslag( $innslag, $monstring ) {
 	}
 	
 	if( $innslag->getType()->harTitler() ) {
-		$data->varighet		= $innslag->getTitler( $monstring )->getVarighet();
-		$data->varighet_human= $innslag->getTitler( $monstring )->getVarighet()->getHumanShort();
+		$data->varighet		= $innslag->getTitler()->getVarighet();
+		$data->varighet_human= $innslag->getTitler()->getVarighet()->getHumanShort();
 	} 
 	
 	$data->hendelser	= [];
