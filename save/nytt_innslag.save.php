@@ -88,8 +88,7 @@ if( $kontaktpersonSomDeltaker ) {
 // Hvis vi legger til innslaget på fylkesmønstring - videresend det!
 if( $monstring->getType() == 'fylke' ) {
 	$monstring->getInnslag()->leggTil( $innslag );
-	throw new Exception('Videresending må implementeres');
-	write_monstring::leggTil( $innslag );
+	write_innslag::leggTil( $innslag );
 }
 
 $JSON->innslag_id = $innslag->getId();

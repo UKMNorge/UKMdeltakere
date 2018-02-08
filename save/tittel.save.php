@@ -72,5 +72,5 @@ write_tittel::save( $tittel );
 **/
 if( $monstring->getType() != 'kommune' ) {
 	$innslag->getTitler()->leggTil( $tittel );
-	write_innslag::saveTitler( $innslag );
+	write_tittel::leggTil( $tittel );
 }
