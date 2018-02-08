@@ -35,16 +35,16 @@
 	<div class="col-xs-12 col-sm-6 col-lg-4">
 		<div class="form-group text-danger">
 			<label for="fornavn">Fornavn *</label>
-			<input name="fornavn" type="text" class="form-control" value="{{ person.fornavn }}" required />
+			<input name="fornavn" type="text" class="form-control" required />
 		</div>
 		<div class="form-group text-danger">
 			<label for="etternavn">Etternavn *</label>
-			<input name="etternavn" type="text" class="form-control" value="{{ person.etternavn }}" required />
+			<input name="etternavn" type="text" class="form-control" required />
 		</div>
 		
 		<div class="form-group text-danger">
 			<label>Mobil *</label>
-			<input name="mobil" type="tel" class="form-control" value="{{ person.mobil }}" required />
+			<input name="mobil" type="tel" class="form-control" required />
 		</div>
 	</div>
 
@@ -52,17 +52,17 @@
 	<div class="col-xs-12 col-sm-6 col-lg-4">
 		<div class="form-group text-danger">
 			<label for="rolle">Rolle / funksjon / instrument *</label>
-			<input name="rolle" type="text" class="form-control" value="{{ person.rolle }}" required />
+			<input name="rolle" type="text" class="form-control" required />
 		</div>
 
 		<div class="form-group text-danger">
 			<label for="alder">Alder *</label>
 			<select name="alder" class="form-control" required>
-				<option value="false" {{ (person.alder_tall < 25) and (person.alder_tall > 9) and (person.alder_tall != '25+') ? '' : 'selected' }} disabled="disabled">Velg alder</option> 
+				<option value="false" selected="selected" disabled="disabled">Velg alder</option> 
 				{% for i in 10..25 %}
-					<option value="{{ i }}" {{ person.alder_tall == i ? 'selected' : '' }}>{{ i }} år</option> 
+					<option value="{{ i }}">{{ i }} år</option> 
 				{% endfor %}
-				<option value="0"{{ person.alder_tall == '25+' or person.alder_tall >= 25 ? 'selected' : '' }}>Over 25 år</option>
+				<option value="0">Over 25 år</option>
 			</select>
 		</div>
 
@@ -81,9 +81,11 @@
 			{% endfor %}
 		{% endif %}
 
+
+
 		<div class="form-group">
 			<label>E-post</label>
-			<input name="epost" type="text" class="form-control" value="{{ person.epost }}" />
+			<input name="epost" type="text" class="form-control" />
 		</div>
 	</div>
 
