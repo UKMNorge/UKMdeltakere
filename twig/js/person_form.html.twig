@@ -66,17 +66,19 @@
 			</select>
 		</div>
 
-		{% if monstring.erFellesmonstring %}
+		{% if monstring.kommuner|length > 1  %}
 			<div class="form-group text-danger">
 				<label for="kommune">Kommune/bydel *</label>
 				<select name="kommune" class="form-control" required>
 					{% for id, navn in monstring.kommuner %}
-						<option value="{{ id }}" {{person.kommune_id == id ? 'selected="selected"':''}}>{{ navn }}</option>
+						<option value="{{ id }}">{{ navn }}</option>
 					{% endfor %}
 				</select>
 			</div>
 		{% else %}
-			<input type="text" name="kommune" value="{{ person.kommune_id }}" />
+			{% for id, navn in monstring.kommuner %}
+				<input type="hidden" name="kommune" value="{{ id }}" />
+			{% endfor %}
 		{% endif %}
 
 		<div class="form-group">

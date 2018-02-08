@@ -25,20 +25,19 @@
 			
 		</div>
 		<div class="col-xs-12 col-sm-6 col-lg-4">
-			{% if monstring.erFellesmonstring %}
+			{% if monstring.kommuner|length > 1  %}
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
 						{% for id, navn in monstring.kommuner %}
-							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ navn }}</option>
+							<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected="selected"' : '' }}>{{ navn }}</option>
 						{% endfor %}
 					</select>
 				</div>
 			{% else %}
-				{# TODO: Bytt til hidden når debug er done #}
 				<input type="hidden" name="kommune" value="{{ innslag.kommune_id }}" />
 			{% endif %}
-
+			
 			{% if 1 == innslag.type.id %}
 				<div class="form-group">
 					<label for="kategori">Kategori</label>

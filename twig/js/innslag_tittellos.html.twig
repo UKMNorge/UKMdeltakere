@@ -12,7 +12,7 @@
 		<input type="hidden" name="type" value="{{ innslag_type }}" />
 
 		<div class="col-xs-12 col-sm-6 col-lg-4">
-			{% if monstring.erFellesmonstring %}
+			{% if monstring.kommuner|length > 1  %}
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>

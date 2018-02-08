@@ -40,7 +40,7 @@
 				<input name="epost" type="text" class="form-control" value="{{ person.epost }}" />
 			</div>
 			
-			{% if monstring.erFellesmonstring %}
+			{% if monstring.kommuner|length > 1  %}
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
@@ -50,9 +50,7 @@
 					</select>
 				</div>
 			{% else %}
-				{% for id, navn in monstring.kommuner %}
-					<input type="hidden" name="kommune" value="{{ id }}" />
-				{% endfor %}
+				<input type="hidden" name="kommune" value="{{ innslag.kommune_id }}" />
 			{% endif %}
 		
 		</div>

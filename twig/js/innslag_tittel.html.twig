@@ -15,7 +15,7 @@
 				<input type="text" class="form-control" required name="navn" />
 			</div>
 
-			{% if monstring.erFellesmonstring() or monstring.type == 'fylke' %}
+			{% if monstring.kommuner|length > 1  %}
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
@@ -25,11 +25,9 @@
 					</select>
 				</div>
 			{% else %}
-				<div class="form-group">
-					{% for id, navn in monstring.kommuner %}
-						<input type="hidden" name="kommune" value="{{ id }}" />
-					{% endfor %}
-				</div>
+				{% for id, navn in monstring.kommuner %}
+					<input type="hidden" name="kommune" value="{{ id }}" />
+				{% endfor %}
 			{% endif %}
 		
 			{# INFO-FELT #}
