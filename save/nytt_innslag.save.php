@@ -81,7 +81,7 @@ else {
 
 write_innslag::save( $innslag );
 write_person::save( $kontaktperson );
-if( $kontaktpersonSomDeltaker ) {
+if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
 	write_person::saveRolle( $kontaktperson );
 }
 
