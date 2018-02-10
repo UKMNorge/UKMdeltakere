@@ -5,8 +5,12 @@
 	{% set innslag_har_titler = innslag.getType().harTitler() %}
 	
 	{% if innslag_har_titler %}
-		{% set innslag_personer_antall = innslag.getPersoner().getAntall() %}
-
+		{% if monstring.getType() == 'kommune' %}
+			{% set innslag_personer_antall = innslag.getPersoner().getAntall() %}
+		{% else %}
+			{% set innslag_personer_antall = innslag.getPersoner().getAntallVideresendt() %}
+		{% endif %}
+		
 		{% if 'utstilling' == innslag_type %}
 			{% set titler_antall = innslag.getTitler( monstring ).getAll()|length %}
 		{% else %}

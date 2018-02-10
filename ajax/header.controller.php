@@ -33,8 +33,11 @@ if( is_object( $innslag ) ) {
 	$JSON->innslag_har_titler = $innslag->getType()->harTitler();
 	
 	if( $innslag->getType()->harTitler() ) {
-		$JSON->innslag_personer_antall = $innslag->getPersoner()->getAntall();
-		
+		if( $monstring->getType() == 'kommune' ) {
+			$JSON->innslag_personer_antall = $innslag->getPersoner()->getAntall();
+		} else {
+			$JSON->innslag_personer_antall = $innslag->getPersoner()->getAntallVideresendt();
+		}
 		if( 'utstilling' == $innslag->getType()->getKey() ) {
 			$JSON->titler_antall = $innslag->getTitler()->getAntall();
 		} else {
