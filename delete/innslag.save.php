@@ -6,9 +6,9 @@
 require_once('UKM/write_innslag.class.php');
 require_once('UKM/write_monstring.class.php');
 
-$innslag = new write_innslag($_POST['innslag']);
-$monstring = new write_monstring(get_option('pl_id'));
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
 $monstring->getInnslag()->fjern($innslag);
 
+write_innslag::fjern( $innslag );
 
 $JSON->meldtAv = true;

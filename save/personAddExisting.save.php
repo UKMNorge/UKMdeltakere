@@ -6,17 +6,10 @@ require_once('UKM/write_innslag.class.php');
 require_once('UKM/write_monstring.class.php');
 require_once('UKM/monstringer.collection.php');
 
-$monstring = new write_monstring( get_option('pl_id') );
-$innslag = new write_innslag( $_POST['innslag'] );
-$person = new write_person( $_POST['object_id'] );
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
+$person = new person_v2( $_POST['object_id'] );
+$person->setRolle( $DATA['rolle'] );
 
-// Vil automatisk videresende til riktig mønstring
-$innslag->getPersoner()->leggTil($person, $monstring);
-
-### Sett rolle / instrument på dette innslaget
-if(!$innslag->getType()->harTitler()) {
-	# TODO:
-	throw new Exception("PERSON_SAVE: Husk å lagre instrument_objekter for tittelløse innslag, og prettify instrument-verdier.");
-}
-$innslag->setRolle($person, $DATA['rolle']);
-$innslag->save();
+// Vil automatisk videresende til riktig mønstring og lagre rolle
+$innslag->getPersoner()->leggTil($person);
+write_innslag::savePersoner( $innslag );

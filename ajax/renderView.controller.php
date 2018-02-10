@@ -16,9 +16,9 @@ if( null == $JSON->innslag_id) {
 else {	
 	// Mer info om kontekst og innslag
 	if( is_numeric( $JSON->innslag_id ) ) {
-		$innslag = new innslag_v2( $JSON->innslag_id, true );
+		$innslag = $monstring->getInnslag()->get( $JSON->innslag_id, true );
 		// Mer info for retur
-		$JSON->innslag = data_innslag( $innslag, $monstring );
+		$JSON->innslag = data_innslag( $innslag );
 	} else {
 		$innslag = null;
 	}

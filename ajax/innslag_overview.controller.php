@@ -11,7 +11,7 @@ if( $innslag->getType()->harTitler() ) {
 	
 	// TITLER OG VARIGHET
 	$JSON->innslag->titler = [];
-	$titler = $innslag->getTitler( $monstring )->getAllInkludertIkkeVideresendt();
+	$titler = $innslag->getTitler()->getAllInkludertIkkeVideresendt();
 	if( is_array( $titler ) ) {
 		foreach( $titler as $tittel ) {
 			$tmp = data_tittel( $tittel );
@@ -23,12 +23,12 @@ if( $innslag->getType()->harTitler() ) {
 			$JSON->innslag->titler[] = $tmp;
 		}
 	}
-	$JSON->innslag->varighet 	= $innslag->getTitler( $monstring )->getVarighet();
+	$JSON->innslag->varighet 	= $innslag->getTitler()->getVarighet();
 	
 	// PERSONER I INNSLAGET
 	$JSON->innslag->personer 	= [];
 	$snittalder 		= 0;
-	foreach( $innslag->getPersoner()->getAll( $monstring ) as $person ) {
+	foreach( $innslag->getPersoner()->getAll() as $person ) {
 		$tmp 			= data_person( $person );
 		$tmp->rolle 	= $person->getRolle();
 		$snittalder 	+= ( ($tmp->alder_tall == '25+') ? 0 : $tmp->alder_tall );
@@ -47,9 +47,9 @@ if( $innslag->getType()->harTitler() ) {
 	$JSON->erfaring		= $innslag->getBeskrivelse();
 }
 // HENT UT PROGRAMMET FOR INNSLAGET PÅ DENNE MØNSTRINGEN
-foreach( $innslag->getProgram( $monstring )->getAllInkludertSkjulte() as $hendelse ) {
+foreach( $innslag->getProgram()->getAllInkludertSkjulte() as $hendelse ) {
 	$tmp 				= data_program( $hendelse );
-	$tmp->rekkefolge	= $innslag->getProgram( $monstring )->getRekkefolge( $hendelse );
+	$tmp->rekkefolge	= $innslag->getProgram()->getRekkefolge( $hendelse );
 	
 	$JSON->innslag->hendelser[ $hendelse->getId() ] = $tmp;
 }
@@ -70,14 +70,14 @@ if( 8 > $innslag->getStatus() ) {
 		// Navnesjekk
 		similar_text($innslag->getNavn(),$sammenlign_innslag->getNavn(), $likhet);
 		if($likhet > 60) {
-			$data = data_innslag( $sammenlign_innslag, $monstring );
+			$data = data_innslag( $sammenlign_innslag );
 			$data->grunnlag = 'det finnes et innslag med et navn som ligner f '. $likhet .'%';
 			$JSON->alle_lignende[ $sammenlign_innslag->getId() ] = $data;
 		}
 		
 		// Samme kontaktperson
 		if( $innslag->getKontaktpersonId() == $sammenlign_innslag->getKontaktpersonId() ) {
-			$data = data_innslag( $sammenlign_innslag, $monstring );
+			$data = data_innslag( $sammenlign_innslag );
 			$data->grunnlag = $innslag->getKontaktperson()->getFornavn() .' '. $innslag->getKontaktperson()->getEtternavn() .' er kontaktperson';
 			$JSON->alle_lignende[ $sammenlign_innslag->getId() ] = $data;
 		}
@@ -85,7 +85,7 @@ if( 8 > $innslag->getStatus() ) {
 		// Deltakere
 		foreach( $innslag->getPersoner()->getAll() as $deltaker ) {
 			if( $deltaker->getId() == $sammenlign_innslag->getKontaktperson()->getId() ) {
-			$data = data_innslag( $sammenlign_innslag, $monstring );
+			$data = data_innslag( $sammenlign_innslag );
 				$data->grunnlag = $person->getFornavn() .' '. $person->getEtternavn() .' er kontaktperson';
 				$JSON->alle_lignende[ $sammenlign_innslag->getId() ] = $data;
 			}

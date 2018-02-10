@@ -33,6 +33,7 @@ function UKMdeltakere_ajax() {
 		} catch( Exception $e ) {
 			$JSON->success = false;
 			$JSON->message = $e->getMessage();
+			$JSON->code = $e->getCode();
 		}
 	}
 

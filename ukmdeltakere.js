@@ -221,7 +221,7 @@
 	});*/
 
 	/**
-	 * innslag.renderBody
+	 * innslag.renderNewForm
 	**/
 	jQuery(document).on('innslag.renderNewForm', function(e, body, server_response ) {
 		if( undefined == server_response.view || null == server_response.view ) {
@@ -307,7 +307,10 @@
 		}
 		
 		var rendered = eval( 'twigJS_'+ server_response.twigJS + '.render( server_response )' );
-		jQuery('#innslag_'+ server_response.innslag_id).find('.body').attr('data-load-state','true').html( rendered );
+		var innslag = jQuery('#innslag_'+ server_response.innslag_id);
+		innslag.find('.body').attr('data-load-state','true').html( rendered );
+		jQuery(window).scrollTop( (innslag.offset().top - 90) );
+		//console.info( 'Scroll to '+ (innslag.offset().top - 90) );
 		jQuery(document).trigger('loadedView.'+ server_response.twigJS );
 	});	
 	
@@ -374,7 +377,7 @@
 				jQuery(document).trigger('innslag.resetBody', response.innslag_id );
 			}
 			else if( response.success ) {
-				jQuery(document).trigger('innslag.renderBody', [response])
+				jQuery(document).trigger('innslag.renderBody', [response]);
 			}
 			else {
 				alert('Beklager, klarte ikke å hente informasjon fra server!');
@@ -451,9 +454,10 @@
 					// Hvis dette var en avmeldingsforespørsel som gikk i orden, skjul hele elementet fra listen
 					if( null != response.meldtAv ) {
 						jQuery('#innslag_'+ response.innslag_id).slideUp();
+					} else {
+						jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true] );
+						jQuery(document).trigger('innslag.reloadHeader', [response.innslag_id]);
 					}
-					jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true] );
-					jQuery(document).trigger('innslag.reloadHeader', [response.innslag_id]);
 				}
 			}
 			else {
@@ -542,7 +546,13 @@
 	 * Vis rolle-spørsmål for kontaktperson
 	**/
 	jQuery(document).on('kontaktperson.valgt', function(e, innslag_id){
-		jQuery('.kontaktpersonRolleValg').slideDown();
+		var innslag = jQuery('#innslag_'+ innslag_id );
+
+		jQuery('.kontaktpersonRolleValg').slideDown(function() {
+			jQuery('.kontaktpersonRolleValg').find('input').focus();
+			jQuery(window).scrollTop( innslag.offset().top );
+		});
+
 	});
 	/**
 	 * Skjul rolle-spørsmål for kontaktperson

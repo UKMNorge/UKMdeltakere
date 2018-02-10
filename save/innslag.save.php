@@ -7,17 +7,16 @@ if( empty($DATA['navn']) || empty($_POST['innslag']) || empty($DATA['kommune']) 
 	throw new Exception("Innslag.save: Mangler noe data!");
 }
 
-$innslag = new write_innslag( $_POST['innslag'] );
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
 
 $innslag->setNavn( $DATA['navn'] );
 if(isset($DATA['sjanger'])) {
 	$innslag->setSjanger( $DATA['sjanger'] );
 }
-
 if( isset($DATA['tekniske_behov'] ) ) {
 	$innslag->setTekniskeBehov( $DATA['tekniske_behov'] );
 }
 $innslag->setBeskrivelse( $DATA['beskrivelse'] );
 $innslag->setKommune( $DATA['kommune'] );
 
-$innslag->save();
+write_innslag::save( $innslag );
