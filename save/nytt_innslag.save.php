@@ -87,8 +87,20 @@ if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
 
 // Hvis vi legger til innslaget på fylkesmønstring - videresend det!
 if( $monstring->getType() == 'fylke' ) {
+	// Videresend innslaget til fylket
 	$monstring->getInnslag()->leggTil( $innslag );
 	write_innslag::leggTil( $innslag );
+	
+	// Hent ut innslaget på nytt (ettersom personen er på lokalnivå vil vedkommende hentes av get())
+	$innslag_fylke = $monstring->getInnslag()->get( $innslag->getId() );
+	// Reset personerCollection for å nullstille context-objektet
+	$innslag_fylke->resetPersonerCollection();
+
+	// Legg til personen i collection
+	$kontaktperson_fylke = $innslag_fylke->getPersoner()->get( $kontaktperson->getId() );
+
+	// Legg til personen på fylkesnivå (litt knotete, men må gjøres for videresendingen)
+	write_person::leggTil( $kontaktperson_fylke );
 }
 
 $JSON->innslag_id = $innslag->getId();
