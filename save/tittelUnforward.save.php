@@ -10,4 +10,19 @@ $innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
 $tittel = $innslag->getTitler()->get( $_POST['object_id'] );
 
 $innslag->getTitler()->fjern( $tittel );
-write_tittel::fjern( $tittel );
+
+try {
+	write_tittel::fjern( $tittel );
+	/**
+	 * Prøv å reloade innslaget, for å se om det nå er fullstendig avmeldt.
+	 * (Som kan skje når man sletter siste tittel fra mønstringen.)
+	**/
+	$monstring->resetInnslagCollection();
+	$innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
+} catch( Exception $e  ) {
+	if( $e->getCode() == 2 ) {
+		$JSON->meldtAv = true;
+	} else {
+		throw $e;
+	}
+}
