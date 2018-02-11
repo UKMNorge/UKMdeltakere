@@ -52,7 +52,7 @@
 				{% if innslag_advarsel_personer_har %}
 					<span class="label label-outline label-warning" style="margin-left: 4px;">
 						{% for advarsel in advarsler_personer %}
-							{{ advarsel }}
+							{{ advarsel.melding is defined ? advarsel.melding : advarsel }}
 						{% endfor %}
 					</span>
 				{% endif %}
