@@ -3,7 +3,7 @@
 require_once('UKM/write_innslag.class.php');
 require_once('UKM/write_person.class.php');
 
-$innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
+$innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
 
 /** OPPDATER PERSONDATA **/
 $person = $innslag->getPersoner()->getSingle();
