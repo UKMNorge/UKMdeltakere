@@ -131,7 +131,7 @@
 		jQuery('.filter_personer').each(function() {
 			jQuery(this).fastLiveFilter(jQuery('#' + jQuery(this).attr('data-results')), {
 													callback: function(total, id) { 
-														console.log(id + ':TOTAL: '+ total);
+														//console.log(id + ':TOTAL: '+ total);
 														if( 0 == total ) {
 															jQuery(document).trigger('person.create.show', [id, true]);
 														} else {
@@ -337,7 +337,7 @@
 	 * innslag.renderHeader
 	**/
 	jQuery(document).on('innslag.renderHeader', function(e, innslag_id, server_response ) {
-		console.log( server_response );
+		//console.log( server_response );
 		var container = jQuery('#innslag_' + innslag_id);
 		var header = container.find(".header");
 		jQuery(header).html("<p>Vennligst vent...</p>");
@@ -497,7 +497,7 @@
 	jQuery(document).on('innslag.addKontaktperson', function(e, selected) {
 		var innslag = jQuery( selected ).parents("li.innslag");
 		var person = jQuery( selected );
-		console.log( innslag );
+		//console.log( innslag );
 		
 		// Sett verdier
 		innslag.find('.kontaktperson').val( person.attr('data-person-id') );
