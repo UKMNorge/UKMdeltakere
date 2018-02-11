@@ -32,8 +32,13 @@ switch( $innslag->getType()->getKey() ) {
 		break;
 	
 	case 'litteratur':
-		$tittel->setVarighet($DATA['lengde']); // I sekunder
-		$tittel->setLitteraturLesOpp("1" == $DATA['leseopp']); // true / false
+		$lese_opp = "1" == $DATA['leseopp'];
+		if( !$lese_opp ) {
+			$tittel->setVarighet( 0 );
+		} else {
+			$tittel->setVarighet($DATA['lengde']); // I sekunder
+		}
+		$tittel->setLitteraturLesOpp( $lese_opp ); // true / false
 		$tittel->setTekstAv($DATA['tekstforfatter']);
 		break;
 	
