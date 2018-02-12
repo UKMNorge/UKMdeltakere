@@ -48,8 +48,12 @@
 						{% endfor %}
 					</select>
 				</div>
-			{% else %}
+			{% elseif person.kommune_id is not empty %}
 				<input type="hidden" name="kommune" value="{{ person.kommune_id }}" />
+			{% else %}
+				{% for id, navn in monstring.kommuner %}
+					<input type="hidden" name="kommune" value="{{ id }}" />
+				{% endfor %}
 			{% endif %}
 
 			<div class="form-group">
