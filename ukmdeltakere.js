@@ -27,7 +27,7 @@
 	/* Knyttet til .action-knapper			   */
 	jQuery(document).on('click', '.action', function( e ) {
 		if( jQuery(this).attr('data-action') == undefined || jQuery(this).attr('data-action') == null ) {
-			console.warn('Could not find action (data-action attr missing');
+			//console.warn('Could not find action (data-action attr missing');
 			return true;
 		}
 		e.preventDefault();
@@ -103,7 +103,7 @@
 				jQuery(document).trigger('innslag.resetKontaktperson', jQuery(this).parents('li.innslag').attr('data-innslag-id'));
 				break;
 			case 'saveNyttInnslag':
-				console.error('DEVELOPER DEBUG: Denne skal nok ikke brukes (bruk save i stedet?)');
+				//console.error('DEVELOPER DEBUG: Denne skal nok ikke brukes (bruk save i stedet?)');
 				var type = jQuery(this).attr('data-type');
 				var form = jQuery("#nyttInnslagContainer_"+type);
 				jQuery(document).trigger('innslag.saveNew', form);
@@ -114,7 +114,7 @@
 				break;
 	
 			default:
-				console.warn('Unknown action '+ jQuery(this).attr('data-action') );
+				//console.warn('Unknown action '+ jQuery(this).attr('data-action') );
 				break;
 		}
 	});
@@ -155,7 +155,7 @@
 	});
 	
 	jQuery(document).on('person.create.show', function(e, id, noResults) {
-		console.info('person.create.show: '+ id);
+		//console.info('person.create.show: '+ id);
 		if( noResults ) {
 			jQuery('#'+ id +'_noResults').show();
 		}
@@ -190,7 +190,7 @@
 	});	
 	
 	jQuery(document).on('person.create.hide', function(e, id, noResults) {
-		console.info('person.create.hide: '+ id);
+		//console.info('person.create.hide: '+ id);
 		jQuery('#'+ id +'_noResults').hide();
 		jQuery('#'+ id +'_create').fadeOut();
 		jQuery('#'+ id +'_notInList').fadeIn();
@@ -531,7 +531,7 @@
 	 * Opprett en kontaktperson
 	**/
 	jQuery(document).on('innslag.createPerson', function(e, innslag_id) {
-		console.info('innslag.createPerson: '+ innslag_id)
+		//console.info('innslag.createPerson: '+ innslag_id)
 		var innslag = jQuery('#innslag_'+ innslag_id );
 
 		innslag.find('.searchPerson').slideUp();

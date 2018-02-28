@@ -77,11 +77,11 @@ jQuery(document).on('innslag.loadHeader', function(e, innslag_id) {
 		else {
 			alert('Beklager, klarte ikke å hente informasjon fra server!');
 			//jQuery(document).trigger('innslag.resetBody', response.innslag_id );
-			console.log( response );
+			//console.log( response );
 		}
 	}).error( function(error) { 
-		console.log("AJAX error: ");
-		console.log(error);
+		//console.log("AJAX error: ");
+		//console.log(error);
 	});
 });
 
@@ -119,11 +119,11 @@ jQuery(document).on('innslag.renderHeader', function(e, server_response ) {
 			var input = jQuery("#" + form.attr('id') + " #fornavn_sok").val();
 			// Er det mobilnummer eller navn vi søker på?
 			if( jQuery.isNumeric( input ) ) {
-				console.log('Numeric!');
+				//console.log('Numeric!');
 				jQuery("#"+ form.attr('id') + " #mobil").val(input);
 			}
 			else {
-				console.log('NotNum');
+				//console.log('NotNum');
 				var name = input.split(" ");
 				var first_name = '';
 				var last_name = '';
@@ -133,7 +133,7 @@ jQuery(document).on('innslag.renderHeader', function(e, server_response ) {
 					/*console.log("First name: "+first_name);
 					console.log("Lastname: "+last_name);*/
 				} else {
-					console.log("Math.floor(name.length/2)= "+Math.floor(name.length/2));
+					//console.log("Math.floor(name.length/2)= "+Math.floor(name.length/2));
 					first_name = name.splice(0, Math.floor(name.length/2)).join(" ");
 					last_name = name.splice(Math.floor(name.length/2), name.length).join(" ");
 					/*console.log("First name: "+first_name);
