@@ -40,8 +40,8 @@ foreach( $monstring->getInnslag()->getAllUfullstendige() as $innslag ) {
 }
 $JSON->personer = $personer;
 
-$fylker = [];
 if( $monstring->getType() == 'land' ) {
+	$JSON->fylker = [];
 	foreach( fylker::getAllInkludertFalske() as $fylke ) {
 		$data = new stdClass();
 		$data->id = $fylke->getId();
@@ -55,9 +55,8 @@ if( $monstring->getType() == 'land' ) {
 			$data->kommuner[] = $data_kommune;
 		}
 		
-		$fylker[] = $data;
+		$JSON->fylker[] = $data;
 	}
-	$JSON->fylker = $fylker;
 }
 
 
