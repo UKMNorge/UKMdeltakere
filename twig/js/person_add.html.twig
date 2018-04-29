@@ -74,7 +74,7 @@
 							{% for fylke in fylker %}
 								<optgroup label="{{ fylke.navn }}">
 									{% for kommune in fylke.kommuner %}
-										<option value="{{ kommune.id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ kommune.navn }}</option>
+										<option value="{{ kommune.id }}">{{ kommune.navn }}</option>
 									{% endfor %}
 								</optgroup>
 							{% endfor %}
