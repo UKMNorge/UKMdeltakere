@@ -29,8 +29,10 @@ if( is_object( $innslag ) ) {
 	
 	$JSON->innslag_navn = $innslag->getNavn();
 	$JSON->innslag_kommune = $innslag->getKommune()->getNavn();
+	$JSON->innslag_fylke = $innslag->getFylke()->getNavn();
 	$JSON->innslag_type = $innslag->getType()->getKey();
 	$JSON->innslag_har_titler = $innslag->getType()->harTitler();
+	$JSON->monstring_type = $monstring->getType();
 	
 	if( $innslag->getType()->harTitler() ) {
 		if( $monstring->getType() == 'kommune' ) {

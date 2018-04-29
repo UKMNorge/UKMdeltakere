@@ -1,8 +1,10 @@
 {% if gotObjects %}
 	{% set innslag_navn = innslag.getNavn() %}
 	{% set innslag_kommune = innslag.getKommune() %}
+	{% set innslag_fylke = innslag.getFylke() %}
 	{% set innslag_type = innslag.getType().getKey() %}
 	{% set innslag_har_titler = innslag.getType().harTitler() %}
+	{% set monstring_type = monstring.getType() %}
 	
 	{% if innslag_har_titler %}
 		{% if monstring.getType() == 'kommune' %}
@@ -91,5 +93,5 @@
 		{{ person_alder }}
 	{% endif %}
 	<br />
-	<small>{{ innslag_kommune }}</small>
+	<small>{% if monstring_type == 'land' %}{{ innslag_fylke }}{% else %}{{ innslag_kommune }}{% endif %}</small>
 </div>
