@@ -85,9 +85,33 @@ if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
 	write_person::saveRolle( $kontaktperson );
 }
 
-// Hvis vi legger til innslaget på fylkesmønstring - videresend det!
-if( $monstring->getType() == 'fylke' ) {
-	// Videresend innslaget til fylket
+// Hvis vi legger til innslaget på fylkesmønstring eller festival - videresend det!
+if( $monstring->getType() != 'kommune' ) {
+
+	// HVIS LAND, LEGG TIL PÅ FYLKESNIVÅ FØRST
+	if( $monstring->getType() == 'land' ) {
+		require_once('UKM/monstringer.collection.php');
+		$monstring_fylke = monstringer_v2::fylke( $innslag->getFylke(), $monstring->getSesong() );
+		// Videresend innslaget til nåværende mønstring
+		$monstring_fylke->getInnslag()->leggTil( $innslag );
+		write_innslag::leggTil( $innslag );
+		
+		if( $kontaktpersonSomDeltaker ) {
+			// Hent ut innslaget på nytt (ettersom personen er på lokalnivå vil vedkommende hentes av get())
+			$innslag_fylke = $monstring_fylke->getInnslag()->get( $innslag->getId() );
+			// Reset personerCollection for å nullstille context-objektet
+			$innslag_fylke->resetPersonerCollection();
+			// Legg til personen i collection
+			$kontaktperson_fylke = $innslag_fylke->getPersoner()->get( $kontaktperson->getId() );
+			// Legg til personen på fylkesnivå (litt knotete, men må gjøres for videresendingen)
+			write_person::leggTil( $kontaktperson_fylke );
+		}
+	}
+	
+	// HVIS LAND: VIDERESEND FRA FYLKE TIL LAND
+	// HVIS FYLKE: VIDERESEND FRA KOMMUNE TIL LAND
+	
+	// Videresend innslaget til nåværende mønstring
 	$monstring->getInnslag()->leggTil( $innslag );
 	write_innslag::leggTil( $innslag );
 	
@@ -98,7 +122,7 @@ if( $monstring->getType() == 'fylke' ) {
 		$innslag_fylke->resetPersonerCollection();
 		// Legg til personen i collection
 		$kontaktperson_fylke = $innslag_fylke->getPersoner()->get( $kontaktperson->getId() );
-		// Legg til personen på fylkesnivå (litt knotete, men må gjøres for videresendingen)
+		// Legg til personen på fylke-/landsnivå (litt knotete, men må gjøres for videresendingen)
 		write_person::leggTil( $kontaktperson_fylke );
 	}
 }

@@ -15,7 +15,21 @@
 				<input type="text" class="form-control" required name="navn" />
 			</div>
 
-			{% if monstring.kommuner|length > 1  %}
+			{% if monstring.type == 'land' %}
+				<div class="form-group text-danger">
+					<label for="kommune">Kommune/bydel *</label>
+					<select name="kommune" class="form-control" required>
+						<option value="0" selected="selected" disabled="disabled">Velg kommune / bydel</option>
+						{% for fylke in fylker %}
+							<optgroup label="{{ fylke.navn }}">
+								{% for kommune in fylke.kommuner %}
+									<option value="{{ kommune.id }}" {{ innslag.kommune_id == id ? 'selected' : '' }}>{{ kommune.navn }}</option>
+								{% endfor %}
+							</optgroup>
+						{% endfor %}
+					</select>
+				</div>
+			{% elseif monstring.kommuner|length > 1  %}
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
