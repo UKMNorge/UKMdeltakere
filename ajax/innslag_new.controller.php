@@ -77,6 +77,7 @@ switch( $type ) {
 		break;
 	case 'nettredaksjon':
 	case 'arrangor':
+	case 'ressurs':
 		$JSON->twigJS = 'innslagtittellos';
 		$iType = innslag_typer::getByName($type);
 		$funksjoner = $iType->getFunksjoner();
