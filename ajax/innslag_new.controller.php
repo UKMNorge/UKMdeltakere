@@ -22,7 +22,7 @@ if( $monstring->getType() != 'land' ) {
 	$res = $sql->run();
 
 	if( $res ) {
-		while( $row = mysql_fetch_assoc( $res ) ) {
+		while( $row = SQL::fetch( $res ) ) {
 			$personer[ $row['p_id'] ] = data_person( new person_v2( $row ) );
 		}
 	}
