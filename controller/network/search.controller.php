@@ -42,7 +42,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 	
 	#echo $sql->debug();
 	
-	while( $row = mysql_fetch_assoc( $res ) ) {
+	while( $row = SQL::fetch( $res ) ) {
 		switch( $key ) {
 			case 'personer':
 				$objekt = new person_v2( $row );
