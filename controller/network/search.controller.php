@@ -37,7 +37,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				}
 		}
 	}
-	$sql = new SQL( $query, ['search' => utf8_decode( $_POST['search'] ) ] );
+	$sql = new SQL( $query, ['search' => $_POST['search'] ] );
 	$res = $sql->run();
 	
 	#echo $sql->debug();
