@@ -15,6 +15,7 @@ if( is_admin() && in_array( get_option('site_type'), array('kommune','fylke','la
 	require_once('UKM/inc/twig-js.inc.php');
 
 	add_action('UKM_admin_menu', 'UKMdeltakere_menu',200);
+	add_filter('UKM_admin_menu_conditions', 'UKMdeltakere_menu_conditions');
 	add_action('UKMWPDASH_shortcuts', 'UKMdeltakere_dash_shortcut', 30);
 }
 
@@ -92,6 +93,12 @@ function UKMdeltakere_dash_shortcut( $shortcuts ) {
 	$shortcuts[] = $shortcut;
 	
 	return $shortcuts;
+}
+
+function UKMdeltakere_menu_conditions( $_CONDITIONS ) {
+	return array_merge( $_CONDITIONS, 
+		['UKMdeltakere' => 'monstring_er_registrert']
+	);
 }
 
 ## CREATE A MENU
