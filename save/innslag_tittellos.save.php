@@ -14,7 +14,7 @@ $person->setMobil( $DATA['mobil'] );
 $person->setEpost( $DATA['epost'] );
 
 // UKM Media eller arrangør:
-if( in_array($innslag->getType()->getKey(), array('nettredaksjon', 'arrangor') ) ) {
+if( $innslag->getType()->harFunksjoner() ) {
 	$funksjoner = array();
 	$mulige = $innslag->getType()->getFunksjoner();
 	foreach($_POST['formData'] as $element) {

@@ -29,40 +29,42 @@ function data_tittel( $tittel ) {
  */
 function data_innslag( $innslag ) {
 	$data = new stdClass();
-	$data->id	 		= $innslag->getId();
-	$data->navn			= $innslag->getNavn();
-	$data->beskrivelse	= $innslag->getBeskrivelse();
-	$data->kategori		= $innslag->getKategori();
-	$data->sjanger		= $innslag->getSjanger();
-	$data->status		= $innslag->getStatus();
-	$data->tekniske_behov= $innslag->getTekniskeBehov();
+	$data->id				 			= $innslag->getId();
+	$data->navn							= $innslag->getNavn();
+	$data->beskrivelse					= $innslag->getBeskrivelse();
+	$data->kategori						= $innslag->getKategori();
+	$data->sjanger						= $innslag->getSjanger();
+	$data->status						= $innslag->getStatus();
+	$data->tekniske_behov				= $innslag->getTekniskeBehov();
 	
-	$data->subscription	= $innslag->getSubscriptionTime();
-	$data->avmeldbar	= $innslag->erAvmeldbar();
-	$data->avmeldlas	= $innslag->getAvmeldbar();
+	$data->subscription					= $innslag->getSubscriptionTime();
+	$data->avmeldbar					= $innslag->erAvmeldbar();
+	$data->avmeldlas					= $innslag->getAvmeldbar();
 	
-	$data->type			= new stdClass();
-	$data->type->id 	= $innslag->getType()->getId();
-	$data->type->key 	= $innslag->getType()->getKey();
-	$data->type->navn 	= $innslag->getType()->getNavn();
-	$data->type->harTitler = $innslag->getType()->harTitler();
-	$data->type->harTekniskeBehov = $innslag->getType()->harTekniskeBehov();
+	$data->type							= new stdClass();
+	$data->type->id		 				= $innslag->getType()->getId();
+	$data->type->key 					= $innslag->getType()->getKey();
+	$data->type->navn	 				= $innslag->getType()->getNavn();
+	$data->type->harTitler				= $innslag->getType()->harTitler();
+	$data->type->harTekniskeBehov		= $innslag->getType()->harTekniskeBehov();
+	$data->type->harFunksjoner			= $innslag->getType()->harFunksjoner();
+	$data->type->funksjoner				= $innslag->getType()->getFunksjoner();
 	
-	$data->advarsler = [];
-	$data->harPersonAdvarsler = false;
+	$data->advarsler	 				= [];
+	$data->harPersonAdvarsler	 		= false;
 	foreach( $innslag->getAdvarsler() as $advarsel ) {
-		$data->advarsler[] = data_advarsel( $advarsel );
+		$data->advarsler[] 				= data_advarsel( $advarsel );
 		if ($advarsel->kategori == 'personer') {
-			$data->harPersonAdvarsler = true;
+			$data->harPersonAdvarsler	= true;
 		}
 	}
 	
 	if( $innslag->getType()->harTitler() ) {
-		$data->varighet		= $innslag->getTitler()->getVarighet();
-		$data->varighet_human= $innslag->getTitler()->getVarighet()->getHumanShort();
+		$data->varighet					= $innslag->getTitler()->getVarighet();
+		$data->varighet_human			= $innslag->getTitler()->getVarighet()->getHumanShort();
 	} 
 	
-	$data->hendelser	= [];
+	$data->hendelser					= [];
 	
 	return $data;
 }

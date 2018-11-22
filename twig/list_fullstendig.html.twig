@@ -2,10 +2,10 @@
 
 {% block content %}
 	<div class="row">
-		{% for type_innslag in monstring.getInnslagTyper() %}
+		{% for type_innslag in monstring.getInnslagTyper( true ) %}
 			<div class="innslagBlock col-xs-12">
 				<div class="innslagTypeHeader">
-					<a href="#" class="action pull-right btn btn-xs btn-success" data-action="nyttInnslag" data-type="{{ type_innslag.getKey() }}" id="add-new-{{ type_innslag.getKey() }}">Legg til nytt innslag</a>
+					<a href="#" class="action pull-right btn btn-xs btn-success" data-action="nyttInnslag" data-type="{{ type_innslag.getKey() }}" id="add-new-{{ type_innslag.getKey() }}">Legg til {{ type_innslag.harTitler() ? 'nytt innslag' : 'ny person' }}</a>
 					
 					<img src="{{ type_innslag.getIcon() }}" height="45" />
 					<h3>{{ type_innslag }}</h3>
