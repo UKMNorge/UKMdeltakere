@@ -22,7 +22,7 @@ require_once('UKM/samtykke/person.class.php');
 $context = context::createSesong( SEASON );
 $alle_innslag = new innslag_collection( $context );
 
-#$count = 0;
+$count = 0;
 echo '<h1>Lets go for '. SEASON .'</h1>';
 foreach( $alle_innslag->getAll() as $innslag ) {
     echo '<h2>'. $innslag->getNavn() .'</h2>';
