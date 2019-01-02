@@ -21,3 +21,5 @@ $data = $cache->load(
     'ukmid.en.yml',
     'https://raw.githubusercontent.com/UKMNorge/UKMdelta/master/src/UKMNorge/DeltaBundle/Resources/translations/ukmid.en.yml'
 );
+
+echo 'done';
