@@ -8,6 +8,8 @@ Version: 2.0
 Author URI: http://www.ukm.no
 */
 
+define('PATH_PLUGIN_UKMDELTAKERE', dirname(__FILE__).'/' );
+
 add_action( 'wp_ajax_UKMdeltakere_ajax', 'UKMdeltakere_ajax' );
 add_action('network_admin_menu', 'UKMdeltakere_network_menu');
 
