@@ -1,0 +1,190 @@
+<div style="width: 95%">
+    <h2>
+        Personvern
+    </h2>
+
+    <p class="lead">
+        Alle deltakere får informasjon om personvern og datalagring ved påmelding, 
+        og kan si at UKM ikke skal ta bilder/film av de.
+        Her har du full oversikt over dine deltakeres status.
+    </p>
+
+    {% if message is defined %}
+        <div class="clearfix"></div>
+        <div class="alert alert-{{ message.level }}">
+            {% if message.header is defined %}
+                <h4>{{ message.header|raw }}</h4>
+            {% endif %}
+            {{ message.body|raw }}
+            
+            {% if message.code is defined %}
+                <br />		
+                <small>{{ message.code }}</small>
+            {% endif %}
+        </div>
+        <div class="clearfix"></div>
+    {% endif %}
+
+    <ol class="list-group">
+        <li class="list-group-item">
+            <b>Film- og foto-reservasjon <span class="badge badge-warning" style="background-color: #f89406;">Det eneste du må følge opp</span></b>
+            <br />
+            Alle deltakere får muligheten til å reservere seg mot å bli tatt bilde av 
+            eller filmet. I listen nedenfor kan du se hvem dette gjelder, men vi anbefaler
+            at du bruker rapporten 
+            <a href="admin.php?page=UKMrapport_admin&rapport=filmogfoto&kat=personer">film- og fotorettigheter</a>.
+        </li>
+
+        <li class="list-group-item">
+            <b>Ingen deltakere skal nektes å delta på UKM</b><br />
+            Personer under 15 år bes om å oppgi kontaktinformasjon til foreldre/foresatte,
+            men dette er ikke påkrevd for UKM-deltakelse.
+        </li>
+
+        <li class="list-group-item">
+            <b>Lær mer om personvern og GDPR</b>
+            <br />
+            I vårt 
+            <a href="https://personvern.{{ UKM_HOSTNAME }}" target="_blank">personvern-senter</a>
+            kan du lese mer om hvordan vi håndterer GDPR og deltakernes personvern.
+        </li>
+
+        <li class="list-group-item">
+            <b>Opplasting av film og foto</b>
+            <br />
+            Ved opplasting av film og foto vil innslag hvor én eller flere personer
+            ikke ønsker å bli fotografert/filmet merkes tydelig med rød tekst.
+        </li>
+
+        <li class="list-group-item">
+            <b>Følgende informasjon-status er mulig</b>
+            <br />
+            - <code>Ikke sendt</code>: Vi har ikke sendt sms enda. Dette gjøres automatisk hver dag.
+            <br />
+            - <code>Ikke sett</code>: Personen har fått sms, men ikke åpnet lenken.
+            <br />
+            - <code>Ikke svart</code>: Personen har åpnet lenken, men ikke trykket "greit" eller "ønsker ikke å bli fotografert/filmet".
+            <br />
+            - <code>Ikke godtatt</code>: Personen ønsker ikke å bli fotografert/filmet.
+            <br />
+            - <code>Godtatt</code>: Alt er ok!
+        </li>
+
+        <li class="list-group-item">
+            <b>Tekst som sendes til deltakerne per sms</b>
+            <br />
+            - <code>Under 15 år</code>: {{ sms_u15 }}
+            <br />
+            - <code>15 år eller eldre</code>: {{ sms_15o }}
+        </li>
+    </ol>
+
+
+    {#<a href="?page={{GET('page')}}&action=sendtoall" class="btn btn-warning">Send til alle som ikke har fått tidligere</a> #}
+    <h2 style="margin-top: 2em;">Status for dine påmeldte</h2>
+    {% for gruppe in personer %}
+        <h3>{{ gruppe.getNavn() }}</h3>
+        <p>
+            <b>{{ gruppe.getKrav() }}</b>
+        </p>
+        <div class="clearfix"></div>
+        <table class="table table-striped " style="margin: .5em 0em 4em 2em; width: Calc(100% - 2em); ">
+            <thead>
+                <tr>
+                    <th width="*%">Person</th>
+                    <th width="50">Alder</th>
+                    <th width="30%">Status</th>
+                    <th width="200">Handlinger</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for person in gruppe.personer %}
+                    <tr>
+                        <td>
+                            {{ person.getNavn() }}
+                            <small>({{ person.getPerson().getFylke() }})</small>
+                            {% if person.harForesatt() %}
+                                <br />
+                                <small>
+                                    Foresatt: {{ person.getForesatt().getNavn() }} ({{ person.getForesatt().getMobil() }})
+                                </small>
+                            {% endif %}
+                        </td>
+                        
+                        
+                        <td>{{ person.getAlder() }}</td>
+                        
+                        
+                        {% if person.getKategori().getId() == 'u13' %}
+                            <td>
+                                Foresatt: <i class="label label-{{ person.getForesatt().getStatus().getLevel() }}">{{ person.getForesatt().getStatus() }}</i>
+                                <br />
+                                Deltaker: <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
+                            </td>
+                        {% elseif (person.getKategori().getId() == 'u15' and person.harForesatt()) or person.harForesatt() %}
+                            <td class="text-{{ person.getStatus().getLevel() }}">
+                                Deltaker: <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
+                                <br />
+                                Foresatt: <i class="label label-{{ person.getForesatt().getStatus().getLevel() }}">{{ person.getForesatt().getStatus() }}</i>
+                            </td>
+                        {% else %}
+                            <td class="tetx-{{ person.getStatus().getLevel() }}">
+                                <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
+                            </td>
+                        {% endif %}
+                        
+                        
+                        <td>
+                            {# Vi har aldri sendt sms til deltakeren #}
+                            {% if person.getStatus().getId() == 'ikke_sendt' %}
+                                <a href="?page={{GET('page')}}&action=samtykke&id={{person.getId()}}" class="btn btn-success btn-sm btn-xs btn-mini">
+                                    Send samtykke-sms
+                                </a>
+                            {% endif %}
+
+                            {# Deltaker har ikke trykket på lenken #}
+                            {% if person.getStatus().getId() not in ['godkjent','ikke_godkjent','ikke_sendt'] %}
+                                <a href="?page={{GET('page')}}&action=purring&id={{person.getId()}}" class="btn btn-primary btn-sm btn-xs btn-mini">
+                                    Send purring
+                                </a>
+                                {% if person.getKommunikasjon().har('purring') %}
+                                    <br />
+                                    <small>
+                                        Purret {{ person.getPerson().getFornavn() }} 
+                                        {{ person.getKommunikasjon().get('purring').getTimestamp() }}
+                                    </small>
+                                {% endif %}
+                            {% endif %}
+
+                            {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
+                            {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() == 'ikke_sendt' %}
+                                <a href="?page={{GET('page')}}&action=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-success btn-sm btn-xs btn-mini">
+                                    Send informasjon til foresatt
+                                </a>
+                            {% endif %}
+                            
+                            {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
+                            {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() not in ['ikke_sendt','godkjent','ikke_godkjent'] %}
+                                <a href="?page={{GET('page')}}&action=purring&foresatt=true&id={{person.getId()}}" class="btn btn-primary btn-sm btn-xs btn-mini">
+                                    Send purring til foresatt
+                                </a>
+                                {% if person.getKommunikasjon().har('purring_foresatt') %}
+                                    <br />
+                                    <small>
+                                        Purret {{ person.getForesatt().getNavn() }} 
+                                        {{ person.getKommunikasjon().get('purring_foresatt').getTimestamp() }}
+                                    </small>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Ingen deltakere som er {{ gruppe.getNavn()|lower }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

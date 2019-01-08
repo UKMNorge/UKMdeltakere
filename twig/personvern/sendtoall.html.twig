@@ -1,0 +1,22 @@
+<h2>Utsending av samtykke til deltakere</h2>
+
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Person</th>
+			<th>Alder</th>
+			<th>Melding</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		{% for person in personer %}
+			<tr>
+				<td>{{ person.getNavn() }}</td>
+				<td>{{ person.getAlder() }}</td>
+				<td>{{ person.getAttr('melding') }}</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

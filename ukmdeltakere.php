@@ -105,10 +105,32 @@ function UKMdeltakere_menu_conditions( $_CONDITIONS ) {
 
 ## CREATE A MENU
 function UKMdeltakere_menu() {
-	global $UKMN;
-	UKM_add_menu_page('monstring','Deltakere', 'Deltakere', 'editor', 'UKMdeltakere', 'UKMdeltakere', '//ico.ukm.no/people-menu.png',5);
+    // Deltakere-menyen
+    UKM_add_menu_page(
+        'monstring',
+        'Deltakere', 
+        'Deltakere', 
+        'editor', 
+        'UKMdeltakere', 
+        'UKMdeltakere', 
+        '//ico.ukm.no/people-menu.png',
+        5
+    );
+
+    // Personvern-menyen
+    UKM_add_menu_page(
+        'monstring',
+        'Personvern', 
+        'Personvern',
+        'editor',
+        'UKMdeltakere_personvern',
+        'UKMdeltakere_personvern',
+        '//ico.ukm.no/toy-ninja-menu.png',
+        20
+    );
 
 	UKM_add_scripts_and_styles('UKMdeltakere', 'UKMdeltakere_scriptsandstyles' );
+	UKM_add_scripts_and_styles('UKMdeltakere_personvern', 'UKMdeltakere_scriptsandstyles_basic' );
 }
 ## INCLUDE SCRIPTS
 function UKMdeltakere_scriptsandstyles() {
@@ -118,7 +140,11 @@ function UKMdeltakere_scriptsandstyles() {
 	wp_enqueue_script('UKMDELTA_tittelJS', WP_PLUGIN_URL . '/UKMdeltakere/DELTA_tittel.js' );
 	
 	wp_enqueue_script('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.js' );
-	wp_enqueue_style('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.css' );
+    wp_enqueue_style('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.css' );
+    UKMdeltakere_scriptsandstyles_basic();
+} 
+
+function UKMdeltakere_scriptsandstyles_basic() {
 	wp_enqueue_script('WPbootstrap3_js');
 	wp_enqueue_style('WPbootstrap3_css');
 	wp_enqueue_style('WPbootstrap3_outlinebtn');
@@ -155,5 +181,30 @@ function UKMdeltakere_network_search() {
 	require_once('controller/network/search.controller.php');
 
 	echo TWIG( 'network/search.html.twig', $TWIGdata, dirname(__FILE__), true);
+}
+
+
+
+function UKMdeltakere_personvern() {
+	$TWIGdata = [
+		'page' => $_GET['page'],
+	];
+	
+	require_once('UKM/samtykke/person.class.php');
+
+    try {
+		if( isset( $_GET['action'] ) ) {
+			$VIEW = 'personvern/'. basename($_GET['action']);
+			require_once('controller/personvern/'. basename($_GET['action']) .'.controller.php');
+		}  else {
+			$VIEW = 'personvern/liste';
+		}
+		require_once('controller/personvern/liste.controller.php');
+	} catch( Exception $e  ) {
+		$TWIGdata['message'] = $e->getMessage();
+		$TWIGdata['code'] = $e->getCode();
+		$VIEW = 'exception';
+	}	
+	echo TWIG( $VIEW .'.html.twig', $TWIGdata, dirname(__FILE__), true);
 }
 ?>
