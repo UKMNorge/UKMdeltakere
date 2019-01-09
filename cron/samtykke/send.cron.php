@@ -18,6 +18,11 @@ require_once('UKM/context.class.php');
 require_once('UKM/innslag.collection.php');
 require_once('UKM/samtykke/person.class.php');
 
+die();
+require_once('prevent_mass_spam.inc.inc.php');
+
+
+
 $selected = new SQL(
     "SELECT `id` 
     FROM `samtykke_deltaker`
