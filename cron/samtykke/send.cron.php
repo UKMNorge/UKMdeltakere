@@ -45,8 +45,8 @@ else {
             $samtykke->getKategori()->getId() .' - '. $samtykke->getMobil() .' '. $samtykke->getPerson()->getNavn() .': '.
             '</h4> '.
             $melding . '<br />'; 
-        if( $count > 10 ) {
+        #if( $count > 10 ) {
             die();
-        }
+        #}
     }
 }
