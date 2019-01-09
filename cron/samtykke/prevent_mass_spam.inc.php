@@ -7,6 +7,8 @@ require_once('cron.config.php');
 require_once('UKM/sql.class.php');
 require_once('UKM/samtykke/person.class.php');
 
+define('THRESHOLD', 10);
+
 $SQL = new SQL(
     "SELECT `mobil`, COUNT(`id`) AS `num`
     FROM `samtykke_deltaker`
@@ -22,7 +24,7 @@ $SQL = new SQL(
 $res = $SQL->run();
 
 while( $row = SQL::fetch( $res ) ) {
-    if( $row['num'] < 2 ) {
+    if( $row['num'] < THRESHOLD ) {
         break;
     }
     $update = new SQLins(
