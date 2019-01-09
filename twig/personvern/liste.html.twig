@@ -59,6 +59,8 @@
         <li class="list-group-item">
             <b>Følgende informasjon-status er mulig</b>
             <br />
+            - <code>Ikke send</code>: Spesial-tilfelle hvor én kontaktperson her meldt på mer enn 10 andre personer, men brukt sitt mobilnummer. Ikke vits i å sende sms da.
+            <br />
             - <code>Ikke sendt</code>: Vi har ikke sendt sms enda. Dette gjøres automatisk hver dag.
             <br />
             - <code>Ikke sett</code>: Personen har fått sms, men ikke åpnet lenken.
@@ -145,7 +147,7 @@
                             {% endif %}
 
                             {# Deltaker har ikke trykket på lenken #}
-                            {% if person.getStatus().getId() not in ['godkjent','ikke_godkjent','ikke_sendt'] %}
+                            {% if person.getStatus().getId() not in ['godkjent','ikke_godkjent','ikke_sendt', 'ikke_send'] %}
                                 <a href="?page={{GET('page')}}&action=purring&id={{person.getId()}}" class="btn btn-primary btn-sm btn-xs btn-mini">
                                     Send purring
                                 </a>
