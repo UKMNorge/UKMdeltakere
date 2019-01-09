@@ -23,7 +23,8 @@ $selected = new SQL(
     FROM `samtykke_deltaker`
     WHERE `status` = 'ikke_sendt'
     AND `antall_innslag` > 0
-    AND `year` = '#sesong'",
+    AND `year` = '#sesong'
+    ORDER BY `id` ASC",
     [
         'sesong' => SEASON
     ]
