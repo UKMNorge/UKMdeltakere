@@ -51,8 +51,10 @@ else {
             $samtykke->getKategori()->getId() .' - '. $samtykke->getMobil() .' '. $samtykke->getPerson()->getNavn() .': '.
             '</h4> '.
             $melding . '<br />'; 
-        #if( $count > 10 ) {
+        if( $count > 50 ) {
+            echo '<h1>Reached 50. Stop</h1>';
             die();
-        #}
+        }
     }
+    echo '<h1>Finito</h1>';
 }
