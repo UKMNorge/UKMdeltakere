@@ -32,6 +32,6 @@ while( $row = SQL::fetch( $res ) ) {
         ['mobil' => $row['mobil']]
     );
     $update->add('status', 'ikke_send');
-    echo $update->debug();
-    echo $row['mobil'] .' => '. $row['num'] .'<br />';
+    $update->run();
+    echo 'IKKE SEND: '. $row['mobil'] .'  ('. $row['num'] .')<br />';
 }
