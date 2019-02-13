@@ -138,7 +138,7 @@
                         
                         
                         <td>
-                            {% if false %}
+                            {% if is_super_admin %}
                             {# Vi har aldri sendt sms til deltakeren #}
                             {% if person.getStatus().getId() == 'ikke_sendt' %}
                                 <a href="?page={{GET('page')}}&action=samtykke&id={{person.getId()}}" class="btn btn-success btn-sm btn-xs btn-mini">

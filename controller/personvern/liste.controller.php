@@ -39,3 +39,4 @@ foreach( $grupper as $gruppe ) {
 $TWIGdata['personer'] = $grupper;
 $TWIGdata['sms_u15'] = $grupper['u15']->getSms();
 $TWIGdata['sms_15o'] = $grupper['15o']->getSms();
+$TWIGdata['is_super_admin'] = is_super_admin();
