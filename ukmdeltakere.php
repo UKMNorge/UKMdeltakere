@@ -105,7 +105,7 @@ function UKMdeltakere_menu() {
         'editor', 
         'UKMdeltakere', 
         'UKMdeltakere', 
-        '//ico.ukm.no/people-menu.png',
+        'dashicons-buddicons-buddypress-logo',#'//ico.ukm.no/people-menu.png',
     	50
     );
 
@@ -165,7 +165,7 @@ function UKMdeltakere_network_menu() {
 		'superadmin', 
 		'UKMdeltakere_network_search',
 		'UKMdeltakere_network_search', 
-		'//ico.ukm.no/people-menu.png',
+        'dashicons-buddicons-buddypress-logo',#'//ico.ukm.no/people-menu.png',
 		24
 	);
 	add_action( 'admin_print_styles-' . $page, 	'UKMdeltakere_scriptsandstyles' );
