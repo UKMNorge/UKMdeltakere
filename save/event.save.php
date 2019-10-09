@@ -1,7 +1,8 @@
 <?php
 
-require_once('UKM/write_innslag.class.php');
-require_once('UKM/forestilling.class.php');
+use UKMNorge\Innslag\Write;
+
+require_once('UKM/Autoloader.php');
 
 try {
 	$forestilling = $monstring->getProgram()->get( $DATA['event'] );
@@ -12,7 +13,7 @@ $innslag = $monstring->getInnslag()->get( $_POST['innslag'] );
 
 try {
 	$forestilling->getInnslag()->leggTil( $innslag );
-	write_innslag::leggTil( $innslag );
+	Write::leggTil( $innslag );
 } catch( Exception $e ) {
 	switch( (int) $e->getCode() ) {
 		case 10404:
