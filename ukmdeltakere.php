@@ -13,7 +13,7 @@ define('PATH_PLUGIN_UKMDELTAKERE', dirname(__FILE__).'/' );
 add_action( 'wp_ajax_UKMdeltakere_ajax', 'UKMdeltakere_ajax' );
 add_action('network_admin_menu', 'UKMdeltakere_network_menu');
 
-if( is_admin() && in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
+if( is_admin() && in_array( get_option('site_type'), array('kommune','fylke','land')) && get_option('pl_id') ) {
 	require_once('UKM/inc/twig-js.inc.php');
 
 	add_action('admin_menu', 'UKMdeltakere_menu');
