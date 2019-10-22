@@ -13,11 +13,10 @@ define('PATH_PLUGIN_UKMDELTAKERE', dirname(__FILE__).'/' );
 add_action( 'wp_ajax_UKMdeltakere_ajax', 'UKMdeltakere_ajax' );
 add_action('network_admin_menu', 'UKMdeltakere_network_menu');
 
-if( is_admin() && in_array( get_option('site_type'), array('kommune','fylke','land')) ) {
+if( is_admin() && get_option('pl_id') ) {
 	require_once('UKM/inc/twig-js.inc.php');
 
-	add_action('UKM_admin_menu', 'UKMdeltakere_menu',200);
-	add_filter('UKM_admin_menu_conditions', 'UKMdeltakere_menu_conditions');
+	add_action('admin_menu', 'UKMdeltakere_menu');
 	add_action('UKMWPDASH_shortcuts', 'UKMdeltakere_dash_shortcut', 30);
 }
 
@@ -97,40 +96,37 @@ function UKMdeltakere_dash_shortcut( $shortcuts ) {
 	return $shortcuts;
 }
 
-function UKMdeltakere_menu_conditions( $_CONDITIONS ) {
-	return array_merge( $_CONDITIONS, 
-		['UKMdeltakere' => 'monstring_er_registrert']
-	);
-}
-
 ## CREATE A MENU
 function UKMdeltakere_menu() {
     // Deltakere-menyen
-    UKM_add_menu_page(
-        'monstring',
-        'Deltakere', 
-        'Deltakere', 
+    $page = add_menu_page(
+        'Påmeldte', 
+        'Påmeldte', 
         'editor', 
         'UKMdeltakere', 
         'UKMdeltakere', 
-        '//ico.ukm.no/people-menu.png',
-        5
+        'dashicons-buddicons-buddypress-logo',#'//ico.ukm.no/people-menu.png',
+    	50
     );
 
     // Personvern-menyen
-    UKM_add_menu_page(
-        'monstring',
+    $page_personvern = add_submenu_page(
+        'UKMdeltakere',
         'Personvern', 
         'Personvern',
         'editor',
         'UKMdeltakere_personvern',
-        'UKMdeltakere_personvern',
-        '//ico.ukm.no/toy-ninja-menu.png',
-        20
-    );
-
-	UKM_add_scripts_and_styles('UKMdeltakere', 'UKMdeltakere_scriptsandstyles' );
-	UKM_add_scripts_and_styles('UKMdeltakere_personvern', 'UKMdeltakere_scriptsandstyles_basic' );
+        'UKMdeltakere_personvern'
+	);
+	
+	add_action(
+		'admin_print_styles-' . $page,
+		'UKMdeltakere_scriptsandstyles'
+	);
+	add_action(
+		'admin_print_styles-' . $page_personvern,
+		'UKMdeltakere_scriptsandstyles_basic'
+	);
 }
 ## INCLUDE SCRIPTS
 function UKMdeltakere_scriptsandstyles() {
@@ -169,7 +165,7 @@ function UKMdeltakere_network_menu() {
 		'superadmin', 
 		'UKMdeltakere_network_search',
 		'UKMdeltakere_network_search', 
-		'//ico.ukm.no/people-menu.png',
+        'dashicons-buddicons-buddypress-logo',#'//ico.ukm.no/people-menu.png',
 		24
 	);
 	add_action( 'admin_print_styles-' . $page, 	'UKMdeltakere_scriptsandstyles' );

@@ -2,7 +2,7 @@
 	<h2>Dine {% if tab_active == 'pabegynte' %}såvidt påbegynte påmeldinger{% elseif tab_active == 'ufullstendig' %}nesten påmeldte innslag{% else %}deltakere{% endif %}</h2>
 	
 	<div class="row">
-		{% if 'kommune' == site_type %}
+		{% if arrangement.harPamelding() %}
 			<div class="col-xs-12 col-sm-6">
 				<ol class="list-group">
 					<li class="list-group-item">
@@ -66,7 +66,7 @@
 			</form>
 		</div>
 		
-		{% if 'kommune' != site_type %}
+		{% if not arrangement.harPamelding() %}
 			<div class="col-xs-12 col-sm-4 col-sm-offset-1">
 				<ol class="list-group">
 					<li class="list-group-item">

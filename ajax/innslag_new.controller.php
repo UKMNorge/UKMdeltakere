@@ -1,7 +1,12 @@
 <?php
 ### innslag_new.controller.php
-require_once('UKM/monstring.class.php');
-require_once('UKM/sql.class.php');
+
+use UKMNorge\Database\SQL\Query;
+use UKMNorge\Geografi\Fylker;
+use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Innslag\Typer;
+
+require_once('UKM/Autoloader.php');
 
 $type = $_POST['type'];
 $monstring = new monstring_v2(get_option('pl_id'));
@@ -15,15 +20,15 @@ $JSON->innslag_type = $type;
 $personer = [];
 
 if( $monstring->getType() != 'land' ) {
-	$sql = new SQL("SELECT * FROM `smartukm_participant`
+	$sql = new Query("SELECT * FROM `smartukm_participant`
 					WHERE `p_kommune` IN('#kommuner')",
 					array('kommuner'=> implode(',', $monstring->getKommuner()->getIdArray()) )
 				);
 	$res = $sql->run();
 
 	if( $res ) {
-		while( $row = SQL::fetch( $res ) ) {
-			$personer[ $row['p_id'] ] = data_person( new person_v2( $row ) );
+		while( $row = Query::fetch( $res ) ) {
+			$personer[ $row['p_id'] ] = data_person( new Person( $row ) );
 		}
 	}
 }
@@ -42,7 +47,7 @@ $JSON->personer = $personer;
 
 if( $monstring->getType() == 'land' ) {
 	$JSON->fylker = [];
-	foreach( fylker::getAllInkludertFalske() as $fylke ) {
+	foreach( Fylker::getAllInkludertFalske() as $fylke ) {
 		$data = new stdClass();
 		$data->id = $fylke->getId();
 		$data->navn = $fylke->getNavn();
@@ -79,7 +84,7 @@ switch( $type ) {
 	case 'arrangor':
 	case 'ressurs':
 		$JSON->twigJS = 'innslagtittellos';
-		$iType = innslag_typer::getByName($type);
+		$iType = Typer::getByName($type);
 		$funksjoner = $iType->getFunksjoner();
 
 		$JSON->type_nicename = $iType->getNavn();

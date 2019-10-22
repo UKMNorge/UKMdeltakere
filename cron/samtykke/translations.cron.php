@@ -8,7 +8,8 @@ ini_set('display_errors',true);
 
 // Dependencies
 use UKMNorge\File\SimpleRemoteCache;
-require_once('UKM/File/SimpleRemoteCache.php');
+
+require_once('UKM/Autoloader.php');
 
 // Init cache
 $cache = new SimpleRemoteCache(

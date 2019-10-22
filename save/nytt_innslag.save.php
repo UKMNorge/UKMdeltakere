@@ -1,29 +1,37 @@
 <?php
-require_once('UKM/write_monstring.class.php');
-require_once('UKM/write_innslag.class.php');
-require_once('UKM/write_person.class.php');
+
+use UKMNorge\Geografi\Kommune;
+use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Innslag\Personer\Write as WritePerson;
+use UKMNorge\Innslag\Typer;
+use UKMNorge\Innslag\Write as WriteInnslag;
+
+require_once('UKM/Autoloader.php');
 
 // Opprett eller velg kontaktperson
 if(null == $DATA['kontakt']) {
-	$kontaktperson = write_person::create(
+	$kontaktperson = WritePerson::create(
 		$DATA['fornavn'],
 		$DATA['etternavn'],
-		$DATA['mobil'],
-		write_person::fodselsdatoFraAlder($DATA['alder']),
-		$DATA['kommune']
-	);
+		(Int) $DATA['mobil'],
+		new Kommune($DATA['kommune'])
+    );
+    $kontaktperson->setFodselsdato(
+        WritePerson::fodselsdatoFraAlder($DATA['alder'])
+    );
 	$kontaktperson->setEpost($DATA['epost']);
-	write_person::save( $kontaktperson );
+    
+    WritePerson::save( $kontaktperson );
 } else {
-	$kontaktperson = new person_v2($DATA['kontakt']);
+	$kontaktperson = new Person($DATA['kontakt']);
 }
 $kontaktpersonSomDeltaker = isset($DATA['kontaktpersonErMed']) && 'on' == $DATA['kontaktpersonErMed'];
 
 // Hvilken kommune er innslaget fra
-$kommune = new kommune( $DATA['kommune'] );
+$kommune = new Kommune( $DATA['kommune'] );
 $fra_monstring = new kommune_monstring_v2( $kommune->getId(), $monstring->getSesong() );
 $fra_monstring = $fra_monstring->monstring_get();
-$type = innslag_typer::getByName($DATA['type']);
+$type = Typer::getByName($DATA['type']);
 
 // Innslag med titler
 if( $type->harTitler() ) {
@@ -40,11 +48,11 @@ else {
 }
 
 // Opprett innslaget
-$innslag = write_innslag::create($kommune, $fra_monstring, $type, $navn, $kontaktperson );
+$innslag = WriteInnslag::create($kommune, $fra_monstring, $type, $navn, $kontaktperson );
 $innslag->setBeskrivelse($beskrivelse);
 $innslag->setSjanger($sjanger);
 $innslag->setStatus(8);
-write_innslag::save( $innslag );
+WriteInnslag::save( $innslag );
 
 // Legg til kontaktperson og håndter evt feilmelding
 // For tittel-innslag hvor kontaktpersonen deltar, eller tittelløse innslag (hvor kontaktpersonen alltid deltar)
@@ -52,7 +60,7 @@ if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
 	if( !$innslag->getPersoner()->leggTil( $kontaktperson ) ) {
 		throw new Exception("Klarte ikke å legge til kontaktpersonen i innslaget!");
 	}
-	write_innslag::savePersoner( $innslag );
+	WriteInnslag::savePersoner( $innslag );
 }
 
 
@@ -79,10 +87,10 @@ else {
 	
 }
 
-write_innslag::save( $innslag );
-write_person::save( $kontaktperson );
+WriteInnslag::save( $innslag );
+WritePerson::save( $kontaktperson );
 if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
-	write_person::saveRolle( $kontaktperson );
+	WritePerson::saveRolle( $kontaktperson );
 }
 
 // Hvis vi legger til innslaget på fylkesmønstring eller festival - videresend det!
@@ -94,7 +102,7 @@ if( $monstring->getType() != 'kommune' ) {
 		$monstring_fylke = monstringer_v2::fylke( $innslag->getFylke(), $monstring->getSesong() );
 		// Videresend innslaget til nåværende mønstring
 		$monstring_fylke->getInnslag()->leggTil( $innslag );
-		write_innslag::leggTil( $innslag );
+		WriteInnslag::leggTil( $innslag );
 		
 		if( $kontaktpersonSomDeltaker ) {
 			// Hent ut innslaget på nytt (ettersom personen er på lokalnivå vil vedkommende hentes av get())
@@ -104,7 +112,7 @@ if( $monstring->getType() != 'kommune' ) {
 			// Legg til personen i collection
 			$kontaktperson_fylke = $innslag_fylke->getPersoner()->get( $kontaktperson->getId() );
 			// Legg til personen på fylkesnivå (litt knotete, men må gjøres for videresendingen)
-			write_person::leggTil( $kontaktperson_fylke );
+			WritePerson::leggTil( $kontaktperson_fylke );
 		}
 	}
 	
@@ -113,7 +121,7 @@ if( $monstring->getType() != 'kommune' ) {
 	
 	// Videresend innslaget til nåværende mønstring
 	$monstring->getInnslag()->leggTil( $innslag );
-	write_innslag::leggTil( $innslag );
+	WriteInnslag::leggTil( $innslag );
 	
 	if( $kontaktpersonSomDeltaker ) {
 		// Hent ut innslaget på nytt (ettersom personen er på lokalnivå vil vedkommende hentes av get())
@@ -123,7 +131,7 @@ if( $monstring->getType() != 'kommune' ) {
 		// Legg til personen i collection
 		$kontaktperson_fylke = $innslag_fylke->getPersoner()->get( $kontaktperson->getId() );
 		// Legg til personen på fylke-/landsnivå (litt knotete, men må gjøres for videresendingen)
-		write_person::leggTil( $kontaktperson_fylke );
+		WritePerson::leggTil( $kontaktperson_fylke );
 	}
 }
 
