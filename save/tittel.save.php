@@ -38,7 +38,7 @@ switch( $innslag->getType()->getKey() ) {
 		} else {
 			$tittel->setVarighet($DATA['lengde']); // I sekunder
 		}
-		$tittel->setLitteraturLesOpp( $lese_opp ); // true / false
+		$tittel->setLesOpp( $lese_opp ); // true / false
 		$tittel->setTekstAv($DATA['tekstforfatter']);
 		break;
 	
