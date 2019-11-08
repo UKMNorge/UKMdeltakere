@@ -3,7 +3,7 @@
 use UKMNorge\Geografi\Kommune;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Personer\Write as WritePerson;
-use UKMNorge\Innslag\Typer;
+use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Innslag\Write as WriteInnslag;
 
 require_once('UKM/Autoloader.php');

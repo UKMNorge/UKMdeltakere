@@ -4,7 +4,7 @@
 use UKMNorge\Database\SQL\Query;
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Innslag\Personer\Person;
-use UKMNorge\Innslag\Typer;
+use UKMNorge\Innslag\Typer\Typer;
 
 require_once('UKM/Autoloader.php');
 
