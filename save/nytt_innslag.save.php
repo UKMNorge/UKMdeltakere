@@ -90,6 +90,8 @@ WritePerson::save( $kontaktperson );
 if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
 	WritePerson::saveRolle( $kontaktperson );
 }
+$innslag->setStatus(8);
+WriteInnslag::saveStatus( $innslag );
 
 // Hvis vi legger til innslaget på fylkesmønstring eller festival - videresend det!
 if( $monstring->getType() != 'kommune' ) {
