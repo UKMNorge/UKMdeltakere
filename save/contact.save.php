@@ -4,9 +4,12 @@
  * BYTTER KONTAKTPERSON FOR GITT INNSLAG
 **/
 
-require_once('UKM/write_innslag.class.php');
+use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Innslag\Write;
+
+require_once('UKM/Autoloader.php');
 
 $innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
-$innslag->setKontaktperson( new person_v2( (int)$DATA['person'] ) );
+$innslag->setKontaktperson( new Person( (int)$DATA['person'] ) );
 
-write_innslag::save( $innslag );
+Write::save( $innslag );
