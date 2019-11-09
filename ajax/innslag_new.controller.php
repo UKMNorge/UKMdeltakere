@@ -1,6 +1,7 @@
 <?php
 ### innslag_new.controller.php
 
+use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Database\SQL\Query;
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Innslag\Personer\Person;
@@ -9,20 +10,21 @@ use UKMNorge\Innslag\Typer\Typer;
 require_once('UKM/Autoloader.php');
 
 $type = $_POST['type'];
-$monstring = new monstring_v2(get_option('pl_id'));
+$arrangement = new Arrangement(get_option('pl_id'));
 
 $JSON->innslag_type = $type;
 
 // TODO: Fix this:
-// $JSON->personer = $monstring->getPersoner();
-// $JSON->personer = $monstring->getPersoner()->getAll();
+// $JSON->personer = $arrangement->getPersoner();
+// $JSON->personer = $arrangement->getPersoner()->getAll();
 // WORKAROUND:
 $personer = [];
 
-if( $monstring->getType() != 'land' ) {
+// Tidligere personer
+if( in_array($arrangement->getEierType(), ['kommune','fylke']) ) {
 	$sql = new Query("SELECT * FROM `smartukm_participant`
 					WHERE `p_kommune` IN('#kommuner')",
-					array('kommuner'=> implode(',', $monstring->getKommuner()->getIdArray()) )
+					array('kommuner'=> implode(',', $arrangement->getKommuner()->getIdArray()) )
 				);
 	$res = $sql->run();
 
@@ -33,19 +35,21 @@ if( $monstring->getType() != 'land' ) {
 	}
 }
 
-foreach( $monstring->getInnslag()->getAll() as $innslag ) {
+// Personer fra påmeldte innslag
+foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
 	foreach( $innslag->getPersoner()->getAll() as $person ) {
 		$personer[ $person->getId() ] = data_person( $person );
 	}
 }
-foreach( $monstring->getInnslag()->getAllUfullstendige() as $innslag ) {
+// Personer fra halv-påmeldte innslag
+foreach( $arrangement->getInnslag()->getAllUfullstendige() as $innslag ) {
 	foreach( $innslag->getPersoner()->getAll() as $person ) {
 		$personer[ $person->getId() ] = data_person( $person );
 	}
 }
 $JSON->personer = $personer;
 
-if( $monstring->getType() == 'land' ) {
+if( $arrangement->getEierType() == 'land' ) {
 	$JSON->fylker = [];
 	foreach( Fylker::getAllInkludertFalske() as $fylke ) {
 		$data = new stdClass();

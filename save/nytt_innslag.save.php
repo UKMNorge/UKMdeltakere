@@ -29,8 +29,6 @@ $kontaktpersonSomDeltaker = isset($DATA['kontaktpersonErMed']) && 'on' == $DATA[
 
 // Hvilken kommune er innslaget fra
 $kommune = new Kommune( $DATA['kommune'] );
-$fra_monstring = new kommune_monstring_v2( $kommune->getId(), $monstring->getSesong() );
-$fra_monstring = $fra_monstring->monstring_get();
 $type = Typer::getByName($DATA['type']);
 
 // Innslag med titler
@@ -48,7 +46,7 @@ else {
 }
 
 // Opprett innslaget
-$innslag = WriteInnslag::create($kommune, $fra_monstring, $type, $navn, $kontaktperson );
+$innslag = WriteInnslag::create($kommune, $monstring, $type, $navn, $kontaktperson );
 $innslag->setBeskrivelse($beskrivelse);
 $innslag->setSjanger($sjanger);
 $innslag->setStatus(8);
