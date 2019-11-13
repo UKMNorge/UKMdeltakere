@@ -87,11 +87,13 @@ function data_type( Type $type ) {
     $data->harBeskrivelse   = $type->harBeskrivelse();
 	$data->harFunksjoner	= $type->harFunksjoner();
 	$data->harTekniskeBehov	= $type->harTekniskeBehov();
-    $data->funksjoner		= $type->getFunksjoner();
     
     $data->har_filmer       = $type->harFilmer();
     $data->har_bilder       = $type->harBilder();
-
+    
+    $data->funksjoner		= $type->getFunksjoner();
+    $data->tekst            = $type->getAllTekst();
+    
     if( $type->harTitler() ) {
         $data->tabell       = $type->getTabell();
     }
