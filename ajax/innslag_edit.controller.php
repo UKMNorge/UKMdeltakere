@@ -13,7 +13,6 @@ if( $innslag->getType()->harTitler() ) {
 	$JSON->innslag->kommune_id = $innslag->getKommune()->getId();
 
 	if( $innslag->getType()->harFunksjoner() ) {
-	#if( in_array($innslag->getType()->getKey(), array('nettredaksjon', 'arrangor') ) ) {
 		if( null == $JSON->person->valgte_funksjoner ) {
 			$JSON->person->valgte_funksjoner = [];
 		}
