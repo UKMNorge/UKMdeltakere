@@ -88,12 +88,13 @@ switch( $type ) {
 	case 'arrangor':
 	case 'ressurs':
 		$JSON->twigJS = 'innslagtittellos';
-		$iType = Typer::getByName($type);
-		$funksjoner = $iType->getFunksjoner();
-
-		$JSON->type_nicename = $iType->getNavn();
-		$JSON->funksjoner = array_keys($funksjoner);
-		$JSON->funksjonsnavn = $funksjoner;
+        $innslag_type = Typer::getByName($type);
+        if( $innslag_type->harFunksjoner() ) {
+            $funksjoner = $innslag_type->getFunksjoner();
+            $JSON->type_nicename = $innslag_type->getNavn();
+            $JSON->funksjoner = array_keys($funksjoner);
+            $JSON->funksjonsnavn = $funksjoner;
+        }
 		break;
 	case 'matkultur':
 		throw new Exception("Matkultur må midlertidig meldes på av deltakerne selv. Dette vil bli mulig også herfra så fort vi har fått rettet feilen.");
