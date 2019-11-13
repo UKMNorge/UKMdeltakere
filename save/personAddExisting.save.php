@@ -1,15 +1,13 @@
 <?php
 // Skal relatere en person til et gitt innslag.
 
-require_once('UKM/write_person.class.php');
-require_once('UKM/write_innslag.class.php');
-require_once('UKM/write_monstring.class.php');
-require_once('UKM/monstringer.collection.php');
+use UKMNorge\Innslag\Personer\Person;
+use UKMNorge\Innslag\Write as WriteInnslag;
 
 $innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
-$person = new person_v2( $_POST['object_id'] );
+$person = new Person( $_POST['object_id'] );
 $person->setRolle( $DATA['rolle'] );
 
 // Vil automatisk videresende til riktig mønstring og lagre rolle
 $innslag->getPersoner()->leggTil($person);
-write_innslag::savePersoner( $innslag );
+WriteInnslag::savePersoner( $innslag );

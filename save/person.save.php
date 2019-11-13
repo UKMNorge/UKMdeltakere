@@ -2,9 +2,7 @@
 
 // OBS - DENNE INKLUDERES OGSÅ AV PERSON_ADD-FUNKSJONALITET.
 
-require_once('UKM/write_person.class.php');
-require_once('UKM/write_innslag.class.php');
-
+use UKMNorge\Innslag\Personer\Write;
 
 $innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
 $person = $innslag->getPersoner()->get( $_POST['object_id'] );
@@ -22,5 +20,5 @@ $person->setEpost( $DATA['epost'] );
 // Kun innslag med titler vil komme til denne siden
 $person->setRolle( $DATA['rolle'] );
 
-write_person::save( $person );
-write_person::saveRolle( $person );
+Write::save( $person );
+Write::saveRolle( $person );

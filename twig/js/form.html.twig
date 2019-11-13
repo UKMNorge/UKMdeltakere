@@ -11,17 +11,19 @@
 				<input name="navn" type="text" class="form-control" value="{{ innslag.navn }}" />
 			</div>
 
-			{% if 'utstilling' != innslag.type.key %}
+			{% if type.harSjanger %}
 				<div class="form-group">
 					<label for="sjanger">Sjanger</label>
 					<input name="sjanger" type="text" class="form-control" value="{{ innslag.sjanger }}" />
 				</div>
 			{% endif %}
 			
-			<div class="form-group">
-				<label>Beskrivelse</label>
-				<textarea name="beskrivelse" class="form-control">{{ innslag.beskrivelse }}</textarea>
-			</div>
+            {% if type.harBeskrivelse %}
+                <div class="form-group">
+                    <label>Beskrivelse</label>
+                    <textarea name="beskrivelse" class="form-control">{{ innslag.beskrivelse }}</textarea>
+			    </div>
+            {% endif %}
 			
 		</div>
 		<div class="col-xs-12 col-sm-6 col-lg-4">
@@ -38,19 +40,12 @@
 				<input type="hidden" name="kommune" value="{{ innslag.kommune_id }}" />
 			{% endif %}
 			
-			{% if 1 == innslag.type.id %}
-				<div class="form-group">
-					<label for="kategori">Kategori</label>
-					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ innslag.kategori }}" />
-				</div>
-			{% endif %}
 			{% if innslag.type.harTekniskeBehov %}
 				<div class="form-group">
 					<label>Tekniske behov</label>
 					<textarea name="tekniske_behov" class="form-control">{{ innslag.tekniske_behov }}</textarea>
 				</div>
 			{% endif %}
-
 		</div>
 	</div>
 

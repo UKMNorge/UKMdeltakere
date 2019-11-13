@@ -1,18 +1,26 @@
 <?php
+
+use UKMNorge\Geografi\Fylker;
+use UKMNorge\Database\SQL\Query;
+use UKMNorge\Innslag\Personer\Person;
+
 $JSON->twigJS = 'personadd';
 
 $personer = [];
 // Personer fra kommunen
-if( $monstring->getType() != 'land' ) {
-	$sql = new SQL("SELECT * FROM `smartukm_participant`
-					WHERE `p_kommune` IN('#kommuner')",
-					array('kommuner'=> implode(',', $monstring->getKommuner()->getIdArray()) )
-				);
+if( $monstring->getEierType() != 'land' ) {
+	$sql = new Query(
+        "SELECT * FROM `smartukm_participant`
+        WHERE `p_kommune` IN('#kommuner')",
+        [
+            'kommuner'=> implode(',', $monstring->getKommuner()->getIdArray()) 
+        ]
+    );
 	$res = $sql->run();
 	
 	if( $res ) {
-		while( $row = SQL::fetch( $res ) ) {
-			$personer[ $row['p_id'] ] = data_person( new person_v2( $row ) );
+		while( $row = Query::fetch( $res ) ) {
+			$personer[ $row['p_id'] ] = data_person( new Person( $row ) );
 		}
 	}
 }
@@ -35,9 +43,9 @@ foreach( $monstring->getInnslag()->getAllUfullstendige() as $innslag ) {
 	}
 }
 
-if( $monstring->getType() == 'land' ) {
+if( $monstring->getEierType() == 'land' ) {
 	$JSON->fylker = [];
-	foreach( fylker::getAllInkludertFalske() as $fylke ) {
+	foreach( Fylker::getAllInkludertFalske() as $fylke ) {
 		$data = new stdClass();
 		$data->id = $fylke->getId();
 		$data->navn = $fylke->getNavn();

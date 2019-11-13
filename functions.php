@@ -1,5 +1,6 @@
 <?php
 
+use UKMNorge\Innslag\Typer\Type;
 
 /**
  * Lag et TWIGjs-objekt av en tittel
@@ -11,15 +12,23 @@ function data_tittel( $tittel ) {
 	$data->varighet		= $tittel->getVarighet();
 	$data->varighet_sek	= $tittel->getVarighet()->getSekunder();
 	$data->varighet_human= $tittel->getVarighet()->getHumanShort();
-	$data->beskrivelse	= $tittel->getBeskrivelse();
-	$data->typeogteknikk= $tittel->getType();
-		
-	$data->koreografi_av= $tittel->getKoreografiAv();
-	$data->instrumental = $tittel->erInstrumental();
-	$data->selvlaget	= $tittel->erSelvlaget();
-	$data->tekst_av		= $tittel->getTekstAv();
-	$data->melodi_av	= $tittel->getMelodiAv();
-	$data->lese_opp		= $tittel->getLitteraturLesOpp();
+    
+    $mightbe = [
+        'beskrivelse'       => 'getBeskrivelse',
+        'typeogteknikk'     => 'getType',
+        'koreografi_av'     => 'getKoreografiAv',
+        'instrumental'      => 'erInstrumental',
+        'selvlaget'         => 'erSelvlaget',
+        'tekst_av'          => 'getTekstAv',
+        'melodi_av'         => 'getMelodiAv',
+        'lese_opp'          => 'getLitteraturLesOpp'
+    ];
+
+    foreach( $mightbe as $store => $function ) {
+        if( method_exists( $tittel, 'getBeskrivelse') ) {
+            $this->$store = $tittel->$function();
+        }
+    }
 
 	return $data;
 }
@@ -41,14 +50,7 @@ function data_innslag( $innslag ) {
 	$data->avmeldbar					= $innslag->erAvmeldbar();
 	$data->avmeldlas					= $innslag->getAvmeldbar();
 	
-	$data->type							= new stdClass();
-	$data->type->id		 				= $innslag->getType()->getId();
-	$data->type->key 					= $innslag->getType()->getKey();
-	$data->type->navn	 				= $innslag->getType()->getNavn();
-	$data->type->harTitler				= $innslag->getType()->harTitler();
-	$data->type->harTekniskeBehov		= $innslag->getType()->harTekniskeBehov();
-	$data->type->harFunksjoner			= $innslag->getType()->harFunksjoner();
-	$data->type->funksjoner				= $innslag->getType()->getFunksjoner();
+	$data->type                         = data_type( $innslag->getType() );
 	
 	$data->advarsler	 				= [];
 	$data->harPersonAdvarsler	 		= false;
@@ -59,7 +61,7 @@ function data_innslag( $innslag ) {
 		}
 	}
 	
-	if( $innslag->getType()->harTitler() ) {
+	if( $innslag->getType()->harTid() ) {
 		$data->varighet					= $innslag->getTitler()->getVarighet();
 		$data->varighet_human			= $innslag->getTitler()->getVarighet()->getHumanShort();
 	} 
@@ -67,6 +69,34 @@ function data_innslag( $innslag ) {
 	$data->hendelser					= [];
 	
 	return $data;
+}
+
+function data_type( Type $type ) {
+    $data					= new stdClass();
+	$data->id		 		= $type->getId();
+	$data->key 				= $type->getKey();
+    $data->navn	 			= $type->getNavn();
+    $data->frist            = $type->getFrist();
+    
+    $data->erGruppe         = $type->erGruppe();
+    $data->erEnkeltperson   = $type->erEnkeltPerson();
+
+    $data->harTid           = $type->harTid();
+    $data->harTitler		= $type->harTitler();
+    $data->harSjanger       = $type->harSjanger();
+    $data->harBeskrivelse   = $type->harBeskrivelse();
+	$data->harFunksjoner	= $type->harFunksjoner();
+	$data->harTekniskeBehov	= $type->harTekniskeBehov();
+    $data->funksjoner		= $type->getFunksjoner();
+    
+    $data->har_filmer       = $type->harFilmer();
+    $data->har_bilder       = $type->harBilder();
+
+    if( $type->harTitler() ) {
+        $data->tabell       = $type->getTabell();
+    }
+
+    return $data;
 }
 
 function data_advarsel( $advarsel ) {
