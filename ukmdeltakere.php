@@ -186,8 +186,6 @@ function UKMdeltakere_personvern() {
 		'page' => $_GET['page'],
 	];
 	
-	require_once('UKM/samtykke/person.class.php');
-
     try {
 		if( isset( $_GET['action'] ) ) {
 			$VIEW = 'personvern/'. basename($_GET['action']);

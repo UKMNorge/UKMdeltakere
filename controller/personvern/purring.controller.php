@@ -2,7 +2,6 @@
 
 use UKMNorge\Samtykke\Person;
 
-require_once('UKM/samtykke/person.class.php');
 $samtykke = Person::getById( $_GET['id'] );
 $message =  new stdClass();
 
@@ -47,8 +46,5 @@ else {
 	}
 }
 
-
-
 $TWIGdata['message'] = $message;
-
 $VIEW = 'personvern/liste';
