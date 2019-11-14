@@ -11,7 +11,7 @@
 					<h3>{{ type_innslag }}</h3>
 					<div class="clearfix"></div>
 				</div>
-				<ol class="list-group innslag_lister" id="innslag_liste_{{ type_innslag.getKey() }}">
+				<ol class="list-group innslag_lister items" id="innslag_liste_{{ type_innslag.getKey() }}">
 					<li class="list-group-item innslag" data-innslag-id="new_{{ type_innslag.getKey() }}" id="innslag_new_{{ type_innslag.getKey() }}" style="display: none;">
 						<div class="body">
 						</div>
@@ -19,7 +19,7 @@
 					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 						{% embed "list_item.html.twig" %}{% endembed %}
 					{% else %}
-						<li class="list-group-item ingen-pameldte">Ingen påmeldte i {{ type_innslag }}</li>
+						<li class="list-group-item ingen-pameldte item" data-filter="">Ingen påmeldte i {{ type_innslag }}</li>
 					{% endfor %}
 				</ol>
 			</div>

@@ -142,16 +142,6 @@ jQuery(document).on('loadedView.personadd', function() {
         });
     });
 });
-// FILTRER INNSLAGSLISTEN
-jQuery(document).ready(function() {
-    jQuery('#filter_innslag').each(function() {
-        jQuery(this).fastLiveFilter('.innslag_lister', {
-            callback: function(total, id) {
-                jQuery('#filter_innslag_counter').fadeIn().html('' + total + ' innslag i listen nedenfor');
-            }
-        });
-    });
-});
 
 jQuery(document).on('person.create.show', function(e, id, noResults) {
     //console.info('person.create.show: '+ id);
