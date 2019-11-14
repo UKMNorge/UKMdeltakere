@@ -21,12 +21,12 @@ function data_tittel( $tittel ) {
         'selvlaget'         => 'erSelvlaget',
         'tekst_av'          => 'getTekstAv',
         'melodi_av'         => 'getMelodiAv',
-        'lese_opp'          => 'getLitteraturLesOpp'
+        'lese_opp'          => 'erLesOpp'
     ];
 
     foreach( $mightbe as $store => $function ) {
-        if( method_exists( $tittel, 'getBeskrivelse') ) {
-            $this->$store = $tittel->$function();
+        if( method_exists( $tittel, $function) ) {
+            $data->$store = $tittel->$function();
         }
     }
 

@@ -4,9 +4,9 @@
 			<div class="alert alert-info">
 				<b>OBS:</b>
 				<p>
-					Innslaget startet påmeldingen for kort tid siden ({{ innslag.subscription.date|dato('d.M H:i') }}), og det er derfor mulig at de fortsatt jobber med påmeldingen sin. 
-									Vi anbefaler at du venter til
-					{{ innslag.avmeldlas|dato('d.M H:i') }}
+					Innslaget startet påmeldingen for kort tid siden ({{ innslag.subscription.date|dato('d.M H:i') }}), 
+                    og det er derfor mulig at de fortsatt jobber med påmeldingen sin. 
+					Vi anbefaler at du venter til {{ innslag.avmeldlas|dato('d.M H:i') }}
 					før du gjør endringer eller melder av innslaget!
 				</p>
 			</div>
@@ -88,7 +88,7 @@
 							<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="personUnforward" data-object-id="{{ person.id }}" data-warning="Vil du fjerne {{ person.fornavn }} fra innslaget på ditt arrangement? {{ person.fornavn }} vil fortsatt stå som deltaker i innslaget hos andre arrangement. {{ person.id == innslag.kontaktperson.id ? br ~ person.fornavn ~ msgDelIsContact : '' }}{{ br ~ msgDelPerson }}">Skal ikke delta</a>
 						{% endif %}
 					</div>
-					<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe">{{ person.fornavn }}{{ person.etternavn}}</a>
+					<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe">{{ person.fornavn }} {{ person.etternavn}}</a>
 					<br/>
 					{% if person.rolle %}
 						<small>{{ person.rolle }}</small>
@@ -115,7 +115,7 @@
 								<a href="#innslag{{innslag_id}}" class="action btn btn-danger btn-xs" data-action="simpleSave" data-handle="deletePerson" data-object-id="{{ person.id }}" data-warning="{{ person.id == innslag.kontaktperson.id ? msgDelIsContact ~ br : '' }}{{ msgConfirmDelPerson ~ person.fornavn ~'?' }}">Fjern</a>
 							{% endif %}
 						</div>
-						<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe text-muted">{{ person.fornavn }}{{ person.etternavn}}</a>
+						<a href="#" data-action="editPerson" data-person-id="{{ person.id }}" class="action momClickMe text-muted">{{ person.fornavn }} {{ person.etternavn}}</a>
 						<br/>
 						{% if person.rolle %}
 							<small>{{ person.rolle }}</small>
@@ -128,53 +128,55 @@
 		{% endif %}
 	</fieldset>
 
-	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
-		<legend>
-			<small>Titler</small>
-		</legend>
-		<p class="explain">
-			{{ innslag.type.harTid ? 'Varighet: '~ innslag.varighet_human : '&nbsp;' }}
-		</p>
+    <fieldset class="col-xs-12 col-sm-6 col-lg-3">
+        {% if innslag.type.harTitler %}
+            <legend>
+                <small>Titler</small>
+            </legend>
+            <p class="explain">
+                {% if innslag.type.harTid %}Varighet: {{ innslag.varighet_human }}{% else %}&nbsp;{% endif %}
+            </p>
 
-		{% if innslag.titler|length > 0 and innslag.titler_ekstra|length > 0 %}
-			<label class="b uppercase small text-muted" style="font-weight: normal;margin-top: -1em;margin-bottom: -.5em;">Fremføres på ditt arrangement</label>
-		{% endif %}
-		<ol class="list-group list-group-compact" style="margin-bottom: 2em;">
-            {% for tittel in innslag.titler %}
-                <li class="list-group-item person clickChildLink" data-tittel-id="{{ tittel.id }}">
-                    <div class="pull-right">
-                        {% if tittel.slettbar %}
-                            <a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" data-warning="Er du sikker på at du vil fjerne {{ tittel.tittel }} fra {{ innslag.navn }}?" data-action="simpleSave" data-handle="deleteTitle" data-object-id="{{ tittel.id }}">Fjern</a>
-                        {% else %}
-                            <a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" data-warning="Vil du fjerne {{ tittel.tittel }} fra innslaget på ditt arrangement? {{ tittel.tittel }} vil fortsatt stå som fremført for innslaget på lokalmønstringen." data-action="simpleSave" data-handle="tittelUnforward" data-object-id="{{ tittel.id }}">Skal ikke fremføres</a>
-                        {% endif %}
-                    </div>
+            {% if innslag.titler|length > 0 and innslag.titler_ekstra|length > 0 %}
+                <label class="b uppercase small text-muted" style="font-weight: normal;margin-top: -1em;margin-bottom: -.5em;">Fremføres på ditt arrangement</label>
+            {% endif %}
+            <ol class="list-group list-group-compact" style="margin-bottom: 2em;">
+                {% for tittel in innslag.titler %}
+                    <li class="list-group-item person clickChildLink" data-tittel-id="{{ tittel.id }}">
+                        <div class="pull-right">
+                            {% if tittel.slettbar %}
+                                <a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" data-warning="Er du sikker på at du vil fjerne {{ tittel.tittel }} fra {{ innslag.navn }}?" data-action="simpleSave" data-handle="deleteTitle" data-object-id="{{ tittel.id }}">Fjern</a>
+                            {% else %}
+                                <a href="#innslag_{{innslag_id}}" class="action btn btn-danger btn-xs" data-warning="Vil du fjerne {{ tittel.tittel }} fra innslaget på ditt arrangement? {{ tittel.tittel }} vil fortsatt stå som 'skal fremføres' på andre arrangement." data-action="simpleSave" data-handle="tittelUnforward" data-object-id="{{ tittel.id }}">Skal ikke fremføres</a>
+                            {% endif %}
+                        </div>
 
-                    <a href="#" class="action momClickMe" data-action="editTitle" data-title-id="{{ tittel.id }}">{{ tittel.tittel }}</a>
-                    <br/>
-                    <small>{{ innslag.type.harTid ? 'Varighet: '~ tittel.varighet_human : '&nbsp;' }}</small>
+                        <a href="#" class="action momClickMe" data-action="editTitle" data-title-id="{{ tittel.id }}">{{ tittel.tittel }}</a>
+                        <br/>
+                        <small>{{ innslag.type.harTid ? 'Varighet: '~ tittel.varighet_human : '&nbsp;' }}</small>
+                    </li>
+                {% endfor %}
+                <li class="list-group-item">
+                    <a href="#innslag_{{ innslag_id }}" class="action" data-action="addTitle">+ Legg til tittel</a>
                 </li>
-            {% endfor %}
-            <li class="list-group-item">
-                <a href="#innslag_{{ innslag_id }}" class="action" data-action="addTitle">+ Legg til tittel</a>
-            </li>
-        </ol>
-        {% if innslag.titler_ekstra|length > 0 %}
-            <label class="b uppercase small text-muted" style="font-weight: normal;margin-top: -1em;margin-bottom: -.5em;">Skal ikke fremføres på ditt arrangement</label>
-			<ol class="list-group list-group-compact" style="margin-bottom: 2em;">
-				{% for tittel in innslag.titler_ekstra %}
-					<li class="list-group-item person clickChildLink" data-tittel-id="{{ tittel.id }}">
-                    <div class="pull-right">
-                        <a href="#innslag_{{innslag_id}}" class="action btn btn-success btn-xs" data-warning="{{ tittel.tittel }} ble fremført på lokalmønstringen. Vil du at denne også skal fremføres på din festival?" data-action="simpleSave" data-handle="tittelForward" data-object-id="{{ tittel.id }}">Skal fremføres</a>
-                    </div>
-                    <a href="#" class="action momClickMe" data-action="editTitle" data-title-id="{{ tittel.id }}">{{ tittel.tittel }}</a>
-                    <br/>
-                    <small>{{ innslag.type.harTid ? 'Varighet: '~ tittel.varighet_human : '&nbsp;' }}</small>
-                </li>
-				{% endfor %}
-			</ol>
-		{% endif %}
-	</fieldset>
+            </ol>
+            {% if innslag.titler_ekstra|length > 0 %}
+                <label class="b uppercase small text-muted" style="font-weight: normal;margin-top: -1em;margin-bottom: -.5em;">Fremføres ikke på ditt arrangement</label>
+                <ol class="list-group list-group-compact" style="margin-bottom: 2em;">
+                    {% for tittel in innslag.titler_ekstra %}
+                        <li class="list-group-item person clickChildLink" data-tittel-id="{{ tittel.id }}">
+                        <div class="pull-right">
+                            <a href="#innslag_{{innslag_id}}" class="action btn btn-success btn-xs" data-warning="{{ tittel.tittel }} ble fremført på lokalmønstringen. Vil du at denne også skal fremføres på din festival?" data-action="simpleSave" data-handle="tittelForward" data-object-id="{{ tittel.id }}">Skal fremføres</a>
+                        </div>
+                        <a href="#" class="action momClickMe" data-action="editTitle" data-title-id="{{ tittel.id }}">{{ tittel.tittel }}</a>
+                        <br/>
+                        <small>{% if innslag.type.harTid %}Varighet: {{ innslag.varighet_human }}{% else %}&nbsp;{% endif %}</small>
+                    </li>
+                    {% endfor %}
+                </ol>
+            {% endif %}
+        {% endif %}
+    </fieldset>
 
 	{% if innslag.status == 8 %}
 		<fieldset class="col-xs-12 col-sm-6 col-lg-3 pull-right">

@@ -55,12 +55,14 @@
 		
 		</div>
 		
-		<div class="col-xs-12 col-sm-6 col-lg-4">
-			<div class="form-group">
-				<label>Erfaring</label>
-				<textarea name="erfaring" class="form-control">{{ erfaring }}</textarea>
-			</div>
-		</div>	
+        {% if type.harBeskrivelse %}
+            <div class="col-xs-12 col-sm-6 col-lg-4">
+                <div class="form-group">
+                    <label>Erfaring</label>
+                    <textarea name="erfaring" class="form-control">{{ erfaring }}</textarea>
+                </div>
+            </div>	
+        {% endif %}
 	
 		{% if innslag.type.harFunksjoner %}
 			<div class="col-xs-12 col-sm-6 col-lg-4">

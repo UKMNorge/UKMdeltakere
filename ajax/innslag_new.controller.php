@@ -13,6 +13,7 @@ $type = $_POST['type'];
 $arrangement = new Arrangement(get_option('pl_id'));
 
 $JSON->innslag_type = $type;
+$JSON->type = data_type( Typer::getByKey($type) );
 
 // TODO: Fix this:
 // $JSON->personer = $arrangement->getPersoner();
@@ -68,36 +69,16 @@ if( $arrangement->getEierType() == 'land' ) {
 	}
 }
 
-
-switch( $type ) {
-	case 'scene':
-	case 'musikk':
-	case 'dans':
-	case 'teater':
-	case 'litteratur':
-	case 'film':
-	case 'video':
-	case 'utstilling':
-		$JSON->twigJS = 'innslagtittel';
-		break;
-	case 'konferansier':
-	// Mulig vi også må ha sceneteknikk her
-		$JSON->twigJS = 'innslagkonferansier';
-		break;
-	case 'nettredaksjon':
-	case 'arrangor':
-	case 'ressurs':
-		$JSON->twigJS = 'innslagtittellos';
-        $innslag_type = Typer::getByName($type);
-        if( $innslag_type->harFunksjoner() ) {
-            $funksjoner = $innslag_type->getFunksjoner();
-            $JSON->type_nicename = $innslag_type->getNavn();
-            $JSON->funksjoner = array_keys($funksjoner);
-            $JSON->funksjonsnavn = $funksjoner;
-        }
-		break;
-	case 'matkultur':
-		throw new Exception("Matkultur må midlertidig meldes på av deltakerne selv. Dette vil bli mulig også herfra så fort vi har fått rettet feilen.");
-	default:
-		throw new Exception("Fant ikke rett skjema for ".$type);
+$real_type = Typer::getByKey($type);
+if( $real_type->erGruppe() ) {
+    $JSON->twigJS = 'innslagtittel';
+} else {
+    $JSON->twigJS = 'innslagtittellos';
+    $innslag_type = Typer::getByName($type);
+    if( $innslag_type->harFunksjoner() ) {
+        $funksjoner = $innslag_type->getFunksjoner();
+        $JSON->type_nicename = $innslag_type->getNavn();
+        $JSON->funksjoner = array_keys($funksjoner);
+        $JSON->funksjonsnavn = $funksjoner;
+    }
 }

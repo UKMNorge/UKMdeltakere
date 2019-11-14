@@ -29,7 +29,9 @@ if( $innslag->getType()->harFunksjoner() ) {
 
 /** OPPDATER INNSLAGSDATA **/
 $innslag->setNavn( $DATA['fornavn'] . ' ' . $DATA['etternavn'] );
-$innslag->setBeskrivelse( $DATA['erfaring'] );
+if( $innslag->getType()->harBeskrivelse() ) {
+    $innslag->setBeskrivelse( $DATA['erfaring'] );
+}
 $innslag->setKommune( $DATA['kommune'] );
 
 WritePerson::save( $person );

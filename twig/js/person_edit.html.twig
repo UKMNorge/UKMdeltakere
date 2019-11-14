@@ -24,8 +24,8 @@
 		
 		<div class="col-xs-12 col-sm-6 col-lg-4">
 			<div class="form-group text-danger">
-				<label for="rolle">{{ innslag.type.tekst['rolle.navn'] }}</label>
-				<input name="rolle" type="text" class="form-control" value="{{ person.rolle }}" required />
+				<label for="rolle">{{ innslag.type.tekst['rolle.navn']|replace({'%person':person.fornavn}) }}</label>
+				<input name="rolle" type="text" class="form-control" value="{{ person.rolle }}" placeholder="{{innslag.type.tekst['rolle.placeholder']}}" required />
 			</div>
 
 			<div class="form-group text-danger">

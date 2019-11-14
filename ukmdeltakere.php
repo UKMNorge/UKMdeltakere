@@ -133,7 +133,7 @@ function UKMdeltakere_scriptsandstyles() {
 	wp_enqueue_script('TwigJS');
 	wp_enqueue_script('jQuery-fastlivefilter');
 
-	wp_enqueue_script('UKMDELTA_tittelJS', WP_PLUGIN_URL . '/UKMdeltakere/DELTA_tittel.js' );
+	wp_enqueue_script('UKMDELTA_tittelJS', 'https://delta.'. UKM_HOSTNAME . '/js/tittel.js' );
 	
 	wp_enqueue_script('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.js' );
     wp_enqueue_style('UKMdeltakere_css', WP_PLUGIN_URL . '/UKMdeltakere/ukmdeltakere.css' );

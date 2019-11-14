@@ -14,7 +14,7 @@
 			{% if type.harSjanger %}
 				<div class="form-group">
 					<label for="sjanger">Sjanger</label>
-					<input name="sjanger" type="text" class="form-control" value="{{ innslag.sjanger }}" />
+					<input name="sjanger" type="text" class="form-control" value="{{ innslag.sjanger }}" placeholder="{{ innslag.type.tekst['sjanger.placeholder']}}" />
 				</div>
 			{% endif %}
 			

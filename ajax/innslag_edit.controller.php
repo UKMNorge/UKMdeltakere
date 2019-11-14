@@ -1,6 +1,6 @@
 <?php
 
-if( $innslag->getType()->harTitler() ) {
+if( $innslag->getType()->erGruppe() ) {
     $JSON->twigJS = 'form';
 	// Kommune hvor innslaget er meldt på:
 	$JSON->innslag->kommune_id = $innslag->getKommune()->getId();
