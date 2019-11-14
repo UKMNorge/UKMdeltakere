@@ -255,20 +255,15 @@
 		</legend>
 
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-			{% if monstring.type == 'kommune' %}
-				{% if innslag.status != 8 %}
-					<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success col-xs-12 col-sm-4 col-lg-3" data-action="meldPa">Meld på UKM</a>
-				{% endif %}
+            {% if innslag.status != 8 %}
+                <a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-success col-xs-12 col-sm-4 col-lg-3" data-action="meldPa">Meld på UKM</a>
+            {% endif %}
 
-				{% if innslag.avmeldbar %}
-					<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM?">Meld av UKM</a>
-				{% else %}
-					<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?">Meld av UKM</a>
-				{% endif %}
-			{% else %}
-				<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra din festival? Innslaget vil fortsatt være registrert som påmeldt på lokalmønstringen">Meld av fra
-					{{ monstring.fylke.navn }}</a>
-			{% endif %}
+            {% if innslag.avmeldbar %}
+                <a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM?">Meld av UKM</a>
+            {% else %}
+                <a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra UKM? Selv om de startet påmeldingen sin for kort tid siden?">Meld av UKM</a>
+            {% endif %}
 		</div>
 		<div class="clearfix"></div>
 
