@@ -1,6 +1,8 @@
 <?php
 
-$monstring = new monstring_v2( get_option('pl_id') );
+use UKMNorge\Arrangement\Arrangement;
+
+$monstring = new Arrangement( get_option('pl_id') );
 $collection = $monstring->getInnslag();
 $TWIGdata['list_innslag'] = [];
 

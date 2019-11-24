@@ -1,5 +1,8 @@
 <?php
+
+use UKMNorge\Innslag\Personer\Person;
+
 $JSON->twigJS = 'personaddexisting';
 
-$person = new person_v2( $_POST['object_id'] );
+$person = new Person( $_POST['object_id'] );
 $JSON->person = data_person( $person );

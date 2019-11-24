@@ -8,12 +8,12 @@
  * Personen vil da få sms fra cronjobben som følger opp dette.
  */
 
+use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Samtykke\Kategorier;
 use UKMNorge\Samtykke\Person;
 
-require_once('UKM/samtykke/kategorier.class.php');
 
-$monstring = new monstring_v2( get_option('pl_id') );
+$monstring = new Arrangement( get_option('pl_id') );
 $TWIGdata['monstring'] = $monstring;
 
 $grupper = [

@@ -5,8 +5,8 @@
 			<h4>Legg til {{ person.fornavn }} {{ person.etternavn }} i {{ innslag.navn }}</h4>
 
 			<div class="form-group text-danger">
-				<label for="rolle">Rolle / funksjon / instrument *</label>
-				<input name="rolle" type="text" class="form-control" value="{{ person.rolle }}" required />
+				<label for="rolle">{{innslag.type.tekst['rolle.navn']|replace({'%person':person.fornavn})}}</label>
+				<input name="rolle" type="text" class="form-control" value="{{ person.rolle }}" placeholder="{{innslag.type.tekst['rolle.placeholder']}}" required />
 			</div>
 		</div>
 	</div>

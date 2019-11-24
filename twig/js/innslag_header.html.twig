@@ -6,17 +6,17 @@
 	{% set innslag_har_titler = innslag.getType().harTitler() %}
 	{% set monstring_type = monstring.getType() %}
 	
-	{% if innslag_har_titler %}
-		{% if monstring.getType() == 'kommune' %}
-			{% set innslag_personer_antall = innslag.getPersoner().getAntall() %}
-		{% else %}
-			{% set innslag_personer_antall = innslag.getPersoner().getAntallVideresendt() %}
-		{% endif %}
+	{% if innslag.getType().erGruppe() %}
+        {% set innslag_personer_antall = innslag.getPersoner().getAntall() %}
 		
 		{% if 'utstilling' == innslag_type %}
 			{% set titler_antall = innslag.getTitler( monstring ).getAll()|length %}
-		{% else %}
+		{% endif %}
+
+        {% if innslag.getType().harTid() %}
 			{% set titler_varighet = innslag.getTitler( monstring ).getVarighet().getHumanShort() %}
+        {% else %}
+            {% set titler_varighet = 0 %}
 		{% endif %}
 
 		{% set innslag_advarsel_personer_har = innslag.getAdvarsler( monstring ).har('personer') %}

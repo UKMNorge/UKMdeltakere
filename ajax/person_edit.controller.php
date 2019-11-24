@@ -1,13 +1,16 @@
 <?php
+
+use UKMNorge\Geografi\Fylker;
+
 $JSON->twigJS = 'personedit';
 
-$person = $innslag->getPersoner()->getById( $_POST['object_id'] );
+$person = $innslag->getPersoner()->get( $_POST['object_id'] );
 $JSON->person = data_person( $person );
 $JSON->person->rolle = $person->getRolle();
 
 if( $monstring->getType() == 'land' ) {
 	$JSON->fylker = [];
-	foreach( fylker::getAllInkludertFalske() as $fylke ) {
+	foreach( Fylker::getAllInkludertFalske() as $fylke ) {
 		$data = new stdClass();
 		$data->id = $fylke->getId();
 		$data->navn = $fylke->getNavn();

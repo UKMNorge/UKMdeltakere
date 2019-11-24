@@ -18,4 +18,3 @@ if( !in_array( $innslag->getKontaktperson()->getId(), $ids ) ) {
 	$JSON->personer[] = data_person( $innslag->getKontaktperson() );
 	$JSON->kontaktperson->deltar = false;	
 }
-

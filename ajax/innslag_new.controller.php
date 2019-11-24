@@ -1,28 +1,31 @@
 <?php
 ### innslag_new.controller.php
 
+use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Database\SQL\Query;
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Innslag\Personer\Person;
-use UKMNorge\Innslag\Typer;
+use UKMNorge\Innslag\Typer\Typer;
 
 require_once('UKM/Autoloader.php');
 
 $type = $_POST['type'];
-$monstring = new monstring_v2(get_option('pl_id'));
+$arrangement = new Arrangement(get_option('pl_id'));
 
 $JSON->innslag_type = $type;
+$JSON->type = data_type( Typer::getByKey($type) );
 
 // TODO: Fix this:
-// $JSON->personer = $monstring->getPersoner();
-// $JSON->personer = $monstring->getPersoner()->getAll();
+// $JSON->personer = $arrangement->getPersoner();
+// $JSON->personer = $arrangement->getPersoner()->getAll();
 // WORKAROUND:
 $personer = [];
 
-if( $monstring->getType() != 'land' ) {
+// Tidligere personer
+if( in_array($arrangement->getEierType(), ['kommune','fylke']) ) {
 	$sql = new Query("SELECT * FROM `smartukm_participant`
 					WHERE `p_kommune` IN('#kommuner')",
-					array('kommuner'=> implode(',', $monstring->getKommuner()->getIdArray()) )
+					array('kommuner'=> implode(',', $arrangement->getKommuner()->getIdArray()) )
 				);
 	$res = $sql->run();
 
@@ -33,19 +36,21 @@ if( $monstring->getType() != 'land' ) {
 	}
 }
 
-foreach( $monstring->getInnslag()->getAll() as $innslag ) {
+// Personer fra påmeldte innslag
+foreach( $arrangement->getInnslag()->getAll() as $innslag ) {
 	foreach( $innslag->getPersoner()->getAll() as $person ) {
 		$personer[ $person->getId() ] = data_person( $person );
 	}
 }
-foreach( $monstring->getInnslag()->getAllUfullstendige() as $innslag ) {
+// Personer fra halv-påmeldte innslag
+foreach( $arrangement->getInnslag()->getAllUfullstendige() as $innslag ) {
 	foreach( $innslag->getPersoner()->getAll() as $person ) {
 		$personer[ $person->getId() ] = data_person( $person );
 	}
 }
 $JSON->personer = $personer;
 
-if( $monstring->getType() == 'land' ) {
+if( $arrangement->getEierType() == 'land' ) {
 	$JSON->fylker = [];
 	foreach( Fylker::getAllInkludertFalske() as $fylke ) {
 		$data = new stdClass();
@@ -64,35 +69,16 @@ if( $monstring->getType() == 'land' ) {
 	}
 }
 
-
-switch( $type ) {
-	case 'scene':
-	case 'musikk':
-	case 'dans':
-	case 'teater':
-	case 'litteratur':
-	case 'film':
-	case 'video':
-	case 'utstilling':
-		$JSON->twigJS = 'innslagtittel';
-		break;
-	case 'konferansier':
-	// Mulig vi også må ha sceneteknikk her
-		$JSON->twigJS = 'innslagkonferansier';
-		break;
-	case 'nettredaksjon':
-	case 'arrangor':
-	case 'ressurs':
-		$JSON->twigJS = 'innslagtittellos';
-		$iType = Typer::getByName($type);
-		$funksjoner = $iType->getFunksjoner();
-
-		$JSON->type_nicename = $iType->getNavn();
-		$JSON->funksjoner = array_keys($funksjoner);
-		$JSON->funksjonsnavn = $funksjoner;
-		break;
-	case 'matkultur':
-		throw new Exception("Matkultur må midlertidig meldes på av deltakerne selv. Dette vil bli mulig også herfra så fort vi har fått rettet feilen.");
-	default:
-		throw new Exception("Fant ikke rett skjema for ".$type);
+$real_type = Typer::getByKey($type);
+if( $real_type->erGruppe() ) {
+    $JSON->twigJS = 'innslagtittel';
+} else {
+    $JSON->twigJS = 'innslagtittellos';
+    $innslag_type = Typer::getByName($type);
+    if( $innslag_type->harFunksjoner() ) {
+        $funksjoner = $innslag_type->getFunksjoner();
+        $JSON->type_nicename = $innslag_type->getNavn();
+        $JSON->funksjoner = array_keys($funksjoner);
+        $JSON->funksjonsnavn = $funksjoner;
+    }
 }

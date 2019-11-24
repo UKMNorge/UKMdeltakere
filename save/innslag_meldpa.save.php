@@ -1,6 +1,8 @@
 <?php
 
-require_once('UKM/write_innslag.class.php');
+use UKMNorge\Innslag\Write;
+
+require_once('UKM/Autoloader.php');
 
 // Sjekk for påkrevd data:
 if( empty($_POST['innslag']) ) {
@@ -10,6 +12,6 @@ if( empty($_POST['innslag']) ) {
 $innslag = $monstring->getInnslag()->get( $_POST['innslag'], true );
 $innslag->setStatus( 8 );
 
-write_innslag::saveStatus( $innslag );
+Write::saveStatus( $innslag );
 
 $JSON->redirect = '?page=UKMdeltakere&list=fullstendig&edit='. $_POST['innslag'] .'#innslag_'. $_POST['innslag'];

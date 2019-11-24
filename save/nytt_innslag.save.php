@@ -3,7 +3,7 @@
 use UKMNorge\Geografi\Kommune;
 use UKMNorge\Innslag\Personer\Person;
 use UKMNorge\Innslag\Personer\Write as WritePerson;
-use UKMNorge\Innslag\Typer;
+use UKMNorge\Innslag\Typer\Typer;
 use UKMNorge\Innslag\Write as WriteInnslag;
 
 require_once('UKM/Autoloader.php');
@@ -29,12 +29,10 @@ $kontaktpersonSomDeltaker = isset($DATA['kontaktpersonErMed']) && 'on' == $DATA[
 
 // Hvilken kommune er innslaget fra
 $kommune = new Kommune( $DATA['kommune'] );
-$fra_monstring = new kommune_monstring_v2( $kommune->getId(), $monstring->getSesong() );
-$fra_monstring = $fra_monstring->monstring_get();
 $type = Typer::getByName($DATA['type']);
 
 // Innslag med titler
-if( $type->harTitler() ) {
+if( $type->erGruppe() ) {
 	$navn = $DATA['navn'];
 	$sjanger = $DATA['sjanger'];
 	$beskrivelse = $DATA['beskrivelse'];
@@ -48,7 +46,7 @@ else {
 }
 
 // Opprett innslaget
-$innslag = WriteInnslag::create($kommune, $fra_monstring, $type, $navn, $kontaktperson );
+$innslag = WriteInnslag::create($kommune, $monstring, $type, $navn, $kontaktperson );
 $innslag->setBeskrivelse($beskrivelse);
 $innslag->setSjanger($sjanger);
 $innslag->setStatus(8);
@@ -63,28 +61,24 @@ if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
 	WriteInnslag::savePersoner( $innslag );
 }
 
-
 // Innslag med titler
-if( $type->harTitler() ) {
+if( $type->erGruppe() ) {
 	$kontaktperson->setRolle( $DATA['rolle'] );
 }
-// Tittelløse innslag (jobbe med UKM)
+// Enkeltperson-innslag med funksjoner (jobbe med UKM)
+elseif( $type->harFunksjoner() ) {
+    $funksjoner = array();
+    $mulige = $innslag->getType()->getFunksjoner();
+    foreach($_POST['formData'] as $element) {
+        if($element['name'] == 'funksjoner[]') {
+            $funksjoner[$element['value']] = $mulige[$element['value']];
+        }
+    }
+    $kontaktperson->setRolle($funksjoner);
+}
+// Enkeltperson-innslag uten funksjoner (konferansier, f.eks)
 else {
-	if( 'konferansier' == $type->getKey() ) {
-		$kontaktperson->setRolle( $type->getNavn() );
-	} 
-	else {
-		// UKM Media eller arrangør:
-		$funksjoner = array();
-		$mulige = $innslag->getType()->getFunksjoner();
-		foreach($_POST['formData'] as $element) {
-			if($element['name'] == 'funksjoner[]') {
-				$funksjoner[$element['value']] = $mulige[$element['value']];
-			}
-		}
-		$kontaktperson->setRolle($funksjoner);
-	}
-	
+    $kontaktperson->setRolle( $type->getNavn() );
 }
 
 WriteInnslag::save( $innslag );
@@ -92,48 +86,8 @@ WritePerson::save( $kontaktperson );
 if( $kontaktpersonSomDeltaker || !$type->harTitler() ) {
 	WritePerson::saveRolle( $kontaktperson );
 }
-
-// Hvis vi legger til innslaget på fylkesmønstring eller festival - videresend det!
-if( $monstring->getType() != 'kommune' ) {
-
-	// HVIS LAND, LEGG TIL PÅ FYLKESNIVÅ FØRST
-	if( $monstring->getType() == 'land' ) {
-		require_once('UKM/monstringer.collection.php');
-		$monstring_fylke = monstringer_v2::fylke( $innslag->getFylke(), $monstring->getSesong() );
-		// Videresend innslaget til nåværende mønstring
-		$monstring_fylke->getInnslag()->leggTil( $innslag );
-		WriteInnslag::leggTil( $innslag );
-		
-		if( $kontaktpersonSomDeltaker ) {
-			// Hent ut innslaget på nytt (ettersom personen er på lokalnivå vil vedkommende hentes av get())
-			$innslag_fylke = $monstring_fylke->getInnslag()->get( $innslag->getId() );
-			// Reset personerCollection for å nullstille context-objektet
-			$innslag_fylke->resetPersonerCollection();
-			// Legg til personen i collection
-			$kontaktperson_fylke = $innslag_fylke->getPersoner()->get( $kontaktperson->getId() );
-			// Legg til personen på fylkesnivå (litt knotete, men må gjøres for videresendingen)
-			WritePerson::leggTil( $kontaktperson_fylke );
-		}
-	}
-	
-	// HVIS LAND: VIDERESEND FRA FYLKE TIL LAND
-	// HVIS FYLKE: VIDERESEND FRA KOMMUNE TIL LAND
-	
-	// Videresend innslaget til nåværende mønstring
-	$monstring->getInnslag()->leggTil( $innslag );
-	WriteInnslag::leggTil( $innslag );
-	
-	if( $kontaktpersonSomDeltaker ) {
-		// Hent ut innslaget på nytt (ettersom personen er på lokalnivå vil vedkommende hentes av get())
-		$innslag_fylke = $monstring->getInnslag()->get( $innslag->getId() );
-		// Reset personerCollection for å nullstille context-objektet
-		$innslag_fylke->resetPersonerCollection();
-		// Legg til personen i collection
-		$kontaktperson_fylke = $innslag_fylke->getPersoner()->get( $kontaktperson->getId() );
-		// Legg til personen på fylke-/landsnivå (litt knotete, men må gjøres for videresendingen)
-		WritePerson::leggTil( $kontaktperson_fylke );
-	}
-}
+$innslag->setStatus(8);
+WriteInnslag::saveStatus( $innslag );
 
 $JSON->innslag_id = $innslag->getId();
 $JSON->type = $type;

@@ -26,7 +26,6 @@ if( is_object( $innslag ) ) {
 	
 	$JSON->filter = implode(' ', $data);
 	
-	
 	$JSON->innslag_navn = $innslag->getNavn();
 	$JSON->innslag_kommune = $innslag->getKommune()->getNavn();
 	$JSON->innslag_fylke = $innslag->getFylke()->getNavn();
@@ -34,16 +33,17 @@ if( is_object( $innslag ) ) {
 	$JSON->innslag_har_titler = $innslag->getType()->harTitler();
 	$JSON->monstring_type = $monstring->getType();
 	
-	if( $innslag->getType()->harTitler() ) {
+	if( $innslag->getType()->erGruppe() ) {
 		if( $monstring->getType() == 'kommune' ) {
 			$JSON->innslag_personer_antall = $innslag->getPersoner()->getAntall();
 		} else {
 			$JSON->innslag_personer_antall = $innslag->getPersoner()->getAntallVideresendt();
-		}
-		if( 'utstilling' == $innslag->getType()->getKey() ) {
-			$JSON->titler_antall = $innslag->getTitler()->getAntall();
-		} else {
+        }
+        
+		if( $innslag->getType()->harTid() ) {
 			$JSON->titler_varighet = $innslag->getTitler()->getVarighet()->getHumanShort();
+        } else {
+			$JSON->titler_antall = $innslag->getTitler()->getAntall();
 		}
 		
 		$JSON->innslag_advarsel_personer_har = $innslag->getAdvarsler()->har('personer');

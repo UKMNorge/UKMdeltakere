@@ -57,16 +57,10 @@
 		</div>
 
 		<div class="col-xs-12 col-sm-6 col-lg-4">
-			{% if 1 == innslag.type.id %}
-				<div class="form-group hidden">
-					<label for="kategori">Kategori</label>
-					<input name="kategori" disabled="disabled" type="text" class="form-control" value="{{ kategori }}"/>
-				</div>
-			{% endif %}
-			{% if 'utstilling' != innslag_type %}
+			{% if type.harSjanger%}
 				<div class="form-group">
 					<label for="sjanger">Sjanger</label>
-					<input name="sjanger" type="text" class="form-control" />
+					<input name="sjanger" type="text" class="form-control" placeholder="{{ type.tekst['sjanger.placeholder']}}" />
 				</div>
 			{% endif %}
 
@@ -123,7 +117,7 @@
 					</div>
 					<div class="form-group text-danger">
 						<label for="mobil">Mobil *</label>
-						<input name="mobil" id="mobil" type="tel" class="form-control" value="" required />
+						<input name="mobil" id="mobil" type="tel" class="form-control" value="" maxlength="8" required />
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-lg-4">
@@ -166,8 +160,8 @@
 			</div>
 			<br />
 			<div class="form-group kontaktpersonRolle">
-				<label for="rolle" class="text-danger">Kontaktpersonens rolle / funksjon / instrument *</label>
-				<input type="text" class="form-control" name="rolle" id="rolle" required />
+				<label for="rolle" class="text-danger">Kontaktpersonens {{ type.tekst['rolle.navn']|replace({'%person':'personen'})|lower }}*</label>
+				<input type="text" class="form-control" name="rolle" id="rolle" placeholder="{{type.tekst['rolle.placeholder']}}" required />
 			</div>
 		</div>
 		<div class="clearfix"></div>
