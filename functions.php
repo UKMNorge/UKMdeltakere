@@ -134,7 +134,8 @@ function data_person( $person ) {
 	$data = new stdClass();
 	$data->id 					= $person->getId();
 	$data->fornavn				= $person->getFornavn();
-	$data->etternavn			= $person->getEtternavn();
+    $data->etternavn			= $person->getEtternavn();
+    $data->navn                 = $person->getNavn();
 	$data->mobil				= $person->getMobil();
 	$data->epost				= $person->getEpost();
 	$data->alder_tall			= $person->getAlder('');
