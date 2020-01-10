@@ -1,5 +1,5 @@
 <div style="width: 95% UKMfilter" id="filter_innslag">
-	<h2>Dine {% if tab_active == 'pabegynte' %}såvidt påbegynte påmeldinger{% elseif tab_active == 'ufullstendig' %}nesten påmeldte innslag{% else %}deltakere{% endif %}</h2>
+	<h2>Dine {% if tab_active == 'ufullstendig' %}uferdige påmeldinger{% else %}påmeldte deltakere{% endif %}</h2>
 	
 	<div class="row">
 		{% if monstring.harPamelding() %}
@@ -8,9 +8,9 @@
 					<li class="list-group-item">
 						<div class="pull-right">
 							{% if tab_active == 'fullstendig' %}
-								vises nå
+								Vises nå
 							{% else %}
-								<a href="?page=UKMdeltakere&list=fullstendig" class="btn btn-default btn-sm pull-right">VIS</a>
+								<a href="?page=UKMdeltakere&list=fullstendig" class="btn btn-default btn-sm pull-right">Vis</a>
 							{% endif %}
 						</div>
 						<h3 style="margin:0px;" class="text-success">
@@ -20,26 +20,13 @@
 					<li class="list-group-item">
 						<div class="pull-right">
 							{% if tab_active == 'ufullstendig' %}
-								vises nå
+								Vises nå
 							{% else %}
-								<a href="?page=UKMdeltakere&list=ufullstendig" class="btn btn-default btn-sm pull-right">VIS</a>
+								<a href="?page=UKMdeltakere&list=ufullstendig" class="btn btn-default btn-sm pull-right">Vis</a>
 							{% endif %}
 						</div>
 						<h3 style="margin:0px;" class="text-danger">
-							{{ stat.ufullstendige }} <small class="text-danger">Nesten påmeldte innslag</small>
-						</h3>
-					</li>
-					
-					<li class="list-group-item">
-						<div class="pull-right">
-							{% if tab_active == 'pabegynte' %}
-								vises nå
-							{% else %}
-								<a href="?page=UKMdeltakere&list=pabegynte" class="btn btn-default btn-sm pull-right">VIS</a>
-							{% endif %}
-						</div>
-						<h3 style="margin:0px;" class="text-info">
-							{{ stat.pabegynte }} <small class="text-info">Såvidt påbegynte påmeldinger</small>
+							{{ stat.ufullstendige }} <small class="text-danger">Ikke påmeldte innslag</small>
 						</h3>
 					</li>
 				</ol>

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row">
 	{% for type_innslag in monstring.getInnslagTyper() %}
-		{% if monstring.getInnslag().filterbyStatus([7,6,5], monstring.getInnslag().filterByType( type_innslag, monstring.getInnslag().getAllUfullstendige() ) )|length > 0 %}
+		{% if monstring.getInnslag().getAllUfullstendige()|length > 0 %}
 			<div class="innslagBlock col-xs-12">
 				<div class="innslagTypeHeader">
 					<a href="?page=UKMdeltakere&create=add-new-{{ type_innslag.getKey() }}#add-new-{{ type_innslag.getKey() }}" class="pull-right btn btn-xs btn-default">Legg til nytt innslag</a>
@@ -12,7 +12,7 @@
 					<h3>{{ type_innslag }}</h3>
 					<div class="clearfix"></div>
 				</div>
-				<ol class="list-group innslag_lister">
+				<ol class="list-group innslag_lister items">
 					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 						{% embed "list_item.html.twig" %}{% endembed %}
 					{% else %}
