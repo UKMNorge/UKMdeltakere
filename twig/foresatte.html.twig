@@ -1,0 +1,39 @@
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      {% include "wp_modul.flashbag.html.twig"  %}
+      <form name="" action="#" method="POST">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Velg</th>
+              <th scope="col">Navn</th>
+              <th>Alder </th>
+              <th>Sist sendt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% set ilisten = [] %}
+            {% for innslag in arrangement.getInnslag().getAll() %}
+            {% for person in innslag.getPersoner().getAll() | filter(person => not person.harForesatt() and person.getId() not in ilisten and person.getAlder() <= 15) %}
+            <tr>
+              <td><input class="form-check-input" type="checkbox" value="{{person.getId()}}" name="personer[]" id="checkbox"></td>
+              <th scope="row">{{ person.getNavn() }}</th>
+              <td>{{ person.getAlder() }}</td>
+              <td>{{ person.getSistSendt() }}</td>
+            </tr>
+            {% set ilisten = ilisten|merge([person.getId()]) %}
+            {% endfor %}
+            {% endfor %}
+            <tr>
+              <td><input type="checkbox" onchange="checkAll(this)" name="chk[]" /><i>(Velg alle)</i></td>
+            </tr>
+          </tbody>
+
+        </table>
+        <button name="submit" type="submit" class="btn btn-primary">Send melding</button>
+    </form>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,9 @@
-<?php  
-/* 
+<?php
+/*
 Plugin Name: UKM Deltakere
 Plugin URI: http://www.ukm.no
 Description: UKM Norge admin
-Author: UKM Norge / M Mandal 
+Author: UKM Norge / M Mandal
 Version: 2.0
 Author URI: http://www.ukm.no
 */
@@ -23,7 +23,7 @@ if( is_admin() && get_option('pl_id') ) {
 function UKMdeltakere_ajax() {
 	$JSON = new stdClass();
 	$JSON->innslag_id = $_POST['innslag'];
-	
+
 	$controller = dirname( __FILE__ ) .'/ajax/'. $_POST['do'] .'.controller.php';
 	if( !file_exists( $controller ) ) {
 		$JSON->success = false;
@@ -86,13 +86,13 @@ function convert_array_to_utf8($mixed) {
 	return $mixed;
 }
 
-function UKMdeltakere_dash_shortcut( $shortcuts ) {	
+function UKMdeltakere_dash_shortcut( $shortcuts ) {
 	$shortcut = new stdClass();
 	$shortcut->url = 'admin.php?page=UKMdeltakere';
 	$shortcut->title = 'Deltakere';
 	$shortcut->icon = '//ico.ukm.no/people-menu.png';
 	$shortcuts[] = $shortcut;
-	
+
 	return $shortcuts;
 }
 
@@ -100,11 +100,11 @@ function UKMdeltakere_dash_shortcut( $shortcuts ) {
 function UKMdeltakere_menu() {
     // Deltakere-menyen
     $page = add_menu_page(
-        'Påmeldte', 
-        'Påmeldte', 
-        'editor', 
-        'UKMdeltakere', 
-        'UKMdeltakere', 
+        'Påmeldte',
+        'Påmeldte',
+        'editor',
+        'UKMdeltakere',
+        'UKMdeltakere',
         'dashicons-buddicons-buddypress-logo',#'//ico.ukm.no/people-menu.png',
     	50
     );
@@ -112,13 +112,22 @@ function UKMdeltakere_menu() {
     // Personvern-menyen
     $page_personvern = add_submenu_page(
         'UKMdeltakere',
-        'Personvern', 
+        'Personvern',
         'Personvern',
         'editor',
         'UKMdeltakere_personvern',
         'UKMdeltakere_personvern'
 	);
-	
+
+	$page_foresatt = add_submenu_page(
+			'UKMdeltakere',
+			'Foresatte',
+			'Foresatte',
+			'editor',
+			'UKMdeltakere_foresatte',
+			'UKMdeltakere_foresatte'
+);
+
 	add_action(
 		'admin_print_styles-' . $page,
 		'UKMdeltakere_scriptsandstyles'
@@ -127,6 +136,14 @@ function UKMdeltakere_menu() {
 		'admin_print_styles-' . $page_personvern,
 		'UKMdeltakere_scriptsandstyles_basic'
 	);
+	add_action(
+		'admin_print_styles-' . $page_foresatt,
+		'UKMdeltakere_scriptsandstyles_basic'
+	);
+	add_action(
+		'admin_print_styles-' . $page_foresatt,
+		'UKMdeltakere_scriptsandstyles_foresatt'
+	);
 }
 ## INCLUDE SCRIPTS
 function UKMdeltakere_scriptsandstyles() {
@@ -134,11 +151,11 @@ function UKMdeltakere_scriptsandstyles() {
 	wp_enqueue_script('jQuery-fastlivefilter');
 
 	wp_enqueue_script('UKMDELTA_tittelJS', 'https://delta.'. UKM_HOSTNAME . '/js/tittel.js' );
-	
-	wp_enqueue_script('UKMdeltakere_css', str_replace('http://','https://', WP_PLUGIN_URL) . '/UKMdeltakere/ukmdeltakere.js' );
+
+	wp_enqueue_script('UKMdeltakere_js', str_replace('http://','https://', WP_PLUGIN_URL) . '/UKMdeltakere/ukmdeltakere.js' );
     wp_enqueue_style('UKMdeltakere_css', str_replace('http://','https://', WP_PLUGIN_URL) . '/UKMdeltakere/ukmdeltakere.css' );
     UKMdeltakere_scriptsandstyles_basic();
-} 
+}
 
 function UKMdeltakere_scriptsandstyles_basic() {
 	wp_enqueue_script('WPbootstrap3_js');
@@ -149,10 +166,10 @@ function UKMdeltakere_scriptsandstyles_basic() {
 ## SHOW STATS OF PLACES
 function UKMdeltakere() {
 	$TWIGdata = [];
-	
+
 	require_once('controller/layout.controller.php');
 	require_once('controller/list_'. $TWIGdata['tab_active'] .'.controller.php' );
-	
+
 	echo TWIG( 'list_'. $TWIGdata['tab_active']. '.html.twig', $TWIGdata, dirname(__FILE__), true);
 	echo TWIGjs_simple( dirname(__FILE__) );
 
@@ -160,11 +177,11 @@ function UKMdeltakere() {
 
 function UKMdeltakere_network_menu() {
 	$page = add_menu_page(
-		'Deltakere', 
-		'Deltakere', 
-		'superadmin', 
+		'Deltakere',
+		'Deltakere',
+		'superadmin',
 		'UKMdeltakere_network_search',
-		'UKMdeltakere_network_search', 
+		'UKMdeltakere_network_search',
         'dashicons-buddicons-buddypress-logo',#'//ico.ukm.no/people-menu.png',
 		24
 	);
@@ -173,7 +190,7 @@ function UKMdeltakere_network_menu() {
 }
 function UKMdeltakere_network_search() {
 	$TWIGdata = [];
-	
+
 	require_once('controller/network/search.controller.php');
 
 	echo TWIG( 'network/search.html.twig', $TWIGdata, dirname(__FILE__), true);
@@ -185,7 +202,7 @@ function UKMdeltakere_personvern() {
 	$TWIGdata = [
 		'page' => $_GET['page'],
 	];
-	
+
     try {
 		if( isset( $_GET['action'] ) ) {
 			$VIEW = 'personvern/'. basename($_GET['action']);
@@ -198,7 +215,20 @@ function UKMdeltakere_personvern() {
 		$TWIGdata['message'] = $e->getMessage();
 		$TWIGdata['code'] = $e->getCode();
 		$VIEW = 'exception';
-	}	
+	}
 	echo TWIG( $VIEW .'.html.twig', $TWIGdata, dirname(__FILE__), true);
+}
+
+function UKMdeltakere_foresatte() {
+	$TWIGdata = [
+		'page' => $_GET['page'],
+	];
+	require_once('controller/foresatte.controller.php');
+	echo TWIG( 'foresatte.html.twig', $TWIGdata, dirname(__FILE__), true);
+}
+
+function UKMdeltakere_scriptsandstyles_foresatt()
+{
+	wp_enqueue_script('UKMdeltakere_foresatt', str_replace('http://','https://', WP_PLUGIN_URL) . '/UKMdeltakere/js/checkAll.js' );
 }
 ?>
