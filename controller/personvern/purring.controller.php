@@ -39,7 +39,7 @@ else {
                 $samtykke->getKommunikasjon()->sendMelding('purring_deltaker') 
             ).
             '</div>';
-    	} else {
+    } else {
         $message->level = 'warning';
         $message->header = 'SMS sendt tidligere';
         $message->body = 'SMS ble ikke sendt, da samme melding har blitt sendt til mottakeren tidligere.';

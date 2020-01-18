@@ -154,7 +154,6 @@ jQuery(document).on('click','.ombestemt', function(e) {
                         
                         
                         <td>
-                            {% if true %}{#is_super_admin %}
                             {# Vi har aldri sendt sms til deltakeren #}
                             {% if person.getStatus().getId() == 'ikke_sendt' %}
                                 <a href="?page={{GET('page')}}&action=samtykke&id={{person.getId()}}" class="btn btn-success btn-sm btn-xs btn-mini">
@@ -200,9 +199,6 @@ jQuery(document).on('click','.ombestemt', function(e) {
                                     Har ombestemt seg
                                 </a>
                             {% endif %}
-                            {% else %}{# else false #}
-                                <code class="small">kommer snart</code>
-                            {% endif %}{# endif false #}
                         </td>
                     </tr>
                 {% else %}
