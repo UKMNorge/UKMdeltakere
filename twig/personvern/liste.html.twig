@@ -156,14 +156,15 @@ jQuery(document).on('click','.ombestemt', function(e) {
                         <td>
                             {# Vi har aldri sendt sms til deltakeren #}
                             {% if person.getStatus().getId() == 'ikke_sendt' %}
-                                <a href="?page={{GET('page')}}&action=samtykke&id={{person.getId()}}" class="btn btn-success btn-sm btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&action=samtykke&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
                                     Send samtykke-sms
                                 </a>
                             {% endif %}
+                            
 
                             {# Deltaker har ikke trykket på lenken #}
                             {% if person.getStatus().getId() not in ['godkjent','ikke_godkjent','ikke_sendt', 'ikke_send'] %}
-                                <a href="?page={{GET('page')}}&action=purring&id={{person.getId()}}" class="btn btn-primary btn-sm btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&action=purring&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
                                     Send purring
                                 </a>
                                 {% if person.getKommunikasjon().har('purring') %}
@@ -177,14 +178,14 @@ jQuery(document).on('click','.ombestemt', function(e) {
 
                             {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
                             {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() == 'ikke_sendt' %}
-                                <a href="?page={{GET('page')}}&action=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-success btn-sm btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&action=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
                                     Send informasjon til foresatt
                                 </a>
                             {% endif %}
                             
                             {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
                             {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() not in ['ikke_sendt','godkjent','ikke_godkjent'] %}
-                                <a href="?page={{GET('page')}}&action=purring&foresatt=true&id={{person.getId()}}" class="btn btn-primary btn-sm btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&action=purring&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
                                     Send purring til foresatt
                                 </a>
                                 {% if person.getKommunikasjon().har('purring_foresatt') %}
