@@ -1,3 +1,19 @@
+<script>
+jQuery(document).on('click','.ombestemt', function(e) {
+    var navn = jQuery(this).parents('tr.samtykke').data('navn');
+    var sure = confirm(
+        'Er du sikker på at '+ navn + ' har ombestemt seg?' + 
+        "\r\n\r\n" +
+        'Hvis du fortsetter, sender vi en sms, hvor '+ navn + 
+        ' selv må gå inn og trykke godkjenn-knappen.'
+    );
+    if( sure ) {
+        return true;
+    }
+    e.preventDefault();
+    return false;
+});
+</script>
 <div style="width: 95%">
     <h2>
         Personvern
@@ -102,7 +118,7 @@
             
             <tbody>
                 {% for person in gruppe.personer %}
-                    <tr>
+                    <tr class="samtykke" data-navn="{{person.getNavn()}}">
                         <td>
                             {{ person.getNavn() }}
                             <small>({{ person.getId() }})</small>
@@ -179,6 +195,10 @@
                                         {{ person.getKommunikasjon().get('purring_foresatt').getTimestamp() }}
                                     </small>
                                 {% endif %}
+                            {% elseif person.getStatus().getId() == 'ikke_godkjent' %}
+                                <a href="?page={{GET('page')}}&action=ombestemt&id={{person.getId()}}" class="ombestemt btn btn-ukm btn-warning btn-xs btn-mini">
+                                    Har ombestemt seg
+                                </a>
                             {% endif %}
                             {% else %}{# else false #}
                                 <code class="small">kommer snart</code>
