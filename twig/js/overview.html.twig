@@ -232,7 +232,7 @@
 							<i class="label label-xs label-{{ lignende.status == 8 ? 'success' : 'warning' }}">{{ lignende.status == 8 ? 'Påmeldt' : 'Ufullstendig påmelding' }}</i>
 							&nbsp;
 							<b>{{ lignende.navn }}</b>
-                            <span class="text-muted">{{ lignende.kategori|capitalize }}{{ lignende.sjanger is not empty ? ' - ' ~lignende.sjanger : ''}}</span>
+                            <span class="text-muted">{{ lignende.type.navn|capitalize }}{{ lignende.type.harSjanger ? ' - ' ~lignende.sjanger : ''}}</span>
 						</div>
 						<div class="col-xs-12 col-sm-6 small">
 							Fordi
