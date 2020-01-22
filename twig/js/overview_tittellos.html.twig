@@ -38,6 +38,45 @@
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 	</fieldset>
 
+    {% if lignende is defined %}
+		<div class="clearfix"></div>
+		<fieldset class="col-xs-12">
+			<legend>
+				<small>Lignende innslag</small>
+			</legend>
+			<p class="explain">
+				Ofte er ufullstendige påmeldinger et duplikat av en fullført påmelding, eller så har kontaktpersonen meldt på et annet innslag.
+								Listen over lignende innslag viser deg innslag med lignende navn, eller andre innslag hvor noen av personene er med.
+			</p>
+
+			<p>
+				<b>{{ alle_lignende|length }}
+					innslag på din mønstring ligner på
+					{{ innslag.navn }}</b>:
+			</p>
+			<ol class="list-group list-group-compact">
+				{% for lignende in alle_lignende %}
+					<li class="list-group-item">
+						<div class="col-xs-12 col-sm-6">
+							<i class="label label-xs label-{{ lignende.status == 8 ? 'success' : 'warning' }}">{{ lignende.status == 8 ? 'Påmeldt' : 'Ufullstendig påmelding' }}</i>
+							&nbsp;
+							<b>{{ lignende.navn }}</b>
+                            <span class="text-muted">{{ lignende.type.navn|capitalize }}{{ lignende.type.harSjanger ? ' - ' ~lignende.sjanger : ''}}</span>
+						</div>
+						<div class="col-xs-12 col-sm-6 small">
+							Fordi
+							{{ lignende.grunnlag }}
+						</div>
+						<div class="clearfix"></div>
+					</li>
+				{% else %}
+					<li class="list-group-item">Fant ingen lignende innslag</li>
+				{% endif %}
+			</ol>
+		</fieldset>
+		<div class="clearfix"></div>
+	{% endif %}
+
 	<fieldset class="col-xs-12 col-sm-6 col-lg-3">
 		<legend><small>Handlinger</small></legend>
 		{% if innslag.status != 8 %}
