@@ -95,6 +95,12 @@ jQuery(document).on('click','.ombestemt', function(e) {
             <br />
             - <code>15 år eller eldre</code>: {{ sms_15o }}
         </li>
+
+        <li class="list-group-item">
+            <b>Har du en deltaker som har ombestemt seg?</b>
+            <br />
+            
+        </li>
     </ol>
 
 
@@ -167,11 +173,11 @@ jQuery(document).on('click','.ombestemt', function(e) {
                                 <a href="?page={{GET('page')}}&action=purring&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
                                     Send purring
                                 </a>
-                                {% if person.getKommunikasjon().har('purring') %}
+                                {% if person.getKommunikasjon().har('purring_deltaker') %}
                                     <br />
                                     <small>
                                         Purret {{ person.getPerson().getFornavn() }} 
-                                        {{ person.getKommunikasjon().get('purring').getTimestamp() }}
+                                        {{ person.getKommunikasjon().get('purring_deltaker').getTimestamp() }}
                                     </small>
                                 {% endif %}
                             {% endif %}
@@ -197,7 +203,7 @@ jQuery(document).on('click','.ombestemt', function(e) {
                                 {% endif %}
                             {% elseif person.getStatus().getId() == 'ikke_godkjent' %}
                                 <a href="?page={{GET('page')}}&action=ombestemt&id={{person.getId()}}" class="ombestemt btn btn-ukm btn-warning btn-xs btn-mini">
-                                    Har ombestemt seg
+                                    Send ny mulighet til samtykke
                                 </a>
                             {% endif %}
                         </td>
