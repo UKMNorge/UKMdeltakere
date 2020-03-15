@@ -26,7 +26,10 @@ if( is_object( $innslag ) ) {
 	
 	$JSON->filter = implode(' ', $data);
 	
-	$JSON->innslag_navn = $innslag->getNavn();
+    $JSON->innslag_navn = $innslag->getNavn();
+    if( $innslag->getNavn() == 'Innslag uten navn' ) {
+        $JSON->innslag_navn_kontakt = $innslag->getKontaktperson()->getNavn();
+    }
 	$JSON->innslag_kommune = $innslag->getKommune()->getNavn();
 	$JSON->innslag_fylke = $innslag->getFylke()->getNavn();
 	$JSON->innslag_type = $innslag->getType()->getKey();

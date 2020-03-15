@@ -38,9 +38,16 @@
 		{% set person_rolle = innslag.getPersoner().getSingle().getRolle() %}
 		{% set person_alder = innslag.getPersoner().getSingle().getAlder() %}
 	{% endif %}	
+
+    {% if innslag_navn == 'Innslag uten navn' %}
+        {% set innslag_navn_kontakt = innslag.getKontaktperson().getNavn() %}
+    {% endif %}
 {% endif %}
 <div class="col-xs-8">
 	{{ innslag_navn }}
+    {% if innslag_navn_kontakt is defined and innslag_navn_kontakt is not empty %}
+        <small>({{innslag_navn_kontakt}})</small>
+    {% endif %}
 	<br />
 	<small>
 		{% if innslag_har_titler %}
