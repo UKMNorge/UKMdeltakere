@@ -62,7 +62,7 @@ else {
 // HENT UT PROGRAMMET FOR INNSLAGET PÅ DENNE MØNSTRINGEN
 foreach ($innslag->getProgram()->getAllInkludertSkjulte() as $hendelse) {
     $tmp                 = data_program($hendelse);
-    $tmp->rekkefolge    = $innslag->getProgram()->getRekkefolge($hendelse) + 1;
+    $tmp->rekkefolge    = $innslag->getProgram()->getRekkefolge($hendelse);
 
     $JSON->innslag->hendelser[$hendelse->getId()] = $tmp;
 }

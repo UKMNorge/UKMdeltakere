@@ -14,7 +14,7 @@
 				</div>
 				<ol class="list-group innslag_lister items">
 					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
-						{% embed "list_item.html.twig" %}{% endembed %}
+						{% embed "list_item.html.twig" with { vis_varsler: false }%}{% endembed %}
 					{% else %}
 						<li class="list-group-item">Ingen ufullstendige påmeldinger i {{ type_innslag|lower }}</li>
 					{% endfor %}
@@ -24,9 +24,5 @@
 			{% set vis_kategori_info = true %}
 		{% endif %}
 	{% endfor %}
-	<div class="col-xs-12">
-		<p><span class="lead">Her vises kun kategorier som du har ikke-fullførte påmeldinger i.</span>
-		<br />For å melde på nye innslag i de kategoriene som ikke vises her, gå til <a href="admin.php?page=UKMdeltakere">Påmeldte innslag</a> og velg "Legg til nytt innslag" over rett kategori.</p>
-	</div>
 </div>
 {% endblock %}

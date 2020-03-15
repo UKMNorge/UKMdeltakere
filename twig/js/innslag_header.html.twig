@@ -57,23 +57,25 @@
 			</div>
 
 			{# PERSON-advarsler #}
-			<div class="hidden-xs pull-left">
-				{% if innslag_advarsel_personer_har %}
-					<span class="label label-outline label-warning" style="margin-left: 4px;">
-						{% for advarsel in advarsler_personer %}
-							{{ advarsel.melding is defined ? advarsel.melding : advarsel }}
-						{% endfor %}
-					</span>
-				{% endif %}
-				{# TITTEL-advarsler #}
-				{% if innslag_advarsel_titler_har %}
-					<span class="label label-outline label-warning" style="margin-left: 4px;">
-						{% for advarsel in advarsler_titler %}
-							{{ advarsel.melding is defined ? advarsel.melding : advarsel }}
-						{% endfor %}
-					</span>
-				{% endif %}
-			</div>
+			{% if vis_varsler is defined and vis_varsler %}
+				<div class="hidden-xs pull-left">
+					{% if innslag_advarsel_personer_har %}
+						<span class="label label-outline label-warning" style="margin-left: 4px;">
+							{% for advarsel in advarsler_personer %}
+								{{ advarsel.melding is defined ? advarsel.melding : advarsel }}
+							{% endfor %}
+						</span>
+					{% endif %}
+					{# TITTEL-advarsler #}
+					{% if innslag_advarsel_titler_har %}
+						<span class="label label-outline label-warning" style="margin-left: 4px;">
+							{% for advarsel in advarsler_titler %}
+								{{ advarsel.melding is defined ? advarsel.melding : advarsel }}
+							{% endfor %}
+						</span>
+					{% endif %}
+				</div>
+			{% endif %}
 		{% else %}
 			{{ person_rolle }}
 		{% endif %}
