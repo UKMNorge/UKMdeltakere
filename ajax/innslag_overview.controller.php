@@ -5,16 +5,16 @@ if ($innslag->getType()->erGruppe()) {
     $JSON->twigJS = 'overview';
 
     // INFO OM INNSLAGET
-    $JSON->innslag->kontaktperson     = $innslag->getKontaktperson();
+    $JSON->innslag->kontaktperson   = $innslag->getKontaktperson();
     $JSON->innslag->beskrivelse     = $innslag->getBeskrivelse();
 
     // PERSONER I INNSLAGET
-    $JSON->innslag->personer     = [];
-    $snittalder                 = 0;
+    $JSON->innslag->personer        = [];
+    $snittalder                     = 0;
 
     // PERSONER PÅMELDT DETTE ARRANGEMENTET
     foreach ($innslag->getPersoner()->getAll() as $person) {
-        $tmp                         = data_person($person);
+        $tmp                        = data_person($person);
         $tmp->rolle                 = $person->getRolle();
         $tmp->slettbar              = !$person->erPameldtAndre($monstring->getId());
         $JSON->innslag->personer[]  = $tmp;
@@ -25,7 +25,7 @@ if ($innslag->getType()->erGruppe()) {
     // PERSONER SOM IKKE ER PÅMELDT DETTE ARRANGEMENTET
     $JSON->innslag->personer_ekstra = [];
     foreach ($innslag->getPersoner()->getAllIkkePameldte() as $person) {
-        $tmp                                 = data_person($person);
+        $tmp                                = data_person($person);
         $tmp->rolle                         = $person->getRolle();
         $JSON->innslag->personer_ekstra[]   = $tmp;
     }
@@ -41,7 +41,6 @@ if ($innslag->getType()->erGruppe()) {
             $tmp                        = data_tittel($tittel);
             $tmp->slettbar              = !$tittel->erPameldtAndre($monstring->getId());
             $JSON->innslag->titler[]    = $tmp;
-
         }
         // TITLER SOM TILHØRER INNSLAGET, MEN IKKE ER PÅMELDT DETTE ARRANGEMENTET
         $JSON->innslag->titler_ekstra = [];
@@ -52,16 +51,16 @@ if ($innslag->getType()->erGruppe()) {
 }
 // INNSLAGET ER ENKELTPERSON
 else {
-    $JSON->twigJS         = 'overviewtittellos';
+    $JSON->twigJS       = 'overviewtittellos';
     $person             = $innslag->getPersoner()->getSingle();
-    $JSON->person         = data_person($person);
-    $JSON->erfaring        = $innslag->getBeskrivelse();
+    $JSON->person       = data_person($person);
+    $JSON->erfaring     = $innslag->getBeskrivelse();
 }
 
 
 // HENT UT PROGRAMMET FOR INNSLAGET PÅ DENNE MØNSTRINGEN
 foreach ($innslag->getProgram()->getAllInkludertSkjulte() as $hendelse) {
-    $tmp                 = data_program($hendelse);
+    $tmp                = data_program($hendelse);
     $tmp->rekkefolge    = $innslag->getProgram()->getRekkefolge($hendelse);
 
     $JSON->innslag->hendelser[$hendelse->getId()] = $tmp;
@@ -81,9 +80,9 @@ if (!$innslag->erPameldt()) {
         }
 
         // Navnesjekk
-        if( $innslag->getNavn() != 'Innslag uten navn' && !empty( $innslag->getNavn() ) ) {
+        if ($innslag->getNavn() != 'Innslag uten navn' && !empty($innslag->getNavn())) {
             similar_text($innslag->getNavn(), $sammenlign_innslag->getNavn(), $likhet);
-            if ($likhet > 60 ) {
+            if ($likhet > 60) {
                 $data = data_innslag($sammenlign_innslag);
                 $data->grunnlag = 'det finnes et innslag med et navn som ligner ' . floor($likhet) . '%';
                 $JSON->alle_lignende[$sammenlign_innslag->getId()] = $data;
