@@ -53,13 +53,17 @@ function data_innslag( $innslag ) {
 	$data->type                         = data_type( $innslag->getType() );
 	
 	$data->advarsler	 				= [];
-	$data->harPersonAdvarsler	 		= false;
-	foreach( $innslag->getAdvarsler() as $advarsel ) {
-		$data->advarsler[] 				= data_advarsel( $advarsel );
-		if ($advarsel->kategori == 'personer') {
-			$data->harPersonAdvarsler	= true;
-		}
-	}
+    $data->harPersonAdvarsler	 		= false;
+    if( $innslag->erPameldt() ){
+        foreach( $innslag->getAdvarsler() as $advarsel ) {
+            $data->advarsler[] 				= data_advarsel( $advarsel );
+            if ($advarsel->kategori == 'personer') {
+                $data->harPersonAdvarsler	= true;
+            }
+        }
+    } else {
+        $data->mangler = json_decode($innslag->getMangler()->getJSON());
+    }
 	
 	if( $innslag->getType()->harTid() ) {
 		$data->varighet					= $innslag->getTitler()->getVarighet();
