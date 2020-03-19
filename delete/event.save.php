@@ -1,9 +1,14 @@
 <?php
 
-require_once('UKM/write_innslag.class.php');
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Arrangement\Program\Write;
 
-$forestilling = $monstring->getProgram()->get( $_POST['object_id'] );
-$innslag = $forestilling->getInnslag()->get( $_POST['innslag'] );
+require_once('UKM/Autoloader.php');
 
-$forestilling->getInnslag()->fjern( $innslag );
-write_innslag::fjern( $innslag );
+$arrangement = new Arrangement( intval(get_option('pl_id')));
+
+$hendelse = $arrangement->getProgram()->get( $_POST['object_id'] );
+$innslag = $hendelse->getInnslag()->get( $_POST['innslag'] );
+
+$hendelse->getInnslag()->fjern( $innslag );
+Write::fjern($hendelse, $innslag );

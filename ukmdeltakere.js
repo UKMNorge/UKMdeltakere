@@ -21,7 +21,6 @@ jQuery(document).on('click', '.innslagResetAndReloadBody', function(e) {
 // Legg til i hendelse
 jQuery(document).on('click', '.actionEventAdd', function(e) {
     e.preventDefault();
-    return alert('Beklager, denne funksjonen er midlertidig deaktivert. Kontakt support@ukm.no');
     jQuery(document).trigger('innslag.loadView', ['addToEvent', jQuery(this).parents('li.innslag').attr('data-innslag-id')]);
 });
 
