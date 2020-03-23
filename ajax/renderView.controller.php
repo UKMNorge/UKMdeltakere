@@ -1,10 +1,14 @@
 <?php
 
+use UKMNorge\Arrangement\Arrangement;
+
+require_once('UKM/Autoloader.php');
+
 // plugin_dir_path makes no sense but makes it work...
 require_once(plugin_dir_path(__FILE__) .'../functions.php');
 
 // Info om kontekst og aktuelt innslag
-$monstring = new monstring_v2( get_option('pl_id') );
+$monstring = new Arrangement( intval(get_option('pl_id') ));
 
 // Info for retur
 $JSON->view = $_POST['view'];

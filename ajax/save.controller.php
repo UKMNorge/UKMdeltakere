@@ -1,12 +1,16 @@
 <?php
 
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Log\Logger;
+
+require_once('UKM/Autoloader.php');
+
 global $current_user;
 get_currentuserinfo();  
 
-require_once('UKM/logger.class.php'); 
-UKMlogger::setID( 'wordpress', $current_user->ID, get_option('pl_id') );
+Logger::setID( 'wordpress', $current_user->ID, get_option('pl_id') );
 
-$monstring = new monstring_v2( get_option( 'pl_id' ) ); 
+$monstring = new Arrangement( intval(get_option( 'pl_id' ) )); 
 
 $DATA = [];
 if(is_array($_POST['formData'])) {

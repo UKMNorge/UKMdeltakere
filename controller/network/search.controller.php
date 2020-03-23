@@ -1,11 +1,12 @@
 <?php
 
+require_once('UKM/Autoloader.php');
+
+use UKMNorge\Database\SQL\Query;
+use UKMNorge\Innslag\Innslag;
+use UKMNorge\Innslag\Personer\Person;
+
 if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-	require_once('UKM/sql.class.php');
-	require_once('UKM/person.class.php');
-	require_once('UKM/innslag.class.php');
-	
-	
 	$TWIGdata['search'] = new stdClass();
 	$TWIGdata['search']->type = $_POST['type'];
 	$TWIGdata['search']->search = $_POST['search'];
@@ -20,12 +21,12 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 
 	if( $_POST['type'] == 'innslag' ) {
 		$key = 'innslag';
-		$query = innslag_v2::getLoadQuery(); 
+		$query = Innslag::getLoadQuery(); 
 	
 		$query .= " WHERE `smartukm_band`.`b_name` $operand '#search'";
 	} else {
 		$key = 'personer';
-		$query = person_v2::getLoadQuery(); // SELECT * FROM `smartukm_participant`
+		$query = Person::getLoadQuery(); // SELECT * FROM `smartukm_participant`
 		switch( $_POST['type'] ) {
 			default:
 				$query .= "
@@ -37,18 +38,18 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				}
 		}
 	}
-	$sql = new SQL( $query, ['search' => $_POST['search'] ] );
+	$sql = new Query( $query, ['search' => $_POST['search'] ] );
 	$res = $sql->run();
 	
 	#echo $sql->debug();
 	
-	while( $row = SQL::fetch( $res ) ) {
+	while( $row = Query::fetch( $res ) ) {
 		switch( $key ) {
 			case 'personer':
-				$objekt = new person_v2( $row );
+				$objekt = new Person( $row );
 				break;
 			case 'innslag':
-				$objekt = new innslag_v2( $row );
+				$objekt = new Innslag( $row );
 				break;
 			default:
 				throw new Exception('Kan ikke søke etter innslag av type '. $key );

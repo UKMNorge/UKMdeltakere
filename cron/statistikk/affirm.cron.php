@@ -1,5 +1,10 @@
 <?php
 
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Database\SQL\Insert;
+use UKMNorge\Database\SQL\Query;
+use UKMNorge\Database\SQL\Update;
+
 $time_limit = 1200; // 1200s = 20min
 ignore_user_abort(true);
 ini_set('max_execution_time', $time_limit);
@@ -17,11 +22,7 @@ ob_start();
 			$SEASON = (int) date('Y');
 	}
 
-	require_once('UKM/monstringer.class.php');
-	require_once('UKM/monstring.class.php');
-	require_once('UKM/innslag.class.php');
-	require_once('UKM/person.class.php');
-	require_once('UKM/sql.class.php');
+	require_once('UKM/Autoloader.php');
 	
 	function echo_flush( $string, $indent=0, $type='p' ) {
 		if( defined('STDIN') ) {
@@ -73,7 +74,7 @@ ob_start();
 		$qry = "SELECT `kjonn` from ukm_navn" .
 			  " WHERE `navn` = '" . $first_name ."' ";
 		
-		$qry = new SQL($qry);
+		$qry = new Query($qry);
 		$res = $qry->run('field','kjonn');
 		
 		if ($res == null)
@@ -91,16 +92,13 @@ ob_start();
 	
 	echo_flush( 'Loop alle mønstringer', 0, 'h1');
 	$TEST_COUNT = 0;
-	while( ($r = SQL::fetch($monstringer)) && $TEST_COUNT < 10) {
-		$monstring = new monstring($r['pl_id']);
+	while( ($r = Query::fetch($monstringer)) && $TEST_COUNT < 10) {
+		$monstring = new Arrangement($r['pl_id']);
 		echo_flush( $monstring->g('pl_name'), 0, 'h2' );
 		// For hvert innslag i en monstring ...
-		foreach ($monstring->innslag() as $innslag_inn) {
-			$innslag = new innslag($innslag_inn["b_id"]);
-			$innslag->loadGeo();
+		foreach ($arrangement->getInnslag()->getAll() as $innslag) {
 			echo_flush( 'INNSLAG: '. $innslag->g('b_name'), 1, 'h3');
-			foreach ($innslag->personer() as $p) { // behandle hver person
-				$person = new person($p["p_id"]);
+			foreach ($innslag->getPersoner()->getAll() as $person) { // behandle hver person
 				echo_flush( 'PERSON: '. $person->g('p_firstname') .' '. $person->g('p_lastname'), 2, 'h4' );
 				$age = $person->getAge();
 				if($age == '25+') 
@@ -159,20 +157,20 @@ ob_start();
 						" AND `p_id` = '" . $stats_info["p_id"] . "'" .
 						#" AND `k_id` = '" . $stats_info["k_id"] . "'"  .
 						" AND `season` = '" . $stats_info["season"] . "'";
-				$sql = new SQL($qry);
+				$sql = new Query($qry);
 				
 				// echo($sql->debug());
 
 				// Sjekke om ting skal settes inn eller oppdateres
-				if (SQL::numRows($sql->run()) > 0)
-					$sql_ins = new SQLins('ukm_statistics', array(
+				if (Query::numRows($sql->run()) > 0)
+					$sql_ins = new Update('ukm_statistics', array(
 						"b_id" => $stats_info["b_id"], // innslag-id
 						"p_id" => $stats_info["p_id"], // person-id
 						"k_id" => $stats_info["k_id"], // kommune-id
 						"season" => $stats_info["season"], // kommune-id
 					) );
 				else 
-					$sql_ins = new SQLins("ukm_statistics");
+					$sql_ins = new Insert("ukm_statistics");
 				
 				// Legge til info i insert-sporringen
 				foreach ($stats_info as $key => $value) {

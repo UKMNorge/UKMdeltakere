@@ -1,6 +1,8 @@
 <?php
 
-require_once('UKM/write_innslag.class.php');
+use UKMNorge\Innslag\Write;
+
+require_once('UKM/Autoloader.php');
 
 // Sjekk for påkrevd data:
 if( empty($DATA['navn']) || empty($_POST['innslag']) || empty($DATA['kommune']) ) {
@@ -19,4 +21,4 @@ if( isset($DATA['tekniske_behov'] ) ) {
 $innslag->setBeskrivelse( $DATA['beskrivelse'] );
 $innslag->setKommune( $DATA['kommune'] );
 
-write_innslag::save( $innslag );
+Write::save( $innslag );

@@ -1,6 +1,10 @@
 <?php
 
-require_once('UKM/monstring.class.php');
+use UKMNorge\Database\SQL\Delete;
+use UKMNorge\Database\SQL\Insert;
+use UKMNorge\Database\SQL\Query;
+
+require_once('UKM/Autoloader.php');
 date_default_timezone_set('Europe/Oslo');
 ini_set('display_errors', true);
 
@@ -14,14 +18,12 @@ if(isset($_GET['season'])) {
 }
 $STORLIMIT = 3000;
 
-require_once('UKM/sql.class.php');
-
 echo '<h1>Beregner målgrupper og dekning for '. $SEASON .'</h1>';
 
-$kommuneQRY = new SQL("SELECT * FROM `smartukm_kommune`");
+$kommuneQRY = new Query("SELECT * FROM `smartukm_kommune`");
 $kommuneRES = $kommuneQRY->run();
 
-while( $kommune = SQL::fetch( $kommuneRES ) ) {
+while( $kommune = Query::fetch( $kommuneRES ) ) {
 	echo '<h2>'. $kommune['name'].'</h2>';
 	// FINN MALGRUPPE
 	// Hent malgruppe
@@ -29,7 +31,7 @@ while( $kommune = SQL::fetch( $kommuneRES ) ) {
 	$AR_stop	= $SEASON-12;
 	$AR_stop	= $SEASON-9; // BEREGNER MÅLGRUPPE FRA 10-20
 	
-	$malgruppeSQL = new SQL("SELECT SUM(`count`) AS `malgruppe`
+	$malgruppeSQL = new Query("SELECT SUM(`count`) AS `malgruppe`
 							FROM `ukm_befolkning`
 							WHERE `k_id` = '#kommune'
 							AND `year` > '#ar_start'
@@ -54,7 +56,7 @@ while( $kommune = SQL::fetch( $kommuneRES ) ) {
 	$size = $malgruppe > $STORLIMIT ? 'stor' : 'liten';
 	
 	// FINN DELTAKERANTALL
-	$persQry = new SQL("SELECT COUNT(`stat_id`) AS `personer` 
+	$persQry = new Query("SELECT COUNT(`stat_id`) AS `personer` 
 						FROM `ukm_statistics`
 						WHERE `k_id` = '#kommune'
 						AND `season` = '#season'",
@@ -72,11 +74,11 @@ while( $kommune = SQL::fetch( $kommuneRES ) ) {
 	}
 		
 	
-	$clean = new SQLdel('ukm_statistics_malgruppe', array('k_id' => $kommune['id'], 'season' => $SEASON));
+	$clean = new Delete('ukm_statistics_malgruppe', array('k_id' => $kommune['id'], 'season' => $SEASON));
 	$clean->run();
 	echo $clean->debug();
 	
-	$insert = new SQLins('ukm_statistics_malgruppe');
+	$insert = new Insert('ukm_statistics_malgruppe');
 	$insert->add('k_id', $kommune['id']);
 	$insert->add('f_id', $kommune['idfylke']);
 	$insert->add('season', $SEASON);

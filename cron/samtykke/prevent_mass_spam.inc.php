@@ -2,6 +2,7 @@
 
 use UKMNorge\Database\SQL\Insert;
 use UKMNorge\Database\SQL\Query;
+use UKMNorge\Database\SQL\Update;
 use UKMNorge\Samtykke;
 
 ini_set('display_errors',true);
@@ -28,7 +29,7 @@ while( $row = Query::fetch( $res ) ) {
     if( $row['num'] < THRESHOLD ) {
         break;
     }
-    $update = new Insert(
+    $update = new Update(
         'samtykke_deltaker', 
         ['mobil' => $row['mobil']]
     );
