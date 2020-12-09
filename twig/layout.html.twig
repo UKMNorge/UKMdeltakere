@@ -1,3 +1,21 @@
+<style>
+	.nop {
+		padding: 0;
+	}
+	.paameldte-item {
+		padding: 10px 15px;
+	}
+	.list-group-item a {
+		text-decoration: none;
+	}
+	.list-group-item a:hover .paameldte-item .pull-right button,
+	.list-group-item a:hover .paameldte-item {
+		background: #ebebeb;
+	}
+	.list-group-item.velg-opsjon {
+		overflow: hidden;
+	} 
+</style>
 <div style="width: 95% UKMfilter" id="filter_innslag">
 	<h2>Dine {% if tab_active == 'ufullstendig' %}uferdige påmeldinger{% else %}påmeldte deltakere{% endif %}</h2>
 	
@@ -5,29 +23,46 @@
 		{% if monstring.harPamelding() %}
 			<div class="col-xs-12 col-sm-6">
 				<ol class="list-group">
-					<li class="list-group-item">
-						<div class="pull-right">
-							{% if tab_active == 'fullstendig' %}
-								Vises nå
-							{% else %}
-								<a href="?page=UKMdeltakere&list=fullstendig" class="btn btn-default btn-sm pull-right">Vis</a>
-							{% endif %}
+					<li class="list-group-item velg-opsjon nop">
+						{% if tab_active != 'fullstendig' %}
+							<a href="?page=UKMdeltakere&list=fullstendig" class="">
+						{% endif %}
+						<div class="paameldte-item">
+							<div class="pull-right">
+								{% if tab_active == 'fullstendig' %}
+									Vises nå
+								{% else %}
+									<button class="btn btn-default btn-sm pull-right">Vis</button>
+								{% endif %}
+							</div>
+							<h3 style="margin:0px;" class="text-success">
+								{{ stat.fullstendige }} <small class="text-success">Påmeldte innslag</small>
+							</h3>
 						</div>
-						<h3 style="margin:0px;" class="text-success">
-							{{ stat.fullstendige }} <small class="text-success">Påmeldte innslag</small>
-						</h3>
+						{% if tab_active != 'fullstendig' %}
+							</a>
+						{% endif %}
 					</li>
-					<li class="list-group-item">
-						<div class="pull-right">
-							{% if tab_active == 'ufullstendig' %}
-								Vises nå
-							{% else %}
-								<a href="?page=UKMdeltakere&list=ufullstendig" class="btn btn-default btn-sm pull-right">Vis</a>
-							{% endif %}
-						</div>
-						<h3 style="margin:0px;" class="text-danger">
-							{{ stat.ufullstendige }} <small class="text-danger">Ikke påmeldte innslag</small>
-						</h3>
+					<li class="list-group-item velg-opsjon nop">
+						{% if tab_active != 'ufullstendig' %}
+							<a href="?page=UKMdeltakere&list=ufullstendig" class="">
+						{% endif %}
+							<div class="paameldte-item">
+								<div class="pull-right">
+									{% if tab_active == 'ufullstendig' %}
+										Vises nå
+									{% else %}
+										<button class="btn btn-default btn-sm pull-right">Vis</button>
+									{% endif %}
+								</div>
+								<h3 style="margin:0px;" class="text-danger">
+									{{ stat.ufullstendige }} <small class="text-danger">Ikke påmeldte innslag</small>
+								</h3>
+							</div>
+						{% if tab_active != 'ufullstendig' %}
+							</a>
+						{% endif %}
+
 					</li>
 				</ol>
 			</div>
