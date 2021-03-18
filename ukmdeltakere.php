@@ -135,8 +135,8 @@ function UKMdeltakere_scriptsandstyles() {
 
 	wp_enqueue_script('UKMDELTA_tittelJS', 'https://delta.'. UKM_HOSTNAME . '/js/tittel.js' );
 	
-	wp_enqueue_script('UKMdeltakere_css', str_replace('http://','https://', WP_PLUGIN_URL) . '/UKMdeltakere/ukmdeltakere.js' );
-    wp_enqueue_style('UKMdeltakere_css', str_replace('http://','https://', WP_PLUGIN_URL) . '/UKMdeltakere/ukmdeltakere.css' );
+	wp_enqueue_script('UKMdeltakere_css', PLUGIN_PATH . '/UKMdeltakere/ukmdeltakere.js' );
+    wp_enqueue_style('UKMdeltakere_css', PLUGIN_PATH . '/UKMdeltakere/ukmdeltakere.css' );
     UKMdeltakere_scriptsandstyles_basic();
 } 
 
