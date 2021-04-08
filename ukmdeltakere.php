@@ -8,7 +8,6 @@ Version: 2.0
 Author URI: http://www.ukm.no
 */
 
-use Symfony\Bundle\SecurityBundle\Command\SetAclCommand;
 use UKMNorge\Wordpress\Modul;
 
 require_once('UKM/Autoloader.php');
