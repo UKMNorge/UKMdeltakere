@@ -253,8 +253,8 @@ class UKMdeltakere extends Modul
 	public static function renderPersonvern()
 	{
 		static::setAction('personvern');
-		if( isset($_GET['send'] ) ) {
-			require_once('controller/personvern/'. basename($_GET['send']).'.controller.php');
+		if (isset($_GET['send'])) {
+			require_once('controller/personvern/' . basename($_GET['send']) . '.controller.php');
 		}
 
 		return parent::renderAdmin();
@@ -262,3 +262,4 @@ class UKMdeltakere extends Modul
 }
 
 UKMdeltakere::init(__DIR__);
+UKMdeltakere::hook();
