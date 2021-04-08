@@ -241,10 +241,7 @@ class UKMdeltakere extends Modul
 
 	public static function scriptsandstyles_intoleranse()
 	{
-		wp_enqueue_script(
-			'UKMdeltakere_script_tilrettelegging',
-			static::getPluginUrl() . 'javascript/tilrettelegging_deltakere.js'
-		);
+		wp_enqueue_script('UKMVideresending_script_tilrettelegging');
 	}
 
 
@@ -265,4 +262,3 @@ class UKMdeltakere extends Modul
 }
 
 UKMdeltakere::init(__DIR__);
-UKMdeltakere::hook();

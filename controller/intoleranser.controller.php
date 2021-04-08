@@ -26,34 +26,12 @@ foreach(UKMdeltakere::getArrangement()->getInnslag()->getAll() as $innslag) {
 
         $id = $person->getNavn() .'-'. $person->getId();
         if( $allergi->har() ) {
-            $data_intoleranse->med[ $id ] = getIntoleransePersonData( $person, $allergi );
+            $data_intoleranse->med[ $id ] = UKMVideresending::getIntoleransePersonData( $person, $allergi );
         } else {
-            $data_intoleranse->uten[ $id ] = getIntoleransePersonData( $person );
+            $data_intoleranse->uten[ $id ] = UKMVideresending::getIntoleransePersonData( $person );
         }
     }
 }    
-
-/**
- * Hent et TwigJS-objekt av en person og dens allergier
- *
- * @param Person $person
- * @param Intoleranse $allergi
- * @return stdClass
- */
-function getIntoleransePersonData(Person $person, Intoleranse $allergi = null)
-{
-    $data = new stdClass();
-    $data->ID = $person->getId();
-    $data->navn = $person->getNavn();
-    $data->mobil = $person->getMobil();
-    if (!is_null($allergi)) {
-        $data->intoleranse_liste = $allergi->getListe();
-        $data->intoleranse_human = $allergi->getListeHuman();
-        $data->intoleranse_tekst = $allergi->getTekst();
-    }
-    return $data;
-}
-
 
 ksort($data_intoleranse->med);
 ksort($data_intoleranse->uten);
