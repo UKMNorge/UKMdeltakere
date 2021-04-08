@@ -25,6 +25,8 @@ jQuery(document).on('click','.ombestemt', function(e) {
         Her har du full oversikt over dine deltakeres status.
     </p>
 
+    {% include "wp_modul.flashbag.html.twig" %}
+
     {% if message is defined %}
         <div class="clearfix"></div>
         <div class="alert alert-{{ message.level }}">
@@ -99,12 +101,12 @@ jQuery(document).on('click','.ombestemt', function(e) {
         <li class="list-group-item">
             <b>Har du en deltaker som har ombestemt seg?</b>
             <br />
-            
+            Da kan du trykke på knappen "Send ny mulighet til samtykke" i listen nedenfor.
         </li>
     </ol>
 
 
-    {#<a href="?page={{GET('page')}}&action=sendtoall" class="btn btn-warning">Send til alle som ikke har fått tidligere</a> #}
+    {#<a href="?page={{GET('page')}}&send=sendtoall" class="btn btn-warning">Send til alle som ikke har fått tidligere</a> #}
     <h2 style="margin-top: 2em;">Status for dine påmeldte</h2>
     {% for gruppe in personer %}
         <h3>{{ gruppe.getNavn() }}</h3>
@@ -126,8 +128,7 @@ jQuery(document).on('click','.ombestemt', function(e) {
                 {% for person in gruppe.personer %}
                     <tr class="samtykke" data-navn="{{person.getNavn()}}">
                         <td>
-                            {{ person.getNavn() }}
-                            <small>({{ person.getId() }})</small>
+                            {{ person.getNavn() }} <small class="UKMSMS clickable" data-to="{{person.getMobil()}}" data-navn="{{person.getNavn()}}">{{ person.getMobil() }}</small>
                             {% if person.harForesatt() %}
                                 <br />
                                 <small>
@@ -162,7 +163,7 @@ jQuery(document).on('click','.ombestemt', function(e) {
                         <td>
                             {# Vi har aldri sendt sms til deltakeren #}
                             {% if person.getStatus().getId() == 'ikke_sendt' %}
-                                <a href="?page={{GET('page')}}&action=samtykke&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&send=samtykke&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
                                     Send samtykke-sms
                                 </a>
                             {% endif %}
@@ -170,7 +171,7 @@ jQuery(document).on('click','.ombestemt', function(e) {
 
                             {# Deltaker har ikke trykket på lenken #}
                             {% if person.getStatus().getId() not in ['godkjent','ikke_godkjent','ikke_sendt', 'ikke_send'] %}
-                                <a href="?page={{GET('page')}}&action=purring&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&send=purring&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
                                     Send purring
                                 </a>
                                 {% if person.getKommunikasjon().har('purring_deltaker') %}
@@ -184,14 +185,14 @@ jQuery(document).on('click','.ombestemt', function(e) {
 
                             {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
                             {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() == 'ikke_sendt' %}
-                                <a href="?page={{GET('page')}}&action=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&send=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
                                     Send informasjon til foresatt
                                 </a>
                             {% endif %}
                             
                             {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
                             {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() not in ['ikke_sendt','godkjent','ikke_godkjent'] %}
-                                <a href="?page={{GET('page')}}&action=purring&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&send=purring&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
                                     Send purring til foresatt
                                 </a>
                                 {% if person.getKommunikasjon().har('purring_foresatt') %}
@@ -202,7 +203,7 @@ jQuery(document).on('click','.ombestemt', function(e) {
                                     </small>
                                 {% endif %}
                             {% elseif person.getStatus().getId() == 'ikke_godkjent' %}
-                                <a href="?page={{GET('page')}}&action=ombestemt&id={{person.getId()}}" class="ombestemt btn btn-ukm btn-warning btn-xs btn-mini">
+                                <a href="?page={{GET('page')}}&send=ombestemt&id={{person.getId()}}" class="ombestemt btn btn-ukm btn-warning btn-xs btn-mini">
                                     Send ny mulighet til samtykke
                                 </a>
                             {% endif %}

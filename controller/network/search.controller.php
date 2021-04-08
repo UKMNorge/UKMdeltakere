@@ -7,10 +7,9 @@ use UKMNorge\Innslag\Innslag;
 use UKMNorge\Innslag\Personer\Person;
 
 if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-	$TWIGdata['search'] = new stdClass();
-	$TWIGdata['search']->type = $_POST['type'];
-	$TWIGdata['search']->search = $_POST['search'];
-
+	$search = new stdClass();
+	$search->type = $_POST['type'];
+	$search->search = $_POST['search'];
 
 	if( strpos( $_POST['search'], '*' ) !== false ) {
 		$operand = 'LIKE';
@@ -42,7 +41,7 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 	$res = $sql->run();
 	
 	#echo $sql->debug();
-	
+	$results = [];
 	while( $row = Query::fetch( $res ) ) {
 		switch( $key ) {
 			case 'personer':
@@ -55,7 +54,8 @@ if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 				throw new Exception('Kan ikke søke etter innslag av type '. $key );
 		}
 	
-		$TWIGdata['results'][$key][] = $objekt;
+		$results[$key][] = $objekt;
 	}
-	$TWIGdata['searchtable'] = $key;
+	UKMdeltakere::addViewData('searchtable', $key);
 }
+UKMdeltakere::addViewData('results', $results);
