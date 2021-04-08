@@ -49,10 +49,11 @@ foreach( $arrangement->getInnslag()->getAllUfullstendige() as $innslag ) {
 	}
 }
 $JSON->personer = $personer;
+$JSON->nedslagsfelt = $arrangement->getMetaValue('nedslagsfelt');
 
-if( $arrangement->getEierType() == 'land' ) {
+if( $arrangement->getEierType() == 'land' || $arrangement->getMetaValue('nedslagsfelt') == 'land' ) {
 	$JSON->fylker = [];
-	foreach( Fylker::getAllInkludertFalske() as $fylke ) {
+	foreach( Fylker::getAll() as $fylke ) {
 		$data = new stdClass();
 		$data->id = $fylke->getId();
 		$data->navn = $fylke->getNavn();
