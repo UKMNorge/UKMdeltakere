@@ -92,4 +92,4 @@ WriteInnslag::saveStatus( $innslag );
 $JSON->innslag_id = $innslag->getId();
 $JSON->type = $type;
 
-$JSON->redirect = '?page=UKMdeltakere&list=fullstendig&edit='. $JSON->innslag_id .'#innslag_'. $JSON->innslag_id;
+$JSON->redirect = '?page=UKMdeltakere&edit='. $JSON->innslag_id .'#innslag_'. $JSON->innslag_id;

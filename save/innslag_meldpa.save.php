@@ -14,4 +14,4 @@ $innslag->setStatus( 8 );
 
 Write::saveStatus( $innslag );
 
-$JSON->redirect = '?page=UKMdeltakere&list=fullstendig&edit='. $_POST['innslag'] .'#innslag_'. $_POST['innslag'];
+$JSON->redirect = '?page=UKMdeltakere&edit='. $_POST['innslag'] .'#innslag_'. $_POST['innslag'];

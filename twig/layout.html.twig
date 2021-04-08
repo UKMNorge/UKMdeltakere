@@ -17,19 +17,19 @@
 	} 
 </style>
 <div style="width: 95% UKMfilter" id="filter_innslag">
-	<h2>Dine {% if tab_active == 'ufullstendig' %}uferdige påmeldinger{% else %}påmeldte deltakere{% endif %}</h2>
-	
+	<h2>Dine {% if action == 'list_ufullstendig' %}uferdige påmeldinger{% else %}påmeldte deltakere{% endif %}</h2>
+
 	<div class="row">
 		{% if monstring.harPamelding() %}
 			<div class="col-xs-12 col-sm-6">
 				<ol class="list-group">
 					<li class="list-group-item velg-opsjon nop">
-						{% if tab_active != 'fullstendig' %}
-							<a href="?page=UKMdeltakere&list=fullstendig" class="">
+						{% if action != 'list_fullstendig' %}
+							<a href="?page=UKMdeltakere&action=list_fullstendig" class="">
 						{% endif %}
 						<div class="paameldte-item">
 							<div class="pull-right">
-								{% if tab_active == 'fullstendig' %}
+								{% if action == 'list_fullstendig' %}
 									Vises nå
 								{% else %}
 									<button class="btn btn-default btn-sm pull-right">Vis</button>
@@ -39,17 +39,17 @@
 								{{ stat.fullstendige }} <small class="text-success">Påmeldte innslag</small>
 							</h3>
 						</div>
-						{% if tab_active != 'fullstendig' %}
+						{% if action != 'list_fullstendig' %}
 							</a>
 						{% endif %}
 					</li>
 					<li class="list-group-item velg-opsjon nop">
-						{% if tab_active != 'ufullstendig' %}
-							<a href="?page=UKMdeltakere&list=ufullstendig" class="">
+						{% if action != 'list_ufullstendig' %}
+							<a href="?page=UKMdeltakere&action=list_ufullstendig" class="">
 						{% endif %}
 							<div class="paameldte-item">
 								<div class="pull-right">
-									{% if tab_active == 'ufullstendig' %}
+									{% if action == 'list_ufullstendig' %}
 										Vises nå
 									{% else %}
 										<button class="btn btn-default btn-sm pull-right">Vis</button>
@@ -59,7 +59,7 @@
 									{{ stat.ufullstendige }} <small class="text-danger">Ikke påmeldte innslag</small>
 								</h3>
 							</div>
-						{% if tab_active != 'ufullstendig' %}
+						{% if action != 'list_ufullstendig' %}
 							</a>
 						{% endif %}
 

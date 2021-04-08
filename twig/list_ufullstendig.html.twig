@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="row">
-	{% for type_innslag in monstring.getInnslagTyper() %}
-		{% if monstring.getInnslag().getAllUfullstendige()|length > 0 %}
+	{% for type_innslag in arrangement.getInnslagTyper() %}
+		{% if arrangement.getInnslag().getAllUfullstendige()|length > 0 %}
 			<div class="innslagBlock col-xs-12">
 				<div class="innslagTypeHeader">
 					<a href="?page=UKMdeltakere&create=add-new-{{ type_innslag.getKey() }}#add-new-{{ type_innslag.getKey() }}" class="pull-right btn btn-xs btn-default">Legg til nytt innslag</a>
