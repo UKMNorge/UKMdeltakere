@@ -5,6 +5,7 @@ use UKMNorge\Arrangement\Arrangement;
 
 $arrangement = new Arrangement(get_option('pl_id'));
 
+$JSON->nedslagsfelt = $arrangement->getMetaValue('nedslagsfelt');
 
 if( $innslag->getType()->erGruppe() ) {
     $JSON->twigJS = 'form';

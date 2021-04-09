@@ -44,13 +44,19 @@
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
-						{% for fylke in fylker %}
-							<optgroup label="{{ fylke.navn }}">
-								{% for kommune in fylke.kommuner %}
-									<option value="{{ kommune.id }}" {{ innslag.kommune_id == kommune.id ? 'selected' : '' }}>{{ kommune.navn }}</option>
-								{% endfor %}
-							</optgroup>
-						{% endfor %}
+						{% if nedslagsfelt == 'land' %}
+							{% for fylke in fylker %}
+								<optgroup label="{{ fylke.navn }}">
+									{% for kommune in fylke.kommuner %}
+										<option value="{{ kommune.id }}" {{ innslag.kommune_id == kommune.id ? 'selected' : '' }}>{{ kommune.navn }}</option>
+									{% endfor %}
+								</optgroup>
+							{% endfor %}
+						{% else %}
+							{% for id, navn in monstring.kommuner %}
+								<option value="{{ id }}" {{ innslag.kommune_id == id ? 'selected="selected"' : '' }}>{{ navn }}</option>
+							{% endfor %}
+						{% endif %}
 					</select>
 				</div>
 			{% else %}
