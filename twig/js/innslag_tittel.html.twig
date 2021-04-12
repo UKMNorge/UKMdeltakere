@@ -15,7 +15,7 @@
 				<input type="text" class="form-control" required name="navn" />
 			</div>
 
-			{% if monstring.type == 'land' %}
+			{% if monstring.type == 'land' or nedslagsfelt == 'land' %}
 				<div class="form-group text-danger">
 					<label for="kommune">Kommune/bydel *</label>
 					<select name="kommune" class="form-control" required>
