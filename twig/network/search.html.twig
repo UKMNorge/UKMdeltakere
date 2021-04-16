@@ -69,13 +69,14 @@
 						<br />
 						<small>
 						{% for person in innslag.getPersoner().getAll() %}
-							{{ person.getNavn() }}, 
+							{{ person.getNavn() }} {{ person.getMobil() }}{{ not loop.last ? ', ' }}
 						{% endfor %}
 						</small>
 					</div>
 
 					<div style="width: 50%">
 						<b>{{ innslag.getNavn() }}</b>
+						<div class="label label-primary">{{ innslag.getSesong() }}</div>
 						<br />
 						{{  innslag.getKontaktperson().getNavn() }} {{ innslag.getKontaktperson().getMobil() }}
 					</div>
