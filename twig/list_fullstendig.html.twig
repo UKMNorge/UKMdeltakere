@@ -16,6 +16,8 @@
 						<div class="body">
 						</div>
 					</li>
+					<li class="list-group-item ingen-pameldte item hide" data-filter="">Ingen påmeldte i {{ type_innslag }}</li>
+
 					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 						{% embed "list_item.html.twig" with { vis_varsler: true } %}{% endembed %}
 					{% else %}

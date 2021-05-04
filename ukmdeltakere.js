@@ -438,7 +438,12 @@ jQuery(document).on('saveAjax', function(e, innslag_id, data) {
             } else {
                 // Hvis dette var en avmeldingsforespørsel som gikk i orden, skjul hele elementet fra listen
                 if (null != response.meldtAv) {
-                    jQuery('#innslag_' + response.innslag_id).slideUp();
+                    jQuery('#innslag_' + response.innslag_id).removeClass('innslag').slideUp();
+
+                    // Vis at det er ingen påmeldte hvis siste innslag er fjernet
+                    if(jQuery(jQuery('#innslag_'+innslag_id).parent()).find('.innslag.item').length < 1) {
+                        jQuery(jQuery('#innslag_'+innslag_id).parent()).find('.list-group-item.ingen-pameldte').removeClass('hide');
+                    }
                 } else {
                     jQuery(document).trigger('innslag.resetBody', [response.innslag_id, true]);
                     jQuery(document).trigger('innslag.reloadHeader', [response.innslag_id]);
