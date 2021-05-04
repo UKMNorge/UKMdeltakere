@@ -410,6 +410,9 @@ jQuery(document).on('simpleSave', function(e, innslag_id, clicked) {
         'object_id': clicked.attr('data-object-id')
     }
     jQuery(document).trigger('saveAjax', [innslag_id, data]);
+    
+    var totalPameldte = parseInt(jQuery('#totalPameldteInnslag').text());
+    jQuery('#totalPameldteInnslag').text(totalPameldte-1);
 });
 
 /**
