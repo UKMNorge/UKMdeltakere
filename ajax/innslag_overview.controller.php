@@ -1,5 +1,16 @@
 <?php
 
+use UKMNorge\Allergener\Allergener;
+
+// SETUP SENSITIVT-REQUESTER
+$requester = new UKMNorge\Sensitivt\Requester(
+    'wordpress', 
+    wp_get_current_user()->ID,
+    get_option('pl_id')
+);
+UKMNorge\Sensitivt\Sensitivt::setRequester( $requester );
+
+
 // HVIS INNSLAGET KAN VÆRE GRUPPE
 if ($innslag->getType()->erGruppe()) {
     $JSON->twigJS = 'overview';
@@ -17,7 +28,15 @@ if ($innslag->getType()->erGruppe()) {
         $tmp                        = data_person($person);
         $tmp->rolle                 = $person->getRolle();
         $tmp->slettbar              = !$person->erPameldtAndre($monstring->getId());
+
+        $allergi = $person->getSensitivt( $requester )->getIntoleranse();
+        $tmp->intoleranse = UKMVideresending::getIntoleransePersonData( $person, $allergi );
+        $tmp->intoleranse_liste = $tmp->intoleranse->intoleranse_liste ? $tmp->intoleranse->intoleranse_liste : null;
+        $tmp->intoleranse_human = $allergi->getListeHuman();
         $JSON->innslag->personer[]  = $tmp;
+        $JSON->allergener_standard = Allergener::getStandard();
+        $JSON->allergener_kulturelle = Allergener::getKulturelle();
+        $JSON->intoleranse_tekst = $allergi->getTekst();
         $snittalder                += (($tmp->alder_tall == '25+') ? 0 : $tmp->alder_tall);
     }
     $JSON->innslag->snittalder    = round($snittalder / ($innslag->getPersoner()->getAntall() > 0 ? $innslag->getPersoner()->getAntall() : 1), 1);
