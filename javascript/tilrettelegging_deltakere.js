@@ -12,8 +12,26 @@ jQuery(document).on('click', '.intoleranse_update', function(e) {
         allergener.push(jQuery(this).val());
     });
     
+    kjorAjaxKall(person, allergener, true);
+    
+});
 
+function tittellosBeforeSubmit(e) {
+    var personId = jQuery(e.currentTarget).attr('person-id');
+    
+    var person = jQuery('li.person.single#'+personId);
 
+    var allergener = [];
+    person.find('input[type="checkbox"]:checked').each(function() {
+        allergener.push(jQuery(this).val());
+    });
+    
+    var empty = jQuery(person).parent().find('.har-valg .btn.selected').attr('funksjon') == 'nei'; 
+    
+    kjorAjaxKall(person, allergener, false, empty);
+};
+
+function kjorAjaxKall(person, allergener, handleUpdate, empty) {
     var data = {
         action: 'UKMVideresending_ajax',
         subaction: 'tilrettelegging',
@@ -22,10 +40,17 @@ jQuery(document).on('click', '.intoleranse_update', function(e) {
         liste: allergener
     };
 
+    if(empty) {
+        data['liste'] = [];
+        data['tekst'] = '';
+    }
+
     jQuery.post(
         ajaxurl,
         data,
         function(response) {
+            if(handleUpdate == false) return;
+
             if (response !== null && response !== undefined) {
                 try {
                     response = JSON.parse(response);
@@ -33,7 +58,7 @@ jQuery(document).on('click', '.intoleranse_update', function(e) {
                     response = null;
                 }
             }
-
+                
             /* HANDLING GJENNOMFØRT. HÅNDTER RESPONS */
             if (response !== null && response.success) {
                 handleTilretteleggUpdate(response);
@@ -42,8 +67,7 @@ jQuery(document).on('click', '.intoleranse_update', function(e) {
             }
         }
     );
-});
-
+}
 
 function handleTilretteleggUpdate(response) {
     var person = jQuery('li.person#' + response.data.id);
@@ -101,4 +125,15 @@ jQuery(document).on('click', '#intoleranse_add', function(e) {
         twigJS_intoleranserpameldte.render(data)
     );
     jQuery(intoleranseSelect).find('option[value="' + data.person.id + '"]').attr('hidden', true).attr('selected', false);
+});
+
+jQuery(document).on('click', '.har-allergi-intoleranse .har-valg .btn', function(e) {
+    jQuery('.har-allergi-intoleranse .har-valg .btn').removeClass('selected btn-primary');
+    var el = jQuery(e.currentTarget);
+    el.addClass('selected btn-primary');
+
+    var ja = el.attr('funksjon') == 'ja';
+    jQuery(el).parents('.intoleranser-ul').find('li.person').addClass(ja ? '' : 'hide').removeClass(ja ? 'hide' : '');
+
+    
 });

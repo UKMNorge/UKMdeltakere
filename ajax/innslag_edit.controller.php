@@ -2,6 +2,16 @@
 
 use UKMNorge\Geografi\Fylker;
 use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Allergener\Allergener;
+
+
+// SETUP SENSITIVT-REQUESTER
+$requester = new UKMNorge\Sensitivt\Requester(
+    'wordpress', 
+    wp_get_current_user()->ID,
+    get_option('pl_id')
+);
+UKMNorge\Sensitivt\Sensitivt::setRequester( $requester );
 
 $arrangement = new Arrangement(get_option('pl_id'));
 
@@ -17,6 +27,14 @@ if( $innslag->getType()->erGruppe() ) {
 	$JSON->person 		        = data_person( $person );
 	$JSON->erfaring		        = $innslag->getBeskrivelse();
 	$JSON->innslag->kommune_id  = $innslag->getKommune()->getId();
+
+	$allergi = $person->getSensitivt( $requester )->getIntoleranse();
+	$JSON->person->intoleranse = UKMVideresending::getIntoleransePersonData( $person, $allergi );
+	$JSON->person->intoleranse_liste = $JSON->person->intoleranse->intoleranse_liste ? $JSON->person->intoleranse->intoleranse_liste : null;
+	$JSON->person->intoleranse_human = $allergi->getListeHuman();
+	
+	$JSON->allergener_standard = Allergener::getStandard();
+    $JSON->allergener_kulturelle = Allergener::getKulturelle();
     
 	if( $innslag->getType()->harFunksjoner() ) {
         if( null == $JSON->person->valgte_funksjoner ) {
