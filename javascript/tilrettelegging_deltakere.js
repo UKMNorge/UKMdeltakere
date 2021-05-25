@@ -72,6 +72,9 @@ function kjorAjaxKall(person, allergener, handleUpdate, empty) {
 function handleTilretteleggUpdate(response) {
     var person = jQuery('li.person#' + response.data.id);
 
+    jQuery(person).find('.row.header-person').addClass("collapsed");
+    jQuery(person).find('.data.row.in').removeClass('in').addClass('collapse');
+
     if (response.data.intoleranse_human.length == 0) {
         person.slideUp(
             function() {
