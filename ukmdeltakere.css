@@ -67,3 +67,32 @@ p.explain {
 .pt-0 {
 	padding-top: 0px;
 }
+
+.har-allergi-intoleranse {
+	display: flex !important;
+}
+.har-allergi-intoleranse .beskrivelse {
+	margin: auto;
+	margin-left: 0;
+}
+.har-allergi-intoleranse .har-valg {
+	margin: auto;
+	margin-right: 0;
+}
+
+.intoleranse_ny-select {
+	min-width: 100px;
+	margin-bottom: 0;
+	margin-right: 10px;
+	width: 100% !important;
+	max-width: initial !important;
+}
+#intoleranse_add {
+	width: 100%;
+}
+@media (max-width: 767px) {
+	.arrangor-kommentarer {
+		padding: 0 !important;
+		margin-top: 10px;
+	}
+}

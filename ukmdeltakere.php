@@ -217,6 +217,8 @@ class UKMdeltakere extends Modul
 
 		wp_enqueue_script('UKMdeltakere_css', static::getPluginUrl() . 'ukmdeltakere.js');
 		wp_enqueue_style('UKMdeltakere_css', static::getPluginUrl() . 'ukmdeltakere.css');
+		wp_enqueue_script('UKMVideresending_script_tilretteleggingdeltakere', static::getPluginUrl() . 'javascript/tilrettelegging_deltakere.js');
+
 		static::scriptsandstyles_basic();
 	}
 
