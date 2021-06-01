@@ -46,4 +46,5 @@ if( $arrangement->getEierType() == 'land' || $arrangement->getMetaValue('nedslag
 	}
 }
 
+$JSON->arrangorKommentar    = $innslag->getArrangorKommentar();
 $JSON->type                 = data_type( $innslag->getType() );
