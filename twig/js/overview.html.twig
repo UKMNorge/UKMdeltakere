@@ -151,7 +151,7 @@
     <fieldset class="col-xs-12 col-sm-6 col-lg-3">
         {% if innslag.type.harTitler %}
             <legend>
-                <small>Titler</small>
+                <small>{{ erKunstgalleri ? 'Kunstverk' : 'Titler' }}</small>
             </legend>
             <p class="explain">
                 {% if innslag.type.harTid %}Varighet: {{ innslag.varighet_human }}{% else %}&nbsp;{% endif %}
@@ -177,7 +177,7 @@
                     </li>
                 {% endfor %}
                 <li class="list-group-item">
-                    <a href="#innslag_{{ innslag_id }}" class="action" data-action="addTitle">+ Legg til tittel</a>
+                    <a href="#innslag_{{ innslag_id }}" class="action" data-action="addTitle">+ Legg til {{ erKunstgalleri ? 'kunstverk' : 'tittel' }}</a>
                 </li>
             </ol>
             {% if innslag.titler_ekstra|length > 0 %}

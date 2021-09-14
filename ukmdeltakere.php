@@ -143,6 +143,7 @@ class UKMdeltakere extends Modul
 	{
 		$JSON = new stdClass();
 		$JSON->innslag_id = $_POST['innslag'];
+		$JSON->erKunstgalleri = isset($_POST['erKunstgalleri']) && $_POST['erKunstgalleri'] == 'true' ? true : false;
 
 		$controller = dirname(__FILE__) . '/ajax/' . $_POST['do'] . '.controller.php';
 		if (!file_exists($controller)) {
