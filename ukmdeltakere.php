@@ -9,6 +9,8 @@ Author URI: http://www.ukm.no
 */
 
 use UKMNorge\Wordpress\Modul;
+use UKMNorge\Arrangement\Arrangement;
+
 
 require_once('UKM/Autoloader.php');
 
@@ -53,16 +55,20 @@ class UKMdeltakere extends Modul
 			'dashicons-buddicons-buddypress-logo', #'//ico.ukm.no/people-menu.png',
 			50
 		);
+		
+		$arrangement = new Arrangement( get_option( 'pl_id ') );
 
-		// Intoleranser-menyen
-		$page_intoleranse = add_submenu_page(
-			'UKMdeltakere',
-			'Intoleranser',
-			'Intoleranser',
-			'editor',
-			'UKMdeltakere_intoleranser', // Page variabel i path-en
-			[static::class, 'renderIntoleranser']
-		);
+		if(!$arrangement->erKunstgalleri()) {
+			// Intoleranser-menyen
+			$page_intoleranse = add_submenu_page(
+				'UKMdeltakere',
+				'Intoleranser',
+				'Intoleranser',
+				'editor',
+				'UKMdeltakere_intoleranser', // Page variabel i path-en
+				[static::class, 'renderIntoleranser']
+			);
+		}
 
 
 		// Personvern-menyen
