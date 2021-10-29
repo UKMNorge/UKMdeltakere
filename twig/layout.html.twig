@@ -19,7 +19,7 @@
 <div style="width: 95% UKMfilter" id="filter_innslag">
 	<h2>Dine {% if action == 'list_ufullstendig' %}uferdige påmeldinger{% else %}påmeldte deltakere{% endif %}</h2>
 
-	<div class="row">
+	<div id="monstringInnslag" erKunstgalleri="{{ monstring.erKunstgalleri() == true ? 'true' : 'false' }}" class="row">
 		{% if monstring.harPamelding() %}
 			<div class="col-xs-12 col-sm-6">
 				<ol class="list-group">

@@ -355,7 +355,8 @@ jQuery(document).on('innslag.loadView', function(e, view, innslag_id, object_id)
         'do': 'renderView',
         'innslag': innslag_id,
         'view': view,
-        'object_id': object_id
+        'object_id': object_id,
+        'erKunstgalleri': jQuery('#monstringInnslag').attr('erkunstgalleri')
     }
     body.html('<p>Vennligst vent, laster inn...</p>').attr('data-load-state', 'false');
 
