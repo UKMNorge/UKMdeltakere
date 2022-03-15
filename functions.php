@@ -120,6 +120,7 @@ function data_monstring( $monstring ) {
 	$data->type				= $monstring->getType();
 	$data->navn				= $monstring->getNavn();
 	$data->erFellesmonstring= $monstring->erFellesmonstring();
+	$data->erKunstgalleri   = $monstring->erKunstgalleri();
 	if( $monstring->getType() != 'land' ) {
 		$data->kommuner			= $monstring->getKommuner()->getKeyValArray();
 		$data->fylke			= new stdClass();

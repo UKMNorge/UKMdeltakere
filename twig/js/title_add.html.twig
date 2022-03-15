@@ -57,6 +57,9 @@
                 <div class="form-group">
                     <label for="teknikk">Type og teknikk</label>
                     <input name="teknikk" type="text" class="form-control" value="{{ tittel.typeogteknikk }}" />
+                    {% if monstring.erKunstgalleri %}
+                        <a href="?page=UKMplayback" class="btn btn-info">Last opp kunstverk</a>
+                    {% endif %}
                 </div>
             {% elseif innslag.type.key == 'litteratur' %}
                 <div class="form-group" id="leseopp-valg">
