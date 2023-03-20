@@ -18,30 +18,26 @@
 	.nominasjoner .nominasjon {
 		max-width: 100% !important;
 		width: 100% !important;
+		display: flex;
+	}
+	.nominasjon-buttons {
+		display: flex;
+		margin: auto;
+		margin-right: 0;
+	}
+	.nominasjon-buttons .btn {
+		margin-left: 10px;
+	}
+	.label-nominasjon {
+		display: flex;
+	}
+	.label-nominasjon .text {
+		margin: auto;
 	}
 </style>
 
 <div style="width: 95% UKMfilter" id="filter_innslag">
 	<h2>Dine {% if action == 'list_ufullstendig' %}uferdige påmeldinger{% else %}påmeldte deltakere{% endif %}</h2>
-
-	{# nominasjoner #}
-	<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#nominasjoner" aria-expanded="false" aria-controls="nominasjoner">Button with data-target</button>
-
-	<div class="collapse nominasjoner in col-xs-12" id="nominasjoner">
-		{% for nominasjon in nominasjoner %}
-		<div class="card nominasjon card-body">
-			{% set nominasjonInnslag = nominasjon.innslag %}
-			{% set person = nominasjon.innslag.getPersoner().getSingle() %}
-			
-			<div class="nominasjon-info">
-				<span class="nominasjon-person-navn">{{ person.getNavn() }}</span>
-				<span class="label label-primary nominasjon-person-navn">{{ nominasjonInnslag.getType().getNavn() }}</span>
-			</div>
-		</div>
-		{% endfor %}
-	</div>
-	{# {{ dump(nominasjoner) }} #}
-
 
 	<div id="monstringInnslag" erKunstgalleri="{{ monstring.erKunstgalleri() == true ? 'true' : 'false' }}" class="row">
 		{% if monstring.harPamelding() %}
@@ -126,6 +122,47 @@
 			<p>&nbsp;</p>
 			<div class="clearfix"></div>
 		{% endif %}
+		
+		<div class="col-xs-12">
+			{# nominasjoner #}
+			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#nominasjoner" aria-expanded="false" aria-controls="nominasjoner">Nominasjoner</button>
+
+			<div class="collapse nominasjoner in col-xs-12 nop" id="nominasjoner">
+				{% for nominasjonArr in nominasjoner %}
+				<div class="nominasjon list-group-item">
+					{# {{ dump(nominasjon) }} #}
+					{% set nominasjonInnslag = nominasjonArr.innslag %}
+					{% set person = nominasjonArr.innslag.getPersoner().getSingle() %}
+					{% set nominasjon = nominasjonArr.nominasjon %}
+					
+					<div class="nominasjon-info">
+						<span class="nominasjon-person-navn">{{ person.getNavn() }}</span>
+						<span class="label label-primary nominasjon-person-navn">{{ nominasjonInnslag.getType().getNavn() }}</span>
+					</div>
+
+					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
+						{% if nominasjon.erAnswered() %}
+							<div class="pull-right label label-nominasjon label-{{ nominasjon.erGodkjent() ? 'success' : 'warning' }}">
+								<span class="dashicons dashicons-info"></span>
+								<span class="text">Nominasjon er {{ nominasjon.erGodkjent() ? 'godkjent' : 'avvist' }}</span>
+							</div>
+							{% if nominasjon.erGodkjent() %}
+								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
+							{% else %}
+								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
+							{% endif %}		
+						{% else %}
+								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
+								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
+						{% endif %}
+						
+					</div>
+						
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
 	</div>
 	
 	<div class="clearfix"></div>

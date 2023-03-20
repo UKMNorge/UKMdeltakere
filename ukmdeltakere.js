@@ -34,6 +34,10 @@ jQuery(document).on('click', '.action', function(e) {
 
     switch (jQuery(this).attr('data-action')) {
         // LAGRING AV INNHOLD
+        case 'godkjentNominasjon':
+            jQuery(document).trigger('godkjentNominasjon', [jQuery(jQuery(this).parent()).attr('innslag-id'), jQuery(jQuery(this).parent()).attr('nominasjon-id'), jQuery(this).attr('godkjent-value')]);
+            break;
+        // LAGRING AV INNHOLD
         case 'save':
             jQuery(document).trigger('save', [jQuery(this).parents('li.innslag').attr('data-innslag-id')]);
             break;
@@ -391,6 +395,19 @@ jQuery(document).on('save', function(e, innslag_id) {
     jQuery(document).trigger('saveAjax', [innslag_id, data]);
 
 });
+
+jQuery(document).on('godkjentNominasjon', function(e, innslag_id, nominasjon_id, godkjent_value) {
+    var data = {
+        'action': 'UKMdeltakere_ajax',
+        'do': 'godkjent_nominasjon',
+        'view': 'godkjent_nominasjon',
+        'nominasjon_id': nominasjon_id,
+        'godkjent_value': godkjent_value,
+        'innslag_id': innslag_id
+    }
+    jQuery(document).trigger('saveAjax', [innslag_id, data]);
+});
+
 
 /**
  * Simplesave 
