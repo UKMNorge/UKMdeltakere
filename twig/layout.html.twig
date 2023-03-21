@@ -169,7 +169,7 @@
 						{% if nominasjon.erAnswered() %}
 							<div class="pull-right label label-nominasjon label-{{ nominasjon.erGodkjent() ? 'success' : 'warning' }}">
 								<span class="dashicons dashicons-info"></span>
-								<span class="text">Nominasjon er {{ nominasjon.erGodkjent() ? 'godkjent' : 'avvist' }}</span>
+								<span class="text">{{ nominasjon.erGodkjent() ? 'Godkjent' : 'Ikke godkjent' }}</span>
 							</div>
 							{% if nominasjon.erGodkjent() %}
 								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
