@@ -23,3 +23,4 @@ try{
     throw $e;
 }
 
+$JSON->redirect = '?page=UKMdeltakere';
