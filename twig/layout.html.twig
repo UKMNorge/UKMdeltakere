@@ -141,11 +141,15 @@
 		{% endif %}
 		
 		{% if nominasjoner and nominasjoner|length > 0 %}
+			{% set unansweredNominasjoner = nominasjoner|filter(n => n.nominasjon.erAnswered() == false)|length %}
 		<div class="col-xs-12">
 			{# nominasjoner #}
 			<button class="btn nominasjoner-btn btn-primary" type="button" data-toggle="collapse" data-target="#nominasjoner" aria-expanded="false" aria-controls="nominasjoner">
 				<span>Nominasjoner</span>
-				<span class="total-indicator">{{ nominasjoner|filter(n => n.nominasjon.erAnswered() == false)|length }}</span>
+				{% if unansweredNominasjoner > 0 %}
+					<span class="total-indicator">{{ unansweredNominasjoner }}</span>
+				{% endif %}
+				
 			</button>
 
 			<div class="collapse nominasjoner in col-xs-12 nop" id="nominasjoner">
