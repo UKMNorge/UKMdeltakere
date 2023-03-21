@@ -15,6 +15,9 @@
 	.list-group-item.velg-opsjon {
 		overflow: hidden;
 	}
+	.nominasjoner {
+		margin-top: 10px;
+	}
 	.nominasjoner .nominasjon {
 		max-width: 100% !important;
 		width: 100% !important;
@@ -33,6 +36,20 @@
 	}
 	.label-nominasjon .text {
 		margin: auto;
+	}
+	.nominasjoner-btn {
+		position: relative;
+	}
+	.nominasjoner-btn .total-indicator{
+	    position: absolute;
+		right: -12px;
+		top: -12px;
+		border: solid 3px #fff;
+		border-radius: 50%;
+		width: 27px;
+		height: 27px;
+		text-align: center;
+		background: red;
 	}
 </style>
 
@@ -123,9 +140,13 @@
 			<div class="clearfix"></div>
 		{% endif %}
 		
+		{% if nominasjoner and nominasjoner|length > 0 %}
 		<div class="col-xs-12">
 			{# nominasjoner #}
-			<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#nominasjoner" aria-expanded="false" aria-controls="nominasjoner">Nominasjoner</button>
+			<button class="btn nominasjoner-btn btn-primary" type="button" data-toggle="collapse" data-target="#nominasjoner" aria-expanded="false" aria-controls="nominasjoner">
+				<span>Nominasjoner</span>
+				<span class="total-indicator">{{ nominasjoner|filter(n => n.nominasjon.erAnswered() == false)|length }}</span>
+			</button>
 
 			<div class="collapse nominasjoner in col-xs-12 nop" id="nominasjoner">
 				{% for nominasjonArr in nominasjoner %}
@@ -152,6 +173,11 @@
 								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
 							{% endif %}		
 						{% else %}
+								<div class="pull-right label label-nominasjon label-danger">
+								<span class="dashicons dashicons-info"></span>
+								<span class="text">Du må besvare nominasjonen</span>
+							</div>
+
 								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
 								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
 						{% endif %}
@@ -162,6 +188,7 @@
 				{% endfor %}
 			</div>
 		</div>
+		{% endif %}
 
 	</div>
 	
