@@ -19,8 +19,10 @@
 					{% set nominasjon = nominasjonArr.nominasjon %}
 					
 					<div class="nominasjon-info">
-						<span class="nominasjon-person-navn">{{ person.getNavn() }}</span>
-						<span class="label label-primary nominasjon-person-navn">{{ nominasjonInnslag.getType().getNavn() }}</span>
+						<h4 class="nominasjon-person-navn">{{ person.getNavn() }}</h4>
+                    {% for rolle in nominasjonInnslag.getPersoner().getSingle().getRolle()|split(',') %}
+                        <span class="label label-primary">{{ rolle }}</span>
+                    {% endfor %}
 					</div>
 
 					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
@@ -40,9 +42,91 @@
 						{% endif %}
 						
 					</div>
-						
+
+                    <div class="nominasjon-vis-mer-div">
+                        <button class="btn btn-xs btn-light collapsed" type="button" data-toggle="collapse" data-target="#visMer{{ nominasjon.getId() }}" aria-expanded="false" aria-controls="visMer{{ nominasjon.getId() }}">
+                            <span class="dashicons dashicons-arrow-down-alt2"></span>
+                        </button>
+                    </div>
+
+                    
+
+                    <div id="visMer{{ nominasjon.getId() }}" class="skjemaer collapse">
+                        <span>Type: {{ nominasjonInnslag.getType().getNavn() }}</span>
+                        {% if nominasjon.harVoksenskjema() %}
+                            <h5><span class="dashicons dashicons-yes-alt nominasjon-correct"></span>Levert voksenskjema</h5>
+                            <p>Fylt ut av: <b>{{ nominasjon.getVoksen().getNavn() }} ({{ nominasjon.getVoksen().getMobil() }})</b></p>
+                            <br>
+                        {% else %}
+                            <h5><span class="dashicons dashicons-dismiss nominasjon-error">Har ikke levert voksenskjema</h5>
+                        {% endif %}
+                        
+                        <div class="show-details">
+                            {% if nominasjonInnslag.getType().getKey() == 'arrangor' or nominasjonInnslag.getType().getKey() == 'datakulturarrangor' %}
+                                {% include "nominasjoner/arrangor.html.twig" %}
+                            {% elseif nominasjonInnslag.getType().getKey() == 'nettredaksjon' %}
+                                {% include "nominasjoner/nettredaksjon.html.twig" %}
+                            {% elseif nominasjonInnslag.getType().getKey() == 'konferansier' %}
+                                {% include "nominasjoner/konferansier.html.twig" %}
+                            {% endif %}
+                        </div>
+                        
+                        {% if nominasjon.harDeltakerskjema() == false %}
+                            <div class="har-ikke-deltakerskjema">
+                                <h5><span class="dashicons dashicons-dismiss nominasjon-error"></span></span>Har ikke levert deltakerskjema</h5>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
 				</div>
+
 				{% endfor %}
 			</div>
 		</div>
 		{% endif %}
+
+
+<style>
+.nominasjon-vis-mer-div {
+    margin-bottom: 10px;
+    display: flex;
+}
+.nominasjon-vis-mer-div .btn {
+    margin: auto;
+    width: 80px;
+}
+.nominasjon-vis-mer-div .btn span.dashicons {
+    transform: rotate(180deg)
+}
+.nominasjon-vis-mer-div .btn.collapsed span.dashicons {
+    transform: rotate(0)
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  width: 50%;
+}
+.nominasjon-error {
+    color: #d43f3a;
+    margin-right: 3px;
+    margin-top: -2px;
+}
+.nominasjon-correct {
+    color: #5cb85c;
+    margin-right: 3px;
+    margin-top: -2px;
+}
+.har-ikke-deltakerskjema {
+    margin: 20px 0;
+}
+.skjemaer {
+    margin-top: -20px;
+}
+</style>
