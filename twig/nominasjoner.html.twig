@@ -58,7 +58,7 @@
                             <p>Fylt ut av: <b>{{ nominasjon.getVoksen().getNavn() }} ({{ nominasjon.getVoksen().getMobil() }})</b></p>
                             <br>
                         {% else %}
-                            <h5><span class="dashicons dashicons-dismiss nominasjon-error">Har ikke levert voksenskjema</h5>
+                            <h5><span class="dashicons dashicons-dismiss nominasjon-error"></span>Har ikke levert voksenskjema</h5>
                         {% endif %}
                         
                         <div class="show-details">
@@ -104,13 +104,13 @@
 .nominasjon-vis-mer-div .btn.collapsed span.dashicons {
     transform: rotate(0)
 }
-table {
+table.nominasjon-table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-td, th {
+.nominasjon-table td, .nominasjon-table th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
