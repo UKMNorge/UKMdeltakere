@@ -1,0 +1,27 @@
+{% if nominasjon.harVoksenskjema() %}  
+     <table>
+        <tr>
+            <th>Slik samarbeider {{ person.getFornavn() }} med andre:</th>
+            <td>{{ nominasjon.getSamarbeid()}}</td>
+        </tr>
+         <tr>
+            <th>{{ person.getFornavn() }} sin erfaring og kunnskap:</th>
+            <td>{{ nominasjon.getErfaring() }}</td>
+        </tr>
+    </table>
+{% endif %}
+
+<div>
+{# Deltakerskjema #}
+{% if nominasjon.harDeltakerskjema() %}
+    <h4>Deltakerskjema</h4>
+    <p>Ønsker å jobbe med</p>
+
+    <p>1: {{ nominasjon.getPri1() }}</p>
+    <p>2: {{ nominasjon.getPri2() }}</p>
+    <p>3: {{ nominasjon.getPri3() }}</p>
+    <p>Annet: {{ nominasjon.getAnnet() }}</p>
+
+    <p>Beskrivelse {{ nominasjon.getBeskrivelse() }}</p>
+{% endif %}
+</div>

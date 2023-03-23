@@ -1,0 +1,40 @@
+<div>
+
+    <table>
+        <tr>
+            <th>{{ person.getFornavn() }} nomineres fordi:</th>
+            <td>{{ nominasjon.getHvorfor() }}</td>
+        </tr>
+        <tr>
+            <th>{{ person.getFornavn() }} sin erfaring og spesielle egenskaper som konferansier:</th>
+            <td>{{ nominasjon.getBeskrivelse() }}</td>
+        </tr>
+        <tr>
+            <th>I playbackmodulen er følgende filer tilknyttet {{ person.getFornavn() }}:</th>
+            <td>{{ nominasjonInnslag.getPlayback().getAntall() < 1 ? 'Har ingen playbackfiler' : '' }}</td>
+        </tr>
+    {% if nominasjonInnslag.getPlayback().getAntall() > 0 %}
+        <tr>
+        {% for playback in nominasjonInnslag.getPlayback().getAll() %} 
+            <th></th>
+            <td>{{ playback.name }} - {{ playback.download() }}</td>
+        {% endfor %}
+        </tr>
+    {% endif %}
+
+        <tr>
+            <th>{{ nominasjon.getVoksen().getNavn() }} har lastet opp denne referanse-filen:</th>
+        {% if nominasjon.getFilUrl() %}
+            <td>{{ nominasjon.getFilUrl() }}</td>
+        {% else %}
+            <td> {{ nominasjon.getVoksen().getNavn() }} har ikke lastet opp ytterligere referanse-filer</td>
+        {% endif %}
+        </tr>
+
+
+
+
+
+
+    </table>
+</div>
