@@ -30,7 +30,7 @@
                             </div>
                             {% endif %}
                         </div>
-                        <h4><span class="label label-info">{{ nominasjonInnslag.getType().getNavn() }}</span></h4>
+                        <h4 style="margin-top: 0"><span class="label label-info">{{ nominasjonInnslag.getType().getNavn() }}</span></h4>
                     {% for rolle in nominasjonInnslag.getPersoner().getSingle().getRolle()|split(',') %}
                         <span class="label label-primary">{{ rolle }}</span>
                     {% endfor %}
@@ -160,5 +160,8 @@ table.nominasjon-table {
 .label-nominasjoner-info .nom-label .text {
     margin: auto;
     margin-left: 3px;
+}
+.deltakerskjema {
+    margin-top: 10px;
 }
 </style>
