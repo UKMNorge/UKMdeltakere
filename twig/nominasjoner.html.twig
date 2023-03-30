@@ -1,5 +1,5 @@
 {% if nominasjoner and nominasjoner|filter(n => n.nominasjon.erAnswered() == false)|length > 0 %}
-		{% set unansweredNominasjoner = nominasjoner|filter(n => n.nominasjon.erAnswered() == false)|length %}
+		{% set unansweredNominasjoner = nominasjoner|filter(n => n.nominasjon.erAnswered() == false and n.innslag.erVideresendtTil(monstring) == false)|length %}
 		<div class="col-xs-12 alle-nominasjoner">
 			{# nominasjoner #}
 			<button class="btn nominasjoner-btn btn-primary" type="button" data-toggle="collapse" data-target="#nominasjoner" aria-expanded="false" aria-controls="nominasjoner">
@@ -10,8 +10,8 @@
 				
 			</button>
 
-			<div class="collapse nominasjoner in col-xs-12 nop" id="nominasjoner">
-				{% for nominasjonArr in nominasjoner|filter(nom => nom.nominasjon.erAnswered() == false) %}
+			<div class="nominasjoner col-xs-12 nop collapsed collapse" id="nominasjoner">
+				{% for nominasjonArr in nominasjoner|filter(nom => nom.innslag.erVideresendtTil(monstring) == false) %}
 				<div class="nominasjon list-group-item">
 					{# {{ dump(nominasjon) }} #}
 					{% set nominasjonInnslag = nominasjonArr.innslag %}
@@ -27,7 +27,7 @@
 
 					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
 						{% if nominasjon.erAnswered() %}
-							<div class="pull-right label label-nominasjon label-{{ nominasjon.erGodkjent() ? 'success' : 'warning' }}">
+							<div class="pull-right label label-nominasjon label-{{ nominasjon.erGodkjent() ? 'info' : 'warning' }}">
 								<span class="dashicons dashicons-info"></span>
 								<span class="text">{{ nominasjon.erGodkjent() ? 'Godkjent' : 'Ikke godkjent' }}</span>
 							</div>
