@@ -52,7 +52,10 @@
                     
 
                     <div id="visMer{{ nominasjon.getId() }}" class="skjemaer collapse">
-                        <span>Type: {{ nominasjonInnslag.getType().getNavn() }}</span>
+                        <h5>Fylke: {{ nominasjonInnslag.getFylke() }}</h5>
+                        <h5>Kommune: {{ nominasjonInnslag.getKommune() }}</h5>
+                        <h5>Type: {{ nominasjonInnslag.getType().getNavn() }}</h5>
+                        <br>
                         {% if nominasjon.harVoksenskjema() %}
                             <h5><span class="dashicons dashicons-yes-alt nominasjon-correct"></span>Levert voksenskjema</h5>
                             <p>Fylt ut av: <b>{{ nominasjon.getVoksen().getNavn() }} ({{ nominasjon.getVoksen().getMobil() }})</b></p>
