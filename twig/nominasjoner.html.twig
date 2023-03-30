@@ -12,11 +12,11 @@
 
 			<div class="nominasjoner col-xs-12 nop collapsed collapse" id="nominasjoner">
 				{% for nominasjonArr in nominasjoner|filter(nom => nom.innslag.erVideresendtTil(monstring) == false) %}
-				<div class="nominasjon list-group-item">
-					{# {{ dump(nominasjon) }} #}
 					{% set nominasjonInnslag = nominasjonArr.innslag %}
 					{% set person = nominasjonArr.innslag.getPersoner().getSingle() %}
 					{% set nominasjon = nominasjonArr.nominasjon %}
+				<div class="nominasjon list-group-item {{ nominasjon.erAnswered() == false ? 'notification' : '' }}">
+					{# {{ dump(nominasjon) }} #}
 					
 					<div class="nominasjon-info">
                         <div class="nom-navn-og-info">
@@ -163,5 +163,9 @@ table.nominasjon-table {
 }
 .deltakerskjema {
     margin-top: 10px;
+}
+.nominasjoner .nominasjon.notification {
+        border: solid 2px #d9534f;
+    box-shadow: 0px 0px 15px -6px #d9534f;
 }
 </style>
