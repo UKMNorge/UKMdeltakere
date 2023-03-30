@@ -19,7 +19,18 @@
 					{% set nominasjon = nominasjonArr.nominasjon %}
 					
 					<div class="nominasjon-info">
-						<h4 class="nominasjon-person-navn">{{ person.getNavn() }}</h4>
+                        <div class="nom-navn-og-info">
+                            <h4 class="nominasjon-person-navn">{{ person.getNavn() }}</h4>
+                            {% if nominasjon.erAnswered() %}
+                            <div class="label-nominasjoner-info">
+                                <div class="pull-left nom-label">
+                                    <span class="dashicons dashicons-info"></span>
+                                    <span class="text">{{ nominasjon.erGodkjent() ? 'Godkjent! Venter for videresending' : 'Ikke godkjent' }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <h4><span class="label label-info">{{ nominasjonInnslag.getType().getNavn() }}</span></h4>
                     {% for rolle in nominasjonInnslag.getPersoner().getSingle().getRolle()|split(',') %}
                         <span class="label label-primary">{{ rolle }}</span>
                     {% endfor %}
@@ -27,10 +38,6 @@
 
 					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
 						{% if nominasjon.erAnswered() %}
-							<div class="pull-right label label-nominasjon label-{{ nominasjon.erGodkjent() ? 'info' : 'warning' }}">
-								<span class="dashicons dashicons-info"></span>
-								<span class="text">{{ nominasjon.erGodkjent() ? 'Godkjent' : 'Ikke godkjent' }}</span>
-							</div>
 							{% if nominasjon.erGodkjent() %}
 								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
 							{% else %}
@@ -54,7 +61,6 @@
                     <div id="visMer{{ nominasjon.getId() }}" class="skjemaer collapse">
                         <h5>Fylke: {{ nominasjonInnslag.getFylke() }}</h5>
                         <h5>Kommune: {{ nominasjonInnslag.getKommune() }}</h5>
-                        <h5>Type: {{ nominasjonInnslag.getType().getNavn() }}</h5>
                         <br>
                         {% if nominasjon.harVoksenskjema() %}
                             <h5><span class="dashicons dashicons-yes-alt nominasjon-correct"></span>Levert voksenskjema</h5>
@@ -134,5 +140,25 @@ table.nominasjon-table {
 }
 .skjemaer {
     margin-top: -10;
+}
+.label-type-nominasjon {
+    margin-right: 10px;
+}
+.nom-navn-og-info {
+    display: flex;
+}
+.nominasjon-person-navn {
+    margin-right: 10px;
+}
+.label-nominasjoner-info {
+    display: flex;
+}
+.label-nominasjoner-info .nom-label {
+    display: flex;
+    margin: auto;
+}
+.label-nominasjoner-info .nom-label .text {
+    margin: auto;
+    margin-left: 3px;
 }
 </style>
