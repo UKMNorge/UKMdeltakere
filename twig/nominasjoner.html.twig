@@ -61,6 +61,7 @@
                     <div id="visMer{{ nominasjon.getId() }}" class="skjemaer collapse">
                         <h5>Fylke: {{ nominasjonInnslag.getFylke() }}</h5>
                         <h5>Kommune: {{ nominasjonInnslag.getKommune() }}</h5>
+                        <h5>Avsender: {{ nominasjon.getFraArrangement().getNavn() }}</h5>
                         <br>
                         {% if nominasjon.harVoksenskjema() %}
                             <h5><span class="dashicons dashicons-yes-alt nominasjon-correct"></span>Levert voksenskjema</h5>
