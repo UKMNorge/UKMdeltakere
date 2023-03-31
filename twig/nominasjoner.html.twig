@@ -31,9 +31,6 @@
                             {% endif %}
                         </div>
                         <h4 style="margin-top: 0"><span class="label label-info">{{ nominasjonInnslag.getType().getNavn() }}</span></h4>
-                    {% for rolle in nominasjonInnslag.getPersoner().getSingle().getRolle()|split(',') %}
-                        <span class="label label-primary">{{ rolle }}</span>
-                    {% endfor %}
 					</div>
 
 					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
@@ -59,9 +56,27 @@
                     
 
                     <div id="visMer{{ nominasjon.getId() }}" class="skjemaer collapse">
-                        <h5>Fylke: {{ nominasjonInnslag.getFylke() }}</h5>
-                        <h5>Kommune: {{ nominasjonInnslag.getKommune() }}</h5>
-                        <h5>Avsender: {{ nominasjon.getFraArrangement().getNavn() }}</h5>
+    					<div class="nominasjon-info">
+                        <h5>Roller</h5>
+
+                        {% for rolle in nominasjonInnslag.getPersoner().getSingle().getRolle()|split(',') %}
+                            <span class="label label-primary">{{ rolle }}</span>
+                        {% endfor %}
+                        </div>
+
+                        <br>
+                        
+                        <h5>Deltaker</h5>
+                        <p>Alder: {{ person.getAlder() }}</p>
+                        <p>Mobil: {{ person.getMobil() }}</p>
+                        <p>Epost: {{ person.getEpost() }}</p>
+
+                        <br>
+                        
+                        <h5>Videresending info</h5>
+                        <p>Fylke: {{ nominasjonInnslag.getFylke() }}</p>
+                        <p>Kommune: {{ nominasjonInnslag.getKommune() }}</p>
+                        <p>Avsender: {{ nominasjon.getFraArrangement().getNavn() }}</p>
                         <br>
                         {% if nominasjon.harVoksenskjema() %}
                             <h5><span class="dashicons dashicons-yes-alt nominasjon-correct"></span>Levert voksenskjema</h5>
