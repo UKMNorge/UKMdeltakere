@@ -1,4 +1,4 @@
-{% if nominasjoner and nominasjoner|filter(n => n.nominasjon.erAnswered() == false)|length > 0 %}
+{% if nominasjoner and nominasjoner|filter(nom => nom.innslag.erVideresendtTil(monstring) == false)|length > 0 %}
 		{% set unansweredNominasjoner = nominasjoner|filter(n => n.nominasjon.erAnswered() == false and n.innslag.erVideresendtTil(monstring) == false)|length %}
 		<div class="col-xs-12 alle-nominasjoner">
 			{# nominasjoner #}
