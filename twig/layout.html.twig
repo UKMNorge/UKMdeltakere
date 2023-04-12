@@ -14,8 +14,54 @@
 	}
 	.list-group-item.velg-opsjon {
 		overflow: hidden;
-	} 
+	}
+	.nominasjoner {
+		margin-top: 10px;
+	}
+	.nominasjoner .nominasjon {
+		max-width: 100% !important;
+		width: 100% !important;
+		display: grid;
+	}
+	.nominasjon-buttons {
+		display: flex;
+		margin: auto;
+		margin-right: 0;
+		position: absolute;
+		right: 10px;
+		top: 47px;
+		display: flex;
+	}
+	.nominasjon-buttons .btn {
+		margin: auto;
+		margin-left: 10px;
+	}
+	.label-nominasjon {
+		display: flex;
+	}
+	.label-nominasjon .text {
+		margin: auto;
+	}
+	.nominasjoner-btn {
+		position: relative;
+	}
+	.nominasjoner-btn .total-indicator{
+	    position: absolute;
+		right: -12px;
+		top: -12px;
+		border: solid 3px #fff;
+		border-radius: 50%;
+		width: 27px;
+		height: 27px;
+		text-align: center;
+		background: red;
+	}
+	.alle-nominasjoner {
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
 </style>
+
 <div style="width: 95% UKMfilter" id="filter_innslag">
 	<h2>Dine {% if action == 'list_ufullstendig' %}uferdige påmeldinger{% else %}påmeldte deltakere{% endif %}</h2>
 
@@ -102,6 +148,8 @@
 			<p>&nbsp;</p>
 			<div class="clearfix"></div>
 		{% endif %}
+		
+		{% include "nominasjoner.html.twig" %}
 	</div>
 	
 	<div class="clearfix"></div>

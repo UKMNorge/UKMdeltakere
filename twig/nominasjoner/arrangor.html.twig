@@ -1,0 +1,61 @@
+
+
+{% if nominasjon.harVoksenskjema() %}
+    <table class="nominasjon-table">
+        <tr>
+            <th>{{ person.getFornavn() }} sine positive egenskaper i samarbeid med andre:</th>
+            <td>{{ nominasjon.getVoksenSamarbeid() }}</td>
+        </tr>
+         <tr>
+            <th>{{ person.getFornavn() }} sin erfaring og kunnskap:</th>
+            <td>{{ nominasjon.getVoksenErfaring() }}</td>
+        </tr>
+         <tr>
+            <th>Andre kommentarer eller annet {{ nominasjon.getVoksen().getNavn() }} tror er viktig å få frem om {{ person.getNavn() }} sin erfaring og kunnskap:</th>
+            <td>{{ nominasjon.getVoksenAnnet() }}</td>
+        </tr>
+    </table>
+{% endif %}
+
+
+<div class="deltakerskjema">
+{% if nominasjon.harDeltakerskjema() %}
+        {% if nominasjon.getLydtekniker() %}
+            <p>LYDTEKNIKER: {{ nominasjon.getLydtekniker() }}</p>
+        {% endif %}
+        {% if nominasjon.getLystekniker() %}
+            <p>LYSTEKNIKER: {{ nominasjon.getLystekniker() }}</p>
+        {% endif %}
+        {% if nominasjon.getVertskap() %}
+            <p>VERTSKAP: {{ nominasjon.getVertskap() }}</p>
+        {% endif %}
+        {% if nominasjon.getProdusent() %}
+            <p>PRODUSENT: {{ nominasjon.getProdusent() }}</p>
+        {% endif %}  
+
+        <p>Samarbeid med andre: {{ nominasjon.getSamarbeid() }}</p>
+        <p>Om egen erfaring: {{ nominasjon.getErfaring() }}</p>
+        <p>Suksesskriterie for UA: {{ nominasjon.getSuksesskriterie() }}</p>
+        <p>Eventuelle kommentarer: {{ nominasjon.getAnnet() }}</p>
+
+        {# LYDTEKNIKER #}
+        {% if nominasjon.getLydtekniker() %}
+            <p>Tidligere erfaring? Brukt hvilke mikser(e)? (kjenner du den godt, eller mindre godt?)</p>
+            <p>Jobbet med lydteknikk utenom UKM? Hvilke? Rolle?</p>
+            <p>Hvordan fungerer stagerack? Hvordan koble det sammen med digitalmikser?</p>
+            <p>Forskjell på dynamisk og kondesator-mikrofon? Når bruke hvilken?</p>
+            <p>Ville du, på kort tid, full lydsjekk band. Monitor + PA + konsert for mange?</p>
+            <p>Eventuelle referanser</p>
+        {% endif %}
+
+        {# LYSTEKNIKK #}
+        {% if nominasjon.getLystekniker() %}
+            <p>Tidligere erfaring? Brukt hvilke mikser(e)? (kjenner du den godt, eller mindre godt?)</p>
+            <p>Jobbet med lysteknikk utenom UKM? Hvilke? Rolle?</p>
+            <p>Kan du patche opp til to universer med dmx-adresser på en mikser, på lampene og om nødvendig feilsøke lampe/fixture?</p>
+            <p>Forskjell på beam, wash og profil? Når bruke hvilken?</p>
+            <p>Takler du stress? Klarer du programmere lysshow + gjennomføre live for mange?</p>
+            <p>Eventuelle referanser</p>
+        {% endif %}
+{% endif %}
+</div>

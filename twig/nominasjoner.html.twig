@@ -1,0 +1,188 @@
+{% if nominasjoner and nominasjoner|filter(nom => nom.innslag.erVideresendtTil(monstring) == false)|length > 0 %}
+		{% set unansweredNominasjoner = nominasjoner|filter(n => n.nominasjon.erAnswered() == false and n.innslag.erVideresendtTil(monstring) == false)|length %}
+		<div class="col-xs-12 alle-nominasjoner">
+			{# nominasjoner #}
+			<button class="btn nominasjoner-btn btn-primary" type="button" data-toggle="collapse" data-target="#nominasjoner" aria-expanded="false" aria-controls="nominasjoner">
+				<span>Nominasjoner</span>
+				{% if unansweredNominasjoner > 0 %}
+					<span class="total-indicator">{{ unansweredNominasjoner }}</span>
+				{% endif %}
+				
+			</button>
+
+			<div class="nominasjoner col-xs-12 nop collapsed collapse" id="nominasjoner">
+				{% for nominasjonArr in nominasjoner|filter(nom => nom.innslag.erVideresendtTil(monstring) == false) %}
+					{% set nominasjonInnslag = nominasjonArr.innslag %}
+					{% set person = nominasjonArr.innslag.getPersoner().getSingle() %}
+					{% set nominasjon = nominasjonArr.nominasjon %}
+				<div class="nominasjon list-group-item {{ nominasjon.erAnswered() == false ? 'notification' : '' }}">
+					{# {{ dump(nominasjon) }} #}
+					
+					<div class="nominasjon-info">
+                        <div class="nom-navn-og-info">
+                            <h4 class="nominasjon-person-navn">{{ person.getNavn() }}</h4>
+                            {% if nominasjon.erAnswered() %}
+                            <div class="label-nominasjoner-info">
+                                <div class="pull-left nom-label">
+                                    <span class="dashicons dashicons-info"></span>
+                                    <span class="text">{{ nominasjon.erGodkjent() ? 'Godkjent! Venter for videresending' : 'Ikke godkjent' }}</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <h4 style="margin-top: 0"><span class="label label-info">{{ nominasjonInnslag.getType().getNavn() }}</span></h4>
+					</div>
+
+					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
+						{% if nominasjon.erAnswered() %}
+							{% if nominasjon.erGodkjent() %}
+								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
+							{% else %}
+								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
+							{% endif %}		
+						{% else %}
+								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
+								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
+						{% endif %}
+						
+					</div>
+
+                    <div class="nominasjon-vis-mer-div">
+                        <button class="btn btn-xs btn-light collapsed" type="button" data-toggle="collapse" data-target="#visMer{{ nominasjon.getId() }}" aria-expanded="false" aria-controls="visMer{{ nominasjon.getId() }}">
+                            <span class="dashicons dashicons-arrow-down-alt2"></span>
+                        </button>
+                    </div>
+
+                    
+
+                    <div id="visMer{{ nominasjon.getId() }}" class="skjemaer collapse">
+    					<div class="nominasjon-info">
+                        <h5>Roller</h5>
+
+                        {% for rolle in nominasjonInnslag.getPersoner().getSingle().getRolle()|split(',') %}
+                            <span class="label label-primary">{{ rolle }}</span>
+                        {% endfor %}
+                        </div>
+
+                        <br>
+                        
+                        <h5>Deltaker</h5>
+                        <p>Alder: {{ person.getAlder() }}</p>
+                        <p>Mobil: {{ person.getMobil() }}</p>
+                        <p>Epost: {{ person.getEpost() }}</p>
+
+                        <br>
+                        
+                        <h5>Videresending info</h5>
+                        <p>Fylke: {{ nominasjonInnslag.getFylke() }}</p>
+                        <p>Kommune: {{ nominasjonInnslag.getKommune() }}</p>
+                        <p>Avsender: {{ nominasjon.getFraArrangement().getNavn() }}</p>
+                        <br>
+                        {% if nominasjon.harVoksenskjema() %}
+                            <h5><span class="dashicons dashicons-yes-alt nominasjon-correct"></span>Levert voksenskjema</h5>
+                            <p>Fylt ut av: <b>{{ nominasjon.getVoksen().getNavn() }} ({{ nominasjon.getVoksen().getMobil() }})</b></p>
+                            <br>
+                        {% else %}
+                            <h5><span class="dashicons dashicons-dismiss nominasjon-error"></span>Har ikke levert voksenskjema</h5>
+                        {% endif %}
+                        
+                        <div class="show-details">
+                            {% if nominasjonInnslag.getType().getKey() == 'arrangor' or nominasjonInnslag.getType().getKey() == 'datakulturarrangor' %}
+                                {% include "nominasjoner/arrangor.html.twig" %}
+                            {% elseif nominasjonInnslag.getType().getKey() == 'nettredaksjon' %}
+                                {% include "nominasjoner/nettredaksjon.html.twig" %}
+                            {% elseif nominasjonInnslag.getType().getKey() == 'konferansier' %}
+                                {% include "nominasjoner/konferansier.html.twig" %}
+                            {% endif %}
+                        </div>
+                        
+                        {% if nominasjon.harDeltakerskjema() == false %}
+                            <div class="har-ikke-deltakerskjema">
+                                <h5><span class="dashicons dashicons-dismiss nominasjon-error"></span></span>Har ikke levert deltakerskjema</h5>
+                            </div>
+                        {% endif %}
+                        
+                        <div>
+                            <span class="muted">Full oversikt over nominasjoner og skjemaene kan finnes på <a href="?page=UKMrapporter&action=rapport&rapport=Nominasjoner">rapporter</a> ved å laste ned Word-fil</span>
+                        </div>
+                    </div>
+				</div>
+
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+
+
+<style>
+.nominasjon-vis-mer-div {
+    margin-bottom: 10px;
+    display: flex;
+}
+.nominasjon-vis-mer-div .btn {
+    margin: auto;
+    width: 80px;
+}
+.nominasjon-vis-mer-div .btn span.dashicons {
+    transform: rotate(180deg)
+}
+.nominasjon-vis-mer-div .btn.collapsed span.dashicons {
+    transform: rotate(0)
+}
+table.nominasjon-table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.nominasjon-table td, .nominasjon-table th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  width: 50%;
+}
+.nominasjon-error {
+    color: #d43f3a;
+    margin-right: 3px;
+    margin-top: -2px;
+}
+.nominasjon-correct {
+    color: #5cb85c;
+    margin-right: 3px;
+    margin-top: -2px;
+}
+.har-ikke-deltakerskjema {
+    margin: 20px 0;
+}
+.skjemaer {
+    margin-top: -10;
+}
+.label-type-nominasjon {
+    margin-right: 10px;
+}
+.nom-navn-og-info {
+    display: flex;
+}
+.nominasjon-person-navn {
+    margin-right: 10px;
+}
+.label-nominasjoner-info {
+    display: flex;
+}
+.label-nominasjoner-info .nom-label {
+    display: flex;
+    margin: auto;
+}
+.label-nominasjoner-info .nom-label .text {
+    margin: auto;
+    margin-left: 3px;
+}
+.deltakerskjema {
+    margin-top: 10px;
+}
+.nominasjoner .nominasjon.notification {
+    border: solid 1px #d9534f;
+    box-shadow: 0px 0px 15px -6px #d9534f;
+    border-bottom-width: 2px;
+}
+</style>
