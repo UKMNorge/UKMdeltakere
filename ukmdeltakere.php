@@ -49,7 +49,7 @@ class UKMdeltakere extends Modul
 		$page = add_menu_page(
 			'Påmeldte',
 			'Påmeldte',
-			'editor',
+			'ukm_deltakere',
 			'UKMdeltakere',
 			[static::class, 'renderAdmin'],
 			'dashicons-buddicons-buddypress-logo', #'//ico.ukm.no/people-menu.png',
