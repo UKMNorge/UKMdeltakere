@@ -24,8 +24,10 @@
                             {% if nominasjon.erAnswered() %}
                             <div class="label-nominasjoner-info">
                                 <div class="pull-left nom-label">
-                                    <span class="dashicons dashicons-info"></span>
-                                    <span class="text">{{ nominasjon.erGodkjent() ? 'Godkjent! Venter for videresending' : 'Avvist' }}</span>
+                                    <span class="text label label-{{ nominasjon.erGodkjent() ? 'success' : 'danger' }}">
+                                        <span class="dashicons inside-label dashicons-info"></span>
+                                        <span>{{ nominasjon.erGodkjent() ? 'Godkjent! Venter for videresending' : 'Avvist' }}</span>
+                                    </span>
                                 </div>
                             </div>
                             {% endif %}
@@ -176,6 +178,11 @@ table.nominasjon-table {
 .label-nominasjoner-info .nom-label .text {
     margin: auto;
     margin-left: 3px;
+    display: flex;
+}
+.label-nominasjoner-info .nom-label .text span {
+    margin: auto;
+    margin-right: 5px;
 }
 .deltakerskjema {
     margin-top: 10px;
@@ -184,5 +191,10 @@ table.nominasjon-table {
     border: solid 1px #d9534f;
     box-shadow: 0px 0px 15px -6px #d9534f;
     border-bottom-width: 2px;
+}
+.dashicons.inside-label {
+    width: 13px;
+    height: 13px;
+    font-size: 13px;
 }
 </style>
