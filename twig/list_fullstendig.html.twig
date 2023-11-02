@@ -11,19 +11,19 @@
 					<h3>{{ type_innslag }}</h3>
 					<div class="clearfix"></div>
 				</div>
-				<ol class="list-group innslag_lister items" id="innslag_liste_{{ type_innslag.getKey() }}">
-					<li class="list-group-item innslag" data-innslag-id="new_{{ type_innslag.getKey() }}" id="innslag_new_{{ type_innslag.getKey() }}" style="display: none;">
+				<ul class="list-group innslag_lister items" id="innslag_liste_{{ type_innslag.getKey() }}">
+					<li class="as-card-2 as-padding-space-3 as-margin-bottom-space-1 innslag" data-innslag-id="new_{{ type_innslag.getKey() }}" id="innslag_new_{{ type_innslag.getKey() }}" style="display: none;">
 						<div class="body">
 						</div>
 					</li>
-					<li class="list-group-item ingen-pameldte item hide" data-filter="">Ingen påmeldte i {{ type_innslag }}</li>
+					<li class="as-card-2 as-padding-space-3 as-margin-bottom-space-1 ingen-pameldte item hide" data-filter="">Ingen påmeldte i {{ type_innslag }}</li>
 
 					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 						{% embed "list_item.html.twig" with { vis_varsler: true } %}{% endembed %}
 					{% else %}
-						<li class="list-group-item ingen-pameldte item" data-filter="">Ingen påmeldte i {{ type_innslag }}</li>
+						<li class="as-card-2 as-padding-space-3 as-margin-bottom-space-1 ingen-pameldte item" data-filter="">Ingen påmeldte i {{ type_innslag }}</li>
 					{% endfor %}
-				</ol>
+				</ul>
 			</div>
 		{% endfor %}
 	</div>

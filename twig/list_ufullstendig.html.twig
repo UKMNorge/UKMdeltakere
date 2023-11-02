@@ -12,13 +12,13 @@
 					<h3>{{ type_innslag }}</h3>
 					<div class="clearfix"></div>
 				</div>
-				<ol class="list-group innslag_lister items">
+				<ul class="list-group innslag_lister items">
 					{% for innslag in list_innslag[ type_innslag.getKey() ] %}
 						{% embed "list_item.html.twig" with { vis_varsler: false }%}{% endembed %}
 					{% else %}
 						<li class="list-group-item">Ingen ufullstendige påmeldinger i {{ type_innslag|lower }}</li>
 					{% endfor %}
-				</ol>
+				</ul>
 			</div>
 		{% else %}
 			{% set vis_kategori_info = true %}
