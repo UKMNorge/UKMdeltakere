@@ -45,6 +45,10 @@ jQuery(document).on('click', '.action', function(e) {
         case 'simpleSave':
             jQuery(document).trigger('simpleSave', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this)]);
             break;
+        // Opprett WP tilgang
+        case 'oppretWPBruker':
+            jQuery(document).trigger('oppretWPBruker', [jQuery(this).parents('li.innslag').attr('data-innslag-id'), jQuery(this)]);
+            break;
 
             // HANDLINGER SOM KUN RELATERER SEG TIL INNSLAGET
         case 'addTitle':
@@ -408,6 +412,20 @@ jQuery(document).on('godkjentNominasjon', function(e, innslag_id, nominasjon_id,
     jQuery(document).trigger('saveAjax', [innslag_id, data]);
 });
 
+
+/**
+ * Opprett tilgang til WP fra delta bruker 
+ * Håndterer oppretting av bruker på WP fra delta
+ */
+jQuery(document).on('oppretWPBruker', function(e, innslag_id, clicked) {
+    alert('aa')
+    var data = {
+        'action': 'UKMdeltakere_ajax',
+        'do': 'oppretWPBruker',
+        'innslag_id': innslag_id
+    }
+    jQuery(document).trigger('saveAjax', [innslag_id, data]);
+});
 
 /**
  * Simplesave 
