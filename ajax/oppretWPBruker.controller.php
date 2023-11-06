@@ -1,7 +1,18 @@
 <?php
-use UKMNorge\Wordpress\WriteUser;
 
-if(is_super_admin()){
-    $user = WriteUser::createParticipantUser('lisalausen1996', 'mhabtjgnpq_1667938457@tfbnw.net', 'LisaW', 'LausenW', 94078002, 37684);
-    var_dump($user);
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Wordpress\WriteUser;
+use UKMNorge\Wordpress\User;
+
+
+$arrangement = new Arrangement(get_option('pl_id'));
+$innslag_id = $_POST['innslag_id'];
+$innslag = $arrangement->getInnslag()->get($innslag_id);
+
+if($innslag && is_super_admin()) {
+    if($innslag->getType()->getKey() == 'arrangor') {
+        $person = $innslag->getPerson();
+        $username = "deltaker_" . $person->getId();
+        $user = WriteUser::createParticipantUser($username, $person->getEpost(), $person->getNavn(), $person->getEtternavn(), 94078002, $person->getId());
+    }
 }
