@@ -10,7 +10,7 @@ $innslag_id = $_POST['innslag_id'];
 $innslag = $arrangement->getInnslag()->get($innslag_id);
 
 if($innslag && is_super_admin()) {
-    if($innslag->getType()->getKey() == 'arrangor') {
+    if($innslag->getType()->getKey() == 'arrangor' || $innslag->getType()->getKey() == 'nettredaksjon') {
         $person = $innslag->getPerson();
         $username = "deltaker_" . $person->getId();
         $user = WriteUser::createParticipantUser($username, $person->getEpost(), $person->getFornavn(), $person->getEtternavn(), $person->getMobil(), $person->getId());
