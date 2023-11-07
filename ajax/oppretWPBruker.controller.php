@@ -16,7 +16,7 @@ if($innslag && is_super_admin()) {
         $username = "deltaker_" . $person->getId();
         $user = WriteUser::createParticipantUser($username, $person->getEpost(), $person->getFornavn(), $person->getEtternavn(), $person->getMobil(), $person->getId());
 
-        Blog::leggTilBruker($blog_id, $user->getId(), $role);
+        Blog::leggTilBruker(get_current_blog_id(), $user->getId(), $role);
 
         // Oppgraderer rollen til brukeren
         WriteUser::oppgraderBruker(
