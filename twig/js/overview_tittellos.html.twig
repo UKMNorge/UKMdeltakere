@@ -92,8 +92,11 @@
             <a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-danger col-xs-12 col-sm-4 col-lg-3" data-action="simpleSave" data-handle="meldAvInnslag" data-object-id="{{ innslag_id }}" data-warning="Sikker på at du vil melde av {{ innslag.navn }} fra ditt arrangement, selv om de startet påmeldingen sin for kort tid siden?">Meld av</a>
         {% endif %}
 
-        <a href="#innslag_{{ innslag_id }}" class="action superadmin hide btn btn-block btn-warning col-xs-12 col-sm-4 col-lg-3" data-action="oppretWPBruker" data-handle="oppretWPBruker" data-object-id="{{ innslag_id }}">Gi tigang ti arrangørsystemet</a>
-		
+		{% if not personTilgang %}
+        	<a href="#innslag_{{ innslag_id }}" class="action btn btn-block btn-warning col-xs-12 col-sm-4 col-lg-3" data-action="oppretWPBruker" data-handle="oppretWPBruker" data-object-id="{{ innslag_id }}">Gi tilgang til arrangementet</a>
+        {% else %}	
+			<a class="action disabled btn btn-block btn-info col-xs-12 col-sm-4 col-lg-3">Brukeren har fått tilgang til arrangementet</a>
+		{% endif %}
 		<div class="clearfix"></div>
 		<br />
 		<p class="visible-xs">

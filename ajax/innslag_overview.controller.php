@@ -1,5 +1,7 @@
 <?php
 
+use UKMNorge\Wordpress\Blog;
+
 // HVIS INNSLAGET KAN VÆRE GRUPPE
 if ($innslag->getType()->erGruppe()) {
     $JSON->twigJS = 'overview';
@@ -55,6 +57,13 @@ else {
     $person             = $innslag->getPersoner()->getSingle();
     $JSON->person       = data_person($person);
     $JSON->erfaring     = $innslag->getBeskrivelse();
+
+    if($person->harWordpressBruker()) {
+        $JSON->personTilgang = Blog::harBloggBruker(get_current_blog_id(), $person->getWordpressBruker());
+    }
+    else {
+        $JSON->personTilgang = false;
+    }
 }
 
 
