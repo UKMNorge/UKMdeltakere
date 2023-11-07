@@ -14,5 +14,12 @@ if($innslag && is_super_admin()) {
         $person = $innslag->getPerson();
         $username = "deltaker_" . $person->getId();
         $user = WriteUser::createParticipantUser($username, $person->getEpost(), $person->getFornavn(), $person->getEtternavn(), $person->getMobil(), $person->getId());
+
+        // Oppgraderer rollen til brukeren
+        WriteUser::oppgraderBruker(
+            $user,
+            get_current_blog_id(),
+            User::getOppgradertRolleForInnslagType($innslag->getType())
+        );
     }
 }
