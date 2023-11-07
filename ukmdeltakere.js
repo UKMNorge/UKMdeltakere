@@ -418,7 +418,6 @@ jQuery(document).on('godkjentNominasjon', function(e, innslag_id, nominasjon_id,
  * Håndterer oppretting av bruker på WP fra delta
  */
 jQuery(document).on('oppretWPBruker', function(e, innslag_id, clicked) {
-    alert('aa')
     var data = {
         'action': 'UKMdeltakere_ajax',
         'do': 'oppretWPBruker',
