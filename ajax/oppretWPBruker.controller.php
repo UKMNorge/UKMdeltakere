@@ -13,6 +13,6 @@ if($innslag && is_super_admin()) {
     if($innslag->getType()->getKey() == 'arrangor') {
         $person = $innslag->getPerson();
         $username = "deltaker_" . $person->getId();
-        $user = WriteUser::createParticipantUser($username, $person->getEpost(), $person->getNavn(), $person->getEtternavn(), 94078002, $person->getId());
+        $user = WriteUser::createParticipantUser($username, $person->getEpost(), $person->getNavn(), $person->getEtternavn(), $person->getMobil(), $person->getId());
     }
 }
