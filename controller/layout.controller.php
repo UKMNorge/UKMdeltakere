@@ -43,4 +43,4 @@ if ( !get_option('pl_id')) {
     UKMdeltakere::addViewData('nominasjoner', $nominasjoner);
 }
 
-UKMdeltakere::addViewData('action', static::getAction());
+UKMdeltakere::addViewData('action', UKMdeltakere::getAction());
