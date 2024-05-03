@@ -1,5 +1,4 @@
 <div>
-
     <table class="nominasjon-table">
         <tr>
             <th>{{ person.getFornavn() }} nomineres fordi:</th>
@@ -10,18 +9,19 @@
             <td>{{ nominasjon.getBeskrivelse() }}</td>
         </tr>
         <tr>
-            <th>I playbackmodulen er følgende filer tilknyttet {{ person.getFornavn() }}:</th>
-            <td>{{ nominasjonInnslag.getPlayback().getAntall() < 1 ? 'Har ingen playbackfiler' : '' }}</td>
-        </tr>
+            <th>I playbackmodulen er følgende filer tilknyttet {{ person.getFornavn() }}:</th>        
     {% if nominasjonInnslag.getPlayback().getAntall() > 0 %}
-        <tr>
+        <td>
         {% for playback in nominasjonInnslag.getPlayback().getAll() %} 
-            <th></th>
-            <td>{{ playback.name }} - {{ playback.download() }}</td>
+            <p>{{ playback.getNavn() }} - <a href="{{ playback.getUrl() }}">Last ned</a></p>
         {% endfor %}
+        </td>
+        </tr>
+    {% else %}
+        <td>Har ingen playbackfiler</td>
         </tr>
     {% endif %}
-
+    
         <tr>
             <th>{{ nominasjon.getVoksen().getNavn() }} har lastet opp denne referanse-filen:</th>
         {% if nominasjon.getFilUrl() %}
@@ -31,10 +31,6 @@
         {% endif %}
         </tr>
 
-
-
-
-
-
+    <tr>
     </table>
 </div>
