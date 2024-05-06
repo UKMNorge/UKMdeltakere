@@ -39,6 +39,7 @@
 						{% if nominasjon.erAnswered() %}
 							{% if nominasjon.erGodkjent() %}
 								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
+								<button godkjent-value="false" class="action btn btn-xs btn-success" data-action="videresendNominasjon">Utfør videresending</button>
 							{% else %}
 								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
 							{% endif %}		

@@ -33,9 +33,13 @@ jQuery(document).on('click', '.action', function(e) {
     e.preventDefault();
 
     switch (jQuery(this).attr('data-action')) {
-        // LAGRING AV INNHOLD
+        // GODKJENNING AV NOMINASJON
         case 'godkjentNominasjon':
             jQuery(document).trigger('godkjentNominasjon', [jQuery(jQuery(this).parent()).attr('innslag-id'), jQuery(jQuery(this).parent()).attr('nominasjon-id'), jQuery(this).attr('godkjent-value')]);
+            break;
+        // UTFØRING AV VIDERESENDING PÅ NOMINASJON
+        case 'videresendNominasjon':
+            jQuery(document).trigger('videresendNominasjon', [jQuery(jQuery(this).parent()).attr('innslag-id'), jQuery(jQuery(this).parent()).attr('nominasjon-id')]);
             break;
         // LAGRING AV INNHOLD
         case 'save':
@@ -412,6 +416,16 @@ jQuery(document).on('godkjentNominasjon', function(e, innslag_id, nominasjon_id,
     jQuery(document).trigger('saveAjax', [innslag_id, data]);
 });
 
+jQuery(document).on('videresendNominasjon', function(e, innslag_id, nominasjon_id) {
+    var data = {
+        'action': 'UKMdeltakere_ajax',
+        'do': 'videresend_nominasjon',
+        'view': 'videresend_nominasjon',
+        'nominasjon_id': nominasjon_id,
+        'innslag_id': innslag_id
+    }
+    jQuery(document).trigger('saveAjax', [innslag_id, data]);
+});
 
 /**
  * Opprett tilgang til WP fra delta bruker 
