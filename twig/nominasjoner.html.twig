@@ -21,6 +21,7 @@
 					<div class="nominasjon-info">
                         <div class="nom-navn-og-info">
                             <h4 class="nominasjon-person-navn">{{ person.getNavn() }}</h4>
+                            <span class="nominasjon-person-fylke">{{ nominasjonInnslag.getFylke()}}
                             {% if nominasjon.erAnswered() %}
                             <div class="label-nominasjoner-info">
                                 <div class="pull-left nom-label">
@@ -168,6 +169,10 @@ table.nominasjon-table {
 }
 .nominasjon-person-navn {
     margin-right: 10px;
+}
+.nominasjon-person-fylke {
+    margin: auto;
+    margin-left: 0;
 }
 .label-nominasjoner-info {
     display: flex;
