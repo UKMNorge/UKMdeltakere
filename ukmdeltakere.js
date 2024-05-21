@@ -1,4 +1,15 @@
 /********** GUI-INTERAKSJONER ************ */
+// Hvis det er innslag definert i url, skal innslaget vises
+jQuery(function() {
+    if(getParamFromUrl('openInnslag') != null) {
+        var innslag_id = getParamFromUrl('openInnslag');
+        if (innslag_id.length > 0) {
+            jQuery(document).trigger('innslag.toggleBody', innslag_id, true);
+        }
+        removeParamFromUrl('openInnslag');
+    }
+});
+
 /* Knyttet til liste-visningen			   */
 jQuery(document).on('click', '.innslag .header', function(e) {
     e.preventDefault();
@@ -249,12 +260,15 @@ jQuery(document).on('innslag.newHeader', function(e, innslag_id, type) {
 /**
  * innslag.toggleBody
  **/
-jQuery(document).on('innslag.toggleBody', function(e, innslag_id) {
+jQuery(document).on('innslag.toggleBody', function(e, innslag_id, focus=false) {
     var body = jQuery('#innslag_' + innslag_id).find('.body');
     if (body.is(':visible')) {
         jQuery(document).trigger('innslag.hideBody', innslag_id);
     } else {
         jQuery(document).trigger('innslag.showBody', innslag_id);
+    }
+    if(focus) {
+        jQuery(window).scrollTop((jQuery('#innslag_' + innslag_id).offset().top - 90));
     }
 });
 /**
@@ -616,3 +630,15 @@ jQuery(document).on('click', '.kontaktpersonErMed', function(e) {
         innslag.find('.kontaktpersonRolle').slideUp();
     }
 });
+
+var getParamFromUrl = function(key) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(key);
+}
+
+function removeParamFromUrl(key) {
+    const params = new URLSearchParams(window.location.search);
+    params.delete(key);
+    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`));
+}
