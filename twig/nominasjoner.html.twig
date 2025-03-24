@@ -39,14 +39,14 @@
 					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
 						{% if nominasjon.erAnswered() %}
 							{% if nominasjon.erGodkjent() %}
-								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
-								<button godkjent-value="false" class="action btn btn-xs btn-success" data-action="videresendNominasjon">Utfør videresending</button>
+								<button godkjent-value="false" class="action btn btn-danger" data-action="godkjentNominasjon">Avvis</button>
+								<button godkjent-value="false" class="action btn btn-lg btn-success" data-action="videresendNominasjon">Utfør videresending</button>
 							{% else %}
-								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
+								<button godkjent-value="true" class="action btn btn-success" data-action="godkjentNominasjon">Godkjenn</button>
 							{% endif %}		
 						{% else %}
-								<button godkjent-value="true" class="action btn btn-xs btn-success" data-action="godkjentNominasjon">Godkjenn</button>
-								<button godkjent-value="false" class="action btn btn-xs btn-danger" data-action="godkjentNominasjon">Avvis</button>
+								<button godkjent-value="true" class="action btn btn-success" data-action="godkjentNominasjon">Godkjenn</button>
+								<button godkjent-value="false" class="action btn btn-danger" data-action="godkjentNominasjon">Avvis</button>
 						{% endif %}
 						
 					</div>
