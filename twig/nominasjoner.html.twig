@@ -21,7 +21,7 @@
 					<div class="nominasjon-info">
                         <div class="nom-navn-og-info">
                             <h4 class="nominasjon-person-navn">{{ person.getNavn() }}</h4>
-                            <span class="nominasjon-person-fylke">{{ nominasjonInnslag.getFylke()}}
+                            <span class="nominasjon-person-fylke">{{ monstring.getType() == 'land' ? nominasjonInnslag.getFylke() : nominasjonInnslag.getKommune()  }}
                             {% if nominasjon.erAnswered() %}
                             <div class="label-nominasjoner-info">
                                 <div class="pull-left nom-label">
