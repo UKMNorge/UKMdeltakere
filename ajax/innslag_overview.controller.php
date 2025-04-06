@@ -7,8 +7,9 @@ if ($innslag->getType()->erGruppe()) {
     $JSON->twigJS = 'overview';
 
     // INFO OM INNSLAGET
-    $JSON->innslag->kontaktperson   = $innslag->getKontaktperson();
-    $JSON->innslag->beskrivelse     = $innslag->getBeskrivelse();
+    $JSON->innslag->kontaktperson     = $innslag->getKontaktperson();
+    $JSON->innslag->beskrivelse       = $innslag->getBeskrivelse();
+    $JSON->innslag->arrangorKommentar = $innslag->getArrangorKommentar();
 
     // PERSONER I INNSLAGET
     $JSON->innslag->personer        = [];
