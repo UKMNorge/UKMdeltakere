@@ -4,7 +4,7 @@ use UKMNorge\Samtykke\Person;
 
 $samtykke = Person::getById( $_GET['id'] );
 
-if( $samtykke->getStatus()->getId() == 'ikke_godkjent' && !$samtykke->getKommunikasjon()->har('ombestemt') ) {
+if( $samtykke->getStatus()->getId() == 'ikke_godkjent' ) { // && !$samtykke->getKommunikasjon()->har('ombestemt') ) {
     UKMdeltakere::getFlash()->success(
         'Meldingen ble sendt: '.
         '<div class="card">'.
