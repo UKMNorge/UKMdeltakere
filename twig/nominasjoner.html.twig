@@ -11,18 +11,17 @@
 			</button>
 
 			<div class="nominasjoner col-xs-12 nop collapsed collapse" id="nominasjoner">
-				{% for nominasjonArr in nominasjoner|filter(nom => nom.innslag.erVideresendtTil(monstring) == false) %}
+				{% for nominasjonArr in nominasjoner %}
 					{% set nominasjonInnslag = nominasjonArr.innslag %}
 					{% set person = nominasjonArr.innslag.getPersoner().getSingle() %}
 					{% set nominasjon = nominasjonArr.nominasjon %}
-				<div class="nominasjon list-group-item {{ nominasjon.erAnswered() == false ? 'notification' : '' }}">
-					{# {{ dump(nominasjon) }} #}
-					
+                    {% set erFullfort = nominasjon.innslag.erVideresendtTil(monstring) %}
+				<div class="nominasjon list-group-item {{ nominasjon.erAnswered() == false ? 'notification' : '' }}">			
 					<div class="nominasjon-info">
                         <div class="nom-navn-og-info">
                             <h4 class="nominasjon-person-navn">{{ person.getNavn() }}</h4>
                             <span class="nominasjon-person-fylke">{{ monstring.getType() == 'land' ? nominasjonInnslag.getFylke() : nominasjonInnslag.getKommune()  }}
-                            {% if nominasjon.erAnswered() %}
+                            {% if nominasjon.erAnswered() and not erFullfort %}
                             <div class="label-nominasjoner-info">
                                 <div class="pull-left nom-label">
                                     <span class="text label label-{{ nominasjon.erGodkjent() ? 'success' : 'danger' }}">
@@ -37,13 +36,15 @@
 					</div>
 
 					<div class="nominasjon-buttons" nominasjon-id="{{ nominasjon.getId() }}" innslag-id="{{ nominasjonInnslag.getId() }}">
-						{% if nominasjon.erAnswered() %}
+						{% if erFullfort %}
+                            <span class="label label-success">Fullført</span>
+                        {% elseif nominasjon.erAnswered() %}
 							{% if nominasjon.erGodkjent() %}
 								<button godkjent-value="false" class="action btn btn-danger" data-action="godkjentNominasjon">Avvis</button>
 								<button godkjent-value="false" class="action btn btn-lg btn-success" data-action="videresendNominasjon">Utfør videresending</button>
 							{% else %}
 								<button godkjent-value="true" class="action btn btn-success" data-action="godkjentNominasjon">Godkjenn</button>
-							{% endif %}		
+							{% endif %}
 						{% else %}
 								<button godkjent-value="true" class="action btn btn-success" data-action="godkjentNominasjon">Godkjenn</button>
 								<button godkjent-value="false" class="action btn btn-danger" data-action="godkjentNominasjon">Avvis</button>
