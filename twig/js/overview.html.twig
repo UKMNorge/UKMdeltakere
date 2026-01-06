@@ -59,10 +59,10 @@
 			</label>
 			<a href="#innslag_{{ innslag_id }}" class="UKMSMS" data-to="{{innslag.kontaktperson.mobil}}" data-navn="{{innslag.kontaktperson.navn}}">{{ innslag.kontaktperson.mobil }}</a>
 			<br/>
-			<label>E-post:
+			{# <label>E-post:
 			</label>
 			<a href="mailto:{{ innslag.kontaktperson.epost }}">{{ innslag.kontaktperson.epost }}</a>
-			<br/>
+			<br/> #}
 			{# Bruker samme sjekk som i edit #}
 			{% if 1 == innslag.type.id %}
 				<label>Sjanger:
