@@ -7,6 +7,9 @@
 use UKMNorge\Arrangement\Arrangement;
 use UKMNorge\Arrangement\Write as WriteArrangement;
 use UKMNorge\Innslag\Write;
+use UKMNorge\Innslag\Personer\Write as WritePerson;
+use UKMNorge\Videresending\VideresendingNominasjon;
+use UKMNorge\Videresending\Write as VideresendingNominasjonWrite;
 
 require_once('UKM/Autoloader.php');
 
@@ -21,6 +24,15 @@ if( $innslag->getHomeId() == $arrangement->getId() ) {
 }
 // Fjern videresending 
 elseif( $innslag->getHomeId() != $arrangement->getId() ) {
+    foreach( $innslag->getPersoner()->getAll() as $person ) {
+        $nominasjoner = VideresendingNominasjon::getAllenForArrangementInnslagPerson($arrangement->getId(), $innslag->getId(), $person->getId());
+        foreach( $nominasjoner->getAll() as $nominasjon ) {
+            $nominasjon->setGodkjent(false);
+            $nominasjon->setStatus(VideresendingNominasjon::STATUS_HOS_DELTAKER);
+            VideresendingNominasjonWrite::save($nominasjon);
+        }
+        WritePerson::fjern( $person );
+    }
     WriteArrangement::fjernInnslag($innslag);
 }
 
