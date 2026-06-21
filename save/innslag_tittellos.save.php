@@ -34,6 +34,8 @@ if( $innslag->getType()->harBeskrivelse() ) {
 }
 $innslag->setKommune( $DATA['kommune'] );
 
+$innslag->setArrangorKommentar($DATA['arrangor_kommentar']);
+
 WritePerson::save( $person );
 WritePerson::saveRolle( $person );
 Write::save( $innslag );
