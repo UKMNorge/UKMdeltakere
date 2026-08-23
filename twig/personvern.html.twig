@@ -1,205 +1,110 @@
 <script>
-jQuery(document).on('click','.ombestemt', function(e) {
-    var navn = jQuery(this).parents('tr.samtykke').data('navn');
-    var sure = confirm(
-        'Er du sikker på at '+ navn + ' har ombestemt seg?' + 
-        "\r\n\r\n" +
-        'Hvis du fortsetter, sender vi en sms, hvor '+ navn + 
-        ' selv må gå inn og trykke godkjenn-knappen.'
-    );
-    if( sure ) {
-        return true;
+function sendPersonvernSMS(mobil, navn, message) {
+    if (!mobil) {
+        alert('Mangler mobilnummer.');
+        return;
     }
-    e.preventDefault();
-    return false;
-});
+    jQuery('#personvern-sms-recipients').val('[' + mobil + ', ' + navn + ']');
+    jQuery('#personvern-sms-message').val(message);
+    jQuery('#personvern-sms-form').submit();
+}
 </script>
-<div style="width: 95%">
-    <h2>
-        Personvern
-    </h2>
 
-    <p class="lead">
-        Alle deltakere får informasjon om personvern og datalagring ved påmelding, 
-        og kan si at UKM ikke skal ta bilder/film av de.
-        Her har du full oversikt over dine deltakeres status.
-    </p>
+<form action="?page=UKMSMS_gui" method="POST" id="personvern-sms-form" style="display:none;">
+    <input type="hidden" name="UKMSMS_message" id="personvern-sms-message" />
+    <input type="hidden" name="UKMSMS_recipients" id="personvern-sms-recipients" />
+</form>
 
-
-    {% include "wp_modul.flashbag.html.twig" %}
-    <ol class="list-group">
-        <li class="list-group-item">
-            <b>Film- og foto-reservasjon <span class="badge badge-warning" style="background-color: #f89406;">Det eneste du må følge opp</span></b>
-            <br />
-            Alle deltakere får muligheten til å reservere seg mot å bli tatt bilde av 
-            eller filmet. I listen nedenfor kan du se hvem dette gjelder, men vi anbefaler
-            at du bruker rapporten 
-            <a href="?page=UKMrapporter&action=rapport&rapport=Personvern">film- og fotorettigheter</a>.
-        </li>
-
-        <li class="list-group-item">
-            <b>Ingen deltakere skal nektes å delta på UKM</b><br />
-            Personer under 15 år bes om å oppgi kontaktinformasjon til foreldre/foresatte,
-            men dette er ikke påkrevd for UKM-deltakelse.
-        </li>
-
-        <li class="list-group-item">
-            <b>Lær mer om personvern og GDPR</b>
-            <br />
-            I vårt 
-            <a href="https://personvern.{{ UKM_HOSTNAME }}" target="_blank">personvern-senter</a>
-            kan du lese mer om hvordan vi håndterer GDPR og deltakernes personvern.
-        </li>
-
-        <li class="list-group-item">
-            <b>Opplasting av film og foto</b>
-            <br />
-            Ved opplasting av film og foto vil innslag hvor én eller flere personer
-            ikke ønsker å bli fotografert/filmet merkes tydelig med rød tekst.
-        </li>
-
-        <li class="list-group-item">
-            <b>Følgende informasjon-status er mulig</b>
-            <br />
-            - <code>Ikke send</code>: Spesial-tilfelle hvor én kontaktperson her meldt på mer enn 10 andre personer, men brukt sitt mobilnummer. Ikke vits i å sende sms da.
-            <br />
-            - <code>Ikke sendt</code>: Vi har ikke sendt sms enda. Dette gjøres automatisk hver dag.
-            <br />
-            - <code>Ikke sett</code>: Personen har fått sms, men ikke åpnet lenken.
-            <br />
-            - <code>Ikke svart</code>: Personen har åpnet lenken, men ikke trykket "greit" eller "ønsker ikke å bli fotografert/filmet".
-            <br />
-            - <code>Ikke godtatt</code>: Personen ønsker ikke å bli fotografert/filmet.
-            <br />
-            - <code>Godtatt</code>: Alt er ok!
-        </li>
-
-        <li class="list-group-item">
-            <b>Tekst som sendes til deltakerne per sms</b>
-            <br />
-            - <code>Under 15 år</code>: {{ sms_u15 }}
-            <br />
-            - <code>15 år eller eldre</code>: {{ sms_15o }}
-        </li>
-
-        <li class="list-group-item">
-            <b>Har du en deltaker som har ombestemt seg?</b>
-            <br />
-            Da kan du trykke på knappen "Send ny mulighet til samtykke" i listen nedenfor.
-        </li>
-    </ol>
-
-
-
-    {#<a href="?page={{GET('page')}}&send=sendtoall" class="btn btn-warning">Send til alle som ikke har fått tidligere</a> #}
-    <h2 style="margin-top: 2em;">Status for dine påmeldte</h2>
-    {% for gruppe in personer %}
-        <h3>{{ gruppe.getNavn() }}</h3>
-        <p>
-            <b>{{ gruppe.getKrav() }}</b>
-        </p>
-        <div class="clearfix"></div>
-        <table class="table table-striped " style="margin: .5em 0em 4em 2em; width: Calc(100% - 2em); ">
-            <thead>
-                <tr>
-                    <th width="*%">Person</th>
-                    <th width="50">Alder</th>
-                    <th width="30%">Status</th>
-                    <th width="200">Handlinger</th>
-                </tr>
-            </thead>
-            
-            <tbody>
-                {% for person in gruppe.personer %}
-                    <tr class="samtykke" data-navn="{{person.getNavn()}}">
-                        <td>
-                            {{ person.getNavn() }} <small class="UKMSMS clickable" data-to="{{person.getMobil()}}" data-navn="{{person.getNavn()}}">{{ person.getMobil() }}</small>
-                            {% if person.harForesatt() %}
-                                <br />
-                                <small>
-                                    Foresatt: {{ person.getForesatt().getNavn() }} ({{ person.getForesatt().getMobil() }})
-                                </small>
-                            {% endif %}
-                        </td>
-                        
-                        
-                        <td>{{ person.getAlder() }}</td>
-                        
-                        
-                        {% if person.getKategori().getId() == 'u13' %}
-                            <td>
-                                Foresatt: <i class="label label-{{ person.getForesatt().getStatus().getLevel() }}">{{ person.getForesatt().getStatus() }}</i>
-                                <br />
-                                Deltaker: <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
-                            </td>
-                        {% elseif (person.getKategori().getId() == 'u15' and person.harForesatt()) or person.harForesatt() %}
-                            <td class="text-{{ person.getStatus().getLevel() }}">
-                                Deltaker: <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
-                                <br />
-                                Foresatt: <i class="label label-{{ person.getForesatt().getStatus().getLevel() }}">{{ person.getForesatt().getStatus() }}</i>
-                            </td>
+{% macro personvern_tabell(personer, under18, delta_base_url, personvern_prosjekt_id) %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Navn</th>
+                <th>Mobil</th>
+                <th>Foresatt Navn</th>
+                <th>Foresatt Mobil</th>
+                <th>Samtykke Skjema</th>
+                <th>Svar</th>
+                <th>Foresatt Samtykke</th>
+                <th>Send SMS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in personer %}
+                {% set deltakerNavn = person.person.getNavn() %}
+                {% set deltakerMobil = person.person.getMobil() %}
+                {% set foresattNavn = person.deltaRespondent ? person.deltaRespondent.getForesattNavn() : null %}
+                {% set foresattMobil = person.deltaRespondent ? person.deltaRespondent.getForesattMobil() : null %}
+                {% set deltaUserId = person.deltaRespondent ? person.deltaRespondent.getId() : null %}
+                {% set harSvar = person.svar and person.svar.erSamtykkeGitt() %}
+                {% set harForesattSamtykke = person.foresattSamtykke %}
+                {% set erKomplett = under18 ? (harSvar and harForesattSamtykke) : harSvar %}
+                {% set deltakerLenke = delta_base_url ~ '/ukmid/samtykkeskjema/' ~ personvern_prosjekt_id ~ '/' %}
+                {% set foresattLenke = deltaUserId ? delta_base_url ~ '/ukmid/samtykkeskjema/' ~ personvern_prosjekt_id ~ '/' ~ deltaUserId ~ '/' : '' %}
+                {% set meldingDeltaker = 'Hei! Du er påmeldt UKM. Les om personvern og ta stilling her: ' ~ deltakerLenke ~ ' Hilsen UKM Norge' %}
+                {% set meldingForesatt = 'Hei! Du er oppgitt som foresatt for ' ~ deltakerNavn ~ ' som er påmeldt UKM. Les om personvern og gi ditt samtykke her: ' ~ foresattLenke ~ ' Hilsen UKM Norge' %}
+                <tr class="table-personvern {{ erKomplett ? 'success' : '' }}">
+                    <td>{{ person.deltaRespondent ? person.deltaRespondent.getId() ~ ' - ' : '' }}{{ deltakerNavn }}</td>
+                    <td>{{ deltakerMobil }}</td>
+                    <td>{{ foresattNavn ?: '—' }}</td>
+                    <td>{{ foresattMobil ?: '—' }}</td>
+                    <td>{{ person.samtykkeSkjema ? person.samtykkeSkjema.getNavn() : '—' }}</td>
+                    <td>{{ person.svar ? (harSvar ? 'Ja' : 'Nei') : '—' }}</td>
+                    <td>
+                        {% if under18 %}
+                            {{ harForesattSamtykke is same as(true) ? 'Ja' : (harForesattSamtykke is same as(false) ? 'Nei' : '—') }}
                         {% else %}
-                            <td class="text-{{ person.getStatus().getLevel() }}">
-                                <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
-                            </td>
+                            —
                         {% endif %}
-                        
-                        
-                        <td>
-                            {# Vi har aldri sendt sms til deltakeren #}
-                            {% if person.getStatus().getId() == 'ikke_sendt' %}
-                                <a href="?page={{GET('page')}}&send=samtykke&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
-                                    Send samtykke-sms
-                                </a>
-                            {% endif %}
-                            
+                    </td>
+                    <td>
+                        {% if harSvar %}
+                            <button type="button" class="btn btn-default" disabled>Send SMS til deltaker</button>
+                        {% else %}
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                onclick="sendPersonvernSMS({{ deltakerMobil|json_encode|raw }}, {{ deltakerNavn|json_encode|raw }}, {{ meldingDeltaker|json_encode|raw }})"
+                            >Send SMS til deltaker</button>
+                        {% endif %}
 
-                            {# Deltaker har ikke trykket på lenken #}
-                            {% if person.getStatus().getId() not in ['godkjent','ikke_godkjent','ikke_sendt', 'ikke_send'] %}
-                                <a href="?page={{GET('page')}}&send=purring&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
-                                    Send purring
-                                </a>
-                                {% if person.getKommunikasjon().har('purring_deltaker') %}
-                                    <br />
-                                    <small>
-                                        Purret {{ person.getPerson().getFornavn() }} 
-                                        {{ person.getKommunikasjon().get('purring_deltaker').getTimestamp() }}
-                                    </small>
-                                {% endif %}
+                        {% if under18 %}
+                            {% if harForesattSamtykke %}
+                                <button type="button" class="btn btn-default" disabled>Send SMS til foresatt</button>
+                            {% elseif foresattMobil %}
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    onclick="sendPersonvernSMS({{ foresattMobil|json_encode|raw }}, {{ (foresattNavn ?: 'Foresatt')|json_encode|raw }}, {{ meldingForesatt|json_encode|raw }})"
+                                >Send SMS til foresatt</button>
+                            {% else %}
+                                <button type="button" class="btn btn-default" disabled title="Mangler foresatt mobil">Send SMS til foresatt</button>
                             {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Ingen personer i denne gruppen.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
 
-                            {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
-                            {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() == 'ikke_sendt' %}
-                                <a href="?page={{GET('page')}}&send=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
-                                    Send informasjon til foresatt
-                                </a>
-                            {% endif %}
-                            
-                            {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
-                            {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() not in ['ikke_sendt','godkjent','ikke_godkjent'] %}
-                                <a href="?page={{GET('page')}}&send=purring&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
-                                    Send purring til foresatt
-                                </a>
-                                {% if person.getKommunikasjon().har('purring_foresatt') %}
-                                    <br />
-                                    <small>
-                                        Purret {{ person.getForesatt().getNavn() }} 
-                                        {{ person.getKommunikasjon().get('purring_foresatt').getTimestamp() }}
-                                    </small>
-                                {% endif %}
-                            {% elseif person.getStatus().getId() == 'ikke_godkjent' %}
-                                <a href="?page={{GET('page')}}&send=ombestemt&id={{person.getId()}}" class="ombestemt btn btn-ukm btn-warning btn-xs btn-mini">
-                                    Send ny mulighet til samtykke
-                                </a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4">Ingen deltakere som er {{ gruppe.getNavn()|lower }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endfor %}
+{% import _self as personvern %}
+
+<div>
+    <h1>Under 18 år</h1>
+    {{ personvern.personvern_tabell(personerUnder18, true, delta_base_url, personvern_prosjekt_id) }}
+
+    <h1>18 år eller eldre</h1>
+    {{ personvern.personvern_tabell(personer18EllerEldre, false, delta_base_url, personvern_prosjekt_id) }}
 </div>
+
+
+<style>
+tr.table-personvern.success > td {
+    background-color: #a2d8a4 !important;
+}
+</style>
