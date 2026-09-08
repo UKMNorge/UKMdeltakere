@@ -8,62 +8,42 @@
  * Personen vil da få sms fra cronjobben som følger opp dette.
  */
 
-use UKMNorge\Samtykkeskjema\SamtykkeSkjema;
-use UKMNorge\Arrangement\Skjema\DeltaRespondent;
+use UKMNorge\Arrangement\Arrangement;
+use UKMNorge\Samtykke\Kategorier;
+use UKMNorge\Samtykke\Person;
+
 
 $arrangement = UKMdeltakere::getArrangement();
 
-$personerUnder18 = [];
-$personer18EllerEldre = [];
+$grupper = [
+	// 'u13' => Kategorier::getById('u13'),
+	// 'u15' => Kategorier::getById('u15'),
+	// '15o' => Kategorier::getById('15o'),
+	'u18' => Kategorier::getById('u18'),
+	'o18' => Kategorier::getById('o18'),
+];
 
 foreach ($arrangement->getInnslag()->getAll() as $innslag) {
 	foreach ($innslag->getPersoner()->getAll() as $person) {
-		$entry = [
-			'person' => $person,
-			'deltaRespondent' => null,
-			'samtykkeSkjema' => null,
-			'svar' => null,
-			'foresattSamtykke' => null,
-		];
+		$samtykke = new Person($person, $innslag);
 
-		$deltaRespondent = DeltaRespondent::loadByMobil($person->getMobil());
-		if ($deltaRespondent == null) {
-			$personerUnder18[$person->getId()] = $entry;
-			continue;
-		}
-
-		$entry['deltaRespondent'] = $deltaRespondent;
-
-		$deltaUserId = $deltaRespondent->getId();
-		$samtykkeSkjema = SamtykkeSkjema::getPersonvernSamtykkeskjema($deltaUserId);
-		$entry['samtykkeSkjema'] = $samtykkeSkjema;
-		if ($samtykkeSkjema != null) {
-			try {
-				$versjon = $samtykkeSkjema->getLastVersion();
-				$svar = $versjon->getSvarSamtykkeForBruker($deltaUserId);
-				$entry['svar'] = $svar;
-				$entry['foresattSamtykke'] = $versjon->isForesattGodkjent($deltaUserId);
-			} catch (Exception $e) {
-				$entry['svar'] = null;
-				$entry['foresattSamtykke'] = null;
-			}
-		}
-
-		if ($deltaRespondent->is18YearNow()) {
-			$personer18EllerEldre[$person->getId()] = $entry;
-		} else {
-			$personerUnder18[$person->getId()] = $entry;
-		}
+		$grupper[$samtykke->getKategori()->getId()]->personer[$samtykke->getNavn() . '-' . $samtykke->getId()] = $samtykke;
 	}
 }
+
+foreach ($grupper as $gruppe) {
+	if (is_array($gruppe)) {
+		ksort($gruppe->personer);
+	}
+}
+
 
 UKMdeltakere::addViewData(
 	[
 		'monstring' => $arrangement,
-		'personerUnder18' => $personerUnder18,
-		'personer18EllerEldre' => $personer18EllerEldre,
-		'personvern_prosjekt_id' => 1,
-		'delta_base_url' => 'https://delta.' . UKM_HOSTNAME,
+		'personer' => $grupper,
+		'sms_u18' => $grupper['u18']->getSms(),
+		'sms_o18' => $grupper['o18']->getSms(),
 		'is_super_admin' => is_super_admin()
 	]
 );
