@@ -39,7 +39,7 @@ jQuery(document).on('click','.ombestemt', function(e) {
 
         <li class="list-group-item">
             <b>Ingen deltakere skal nektes å delta på UKM</b><br />
-            Personer under 15 år bes om å oppgi kontaktinformasjon til foreldre/foresatte,
+            Personer under 18 år bes om å oppgi kontaktinformasjon til foreldre/foresatte,
             men dette er ikke påkrevd for UKM-deltakelse.
         </li>
 
@@ -77,9 +77,9 @@ jQuery(document).on('click','.ombestemt', function(e) {
         <li class="list-group-item">
             <b>Tekst som sendes til deltakerne per sms</b>
             <br />
-            - <code>Under 15 år</code>: {{ sms_u15 }}
+            - <code>Under 18 år</code>: {{ sms_u18 }}
             <br />
-            - <code>15 år eller eldre</code>: {{ sms_15o }}
+            - <code>18 år eller eldre</code>: {{ sms_o18 }}
         </li>
 
         <li class="list-group-item">
@@ -98,14 +98,14 @@ jQuery(document).on('click','.ombestemt', function(e) {
         <p>
             <b>{{ gruppe.getKrav() }}</b>
         </p>
-                {% for person in gruppe.personer %}
-                    {% if person.getSvarSamtykke() != null %}
-                        <pre>
-                            {{ dump(person.getSvarSamtykke().getForesattIdGodkjent()) }}
-                        </pre>
-                    {% endif %}
-                {% endfor %}
-        
+
+        {% for person in gruppe.personer %}
+            {% if person.getSvarSamtykke() != null %}
+                <pre>
+                    {{ dump(person.getSvarSamtykke().getForesattIdGodkjent()) }}
+                </pre>
+            {% endif %}
+        {% endfor %}
 
         <div class="clearfix"></div>
         <table class="table table-striped " style="margin: .5em 0em 4em 2em; width: Calc(100% - 2em); ">
@@ -122,6 +122,11 @@ jQuery(document).on('click','.ombestemt', function(e) {
                 {% for person in gruppe.personer %}
                     <tr class="samtykke" data-navn="{{person.getNavn()}}">
                         <td>
+                            {% if person.getSvarSamtykke() %}                            
+                                <span class="label label-default">Samtykkeskjema</span>
+                            {% endif %}
+                            
+                            <br />
                             {{ person.getNavn() }} <small class="UKMSMS clickable" data-to="{{person.getMobil()}}" data-navn="{{person.getNavn()}}">{{ person.getMobil() }}</small>
                             {% if person.harForesatt() %}
                                 <br />
@@ -137,20 +142,28 @@ jQuery(document).on('click','.ombestemt', function(e) {
                         
                         {% if person.getKategori().getId() == 'u18' %}
                             <td>
+                                {# Under 18: vis alltid deltaker og foresatt. Nytt skjema og gammelt samtykke-system sjekkes hver for seg. #}
                                 {% if person.getSvarSamtykke() %}
-                                    Deltakerw: <i class="label label-{{ person.getSvarSamtykke().getSvar() == 'ja' ? 'success' : 'danger' }}">{{ person.getSvarSamtykke().getSvar() == 'ja' ? 'Godtatt' : 'Ikke godtatt' }}</i>
+                                    Deltaker: <i class="label label-{{ person.getSvarSamtykke().getSvar() == 'ja' ? 'success' : (person.getSvarSamtykke().getSvar() == 'nei' ? 'danger' : 'info') }}">{{ person.getSvarSamtykke().getSvar() == 'ja' ? 'Godtatt' : (person.getSvarSamtykke().getSvar() == 'nei' ? 'Ikke godtatt' : 'Ikke svart') }}</i>
                                     <br />
                                     Foresatt: <i class="label label-{{ person.getSvarSamtykke().hasForesattGodkjent() ? 'success' : 'danger' }}">{{ person.getSvarSamtykke().hasForesattGodkjent() ? 'Godtatt' : 'Ikke godtatt' }}</i>
                                 {% else %}
                                     Deltaker: <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
                                     <br />
-                                    Foresatt: <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
+                                    {% if person.harForesatt() %}
+                                        Foresatt: <i class="label label-{{ person.getForesatt().getStatus().getLevel() }}">{{ person.getForesatt().getStatus() }}</i>
+                                    {% else %}
+                                        Foresatt: <i class="label label-info">Ikke oppgitt</i>
+                                    {% endif %}
                                 {% endif %}
-                                
                             </td>
                         {% else %}
                             <td class="text-{{ person.getStatus().getLevel() }}">
-                                <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
+                                {% if person.getSvarSamtykke() %}
+                                    <i class="label label-{{ person.getSvarSamtykke().getSvar() == 'ja' ? 'success' : (person.getSvarSamtykke().getSvar() == 'nei' ? 'danger' : 'info') }}">{{ person.getSvarSamtykke().getSvar() == 'ja' ? 'Godtatt' : (person.getSvarSamtykke().getSvar() == 'nei' ? 'Ikke godtatt' : 'Ikke svart') }}</i>
+                                {% else %}
+                                    <i class="label label-{{ person.getStatus().getLevel() }}">{{ person.getStatus() }}</i>
+                                {% endif %}
                             </td>
                         {% endif %}
                         
@@ -178,39 +191,47 @@ jQuery(document).on('click','.ombestemt', function(e) {
                                 {% endif %}
                             {% endif %}
 
-                            {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
-                            {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() == 'ikke_sendt' %}
-                                <a href="?page={{GET('page')}}&send=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
-                                    Send informasjon til foresatt
-                                </a>
+                            {# Foresatt-oppfølging gjelder kun under 18. Nytt skjema og gammelt system er to ulike sjekker. #}
+                            {% if person.getKategori().getId() == 'u18' %}
+                                {% if person.getSvarSamtykke() %}
+                                    {% if not person.getSvarSamtykke().hasForesattGodkjent() and person.harForesatt() %}
+                                        <a href="?page={{GET('page')}}&send=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
+                                            Send informasjon til foresatt
+                                        </a>
+                                    {% endif %}
+                                {% elseif person.harForesatt() %}
+                                    {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.getForesatt().getStatus().getId() == 'ikke_sendt' %}
+                                        <a href="?page={{GET('page')}}&send=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
+                                            Send informasjon til foresatt
+                                        </a>
+                                    {% endif %}
+
+                                    {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.getForesatt().getStatus().getId() not in ['ikke_sendt','godkjent','ikke_godkjent'] %}
+                                        <a href="?page={{GET('page')}}&send=purring&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
+                                            Send purring til foresatt
+                                        </a>
+                                        {% if person.getKommunikasjon().har('purring_foresatt') %}
+                                            <br />
+                                            <small>
+                                                Purret {{ person.getForesatt().getNavn() }}
+                                                {{ person.getKommunikasjon().get('purring_foresatt').getTimestamp() }}
+                                            </small>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
                             {% endif %}
 
                             {% if person.getSvarSamtykke() %}
-                                {% if not person.getSvarSamtykke().hasForesattGodkjent() %}
-                                    <a href="?page={{GET('page')}}&send=samtykke&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-success btn-xs btn-mini">
-                                        Send informasjon til foresatt
+                                {% if person.getSvarSamtykke().getSvar() == 'nei' %}
+                                    <a href="?page={{GET('page')}}&send=ombestemt&id={{person.getId()}}" class="ombestemt btn btn-ukm btn-warning btn-xs btn-mini">
+                                        Send ny mulighet til samtykke
                                     </a>
-                                {% endif %}
-                            {% endif %}
-                            
-                            
-                            {# Deltaker har sagt godkjent/ikke godkjent, men foresatte har ikke gjort noe #}
-                            {# {% if person.getStatus().getId() in ['godkjent','ikke_godkjent'] and person.harForesatt() and person.getForesatt().getStatus().getId() not in ['ikke_sendt','godkjent','ikke_godkjent'] %}
-                                <a href="?page={{GET('page')}}&send=purring&foresatt=true&id={{person.getId()}}" class="btn btn-ukm btn-primary btn-xs btn-mini">
-                                    Send purring til foresatt
-                                </a>
-                                {% if person.getKommunikasjon().har('purring_foresatt') %}
-                                    <br />
-                                    <small>
-                                        Purret {{ person.getForesatt().getNavn() }} 
-                                        {{ person.getKommunikasjon().get('purring_foresatt').getTimestamp() }}
-                                    </small>
                                 {% endif %}
                             {% elseif person.getStatus().getId() == 'ikke_godkjent' %}
                                 <a href="?page={{GET('page')}}&send=ombestemt&id={{person.getId()}}" class="ombestemt btn btn-ukm btn-warning btn-xs btn-mini">
                                     Send ny mulighet til samtykke
                                 </a>
-                            {% endif %} #}
+                            {% endif %}
                         </td>
                     </tr>
                 {% else %}
