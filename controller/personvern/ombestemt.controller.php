@@ -2,21 +2,14 @@
 
 use UKMNorge\Samtykke\Person;
 
-$samtykkePerson = Person::getById( $_GET['id'] );
+$samtykke = Person::getById( $_GET['id'] );
 
-echo '<pre>';
-var_dump($samtykkePerson);
-echo '</pre>';
-// die;
-
-if( $samtykkePerson->getStatus()->getId() == 'ikke_godkjent' ) { // && !$samtykkePerson->getKommunikasjon()->har('ombestemt') ) {
-    $kode = $samtykkePerson->getSvarSamtykke() ? 'ombestemtsamtykkeskjemadelta' : 'ombestemt';
-
+if( $samtykke->getStatus()->getId() == 'ikke_godkjent' ) { // && !$samtykke->getKommunikasjon()->har('ombestemt') ) {
     UKMdeltakere::getFlash()->success(
         'Meldingen ble sendt: '.
         '<div class="card">'.
         nl2br( 
-            $samtykkePerson->getKommunikasjon()->sendMelding($kode) 
+            $samtykke->getKommunikasjon()->sendMelding('ombestemt') 
         ).
         '</div>'
     );
