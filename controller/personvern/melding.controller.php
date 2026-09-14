@@ -5,6 +5,9 @@
  */
 
 use UKMNorge\Arrangement\Skjema\DeltaRespondent;
+use UKMNorge\Samtykkeskjema\SvarBeskjed;
+use UKMNorge\Samtykkeskjema\Write;
+use UKMNorge\Samtykkeskjema\SvarUser;
 
 require_once('UKM/sms.class.php');
 
@@ -34,6 +37,15 @@ if ($person === null) {
 }
 
 $svar = $person->getPersonvernSamtykkeskjemaSvar();
+// Sjekk hvis det ble sendt beskjed til deltaker eller foresatt tidligere
+$beskjed = SvarBeskjed::getSisteForSvar($svar, $mottakerType);
+
+// Sjekk om det ble sendt beskjed for mindre enn 24 timer siden
+if ($beskjed !== null && $beskjed->getCreatedAtTimestamp() > (time() - 86400)) {
+	UKMdeltakere::getFlash()->error('Det ble allerede sendt beskjed til ' . $mottakerType . ' for mindre enn 24 timer siden.');
+	return;
+}
+	
 $deltaUser = DeltaRespondent::loadByMobil($person->getMobil());
 $erU18 = (int) $person->getAlderTall() < 18;
 $deltakerSvar = $svar !== null ? $svar->getSvar() : null;
@@ -92,6 +104,7 @@ if (UKM_HOSTNAME == 'ukm.dev') {
 			nl2br(htmlspecialchars($melding)) .
 			'</div>'
 	);
+	registerSendBeskjed($svar, $mottakerType, $melding, $mobil);
 	return;
 }
 
@@ -104,6 +117,11 @@ try {
 			nl2br(htmlspecialchars($melding)) .
 			'</div>'
 	);
+	registerSendBeskjed($svar, $mottakerType, $melding, $mobil);
 } catch (Exception $e) {
 	UKMdeltakere::getFlash()->error('Kunne ikke sende SMS: ' . $e->getMessage());
+}
+
+function registerSendBeskjed(SvarUser $svar, string $rolle, string $message, string $phone) {
+	Write::registrerBeskjed($svar, $rolle, $message, $phone);
 }
