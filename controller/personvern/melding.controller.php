@@ -93,7 +93,7 @@ if ($mottakerType === 'deltaker') {
 	$foresattLenke = $deltaLenke . $deltaUser->getId() . '/';
 	$melding = 'Hei! Vi savner et svar fra deg om bilder og film i forbindelse med ' . $fornavn .
 		' sin deltakelse på UKM. ' . "\r\n" .
-		'Gi oss beskjed på lenken nedenfor. ' . $foresattLenke;
+		'Gi ditt samtykke på lenken: ' . $foresattLenke;
 }
 
 if (UKM_HOSTNAME == 'ukm.dev') {

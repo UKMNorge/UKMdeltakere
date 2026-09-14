@@ -45,7 +45,7 @@
             <br />
             - <code>Godtatt</code>: Alt er ok.
             <br />
-            For under 18 vises også foresatt: <code>Godtatt</code> eller <code>Ikke svart</code>.
+            For under 18 vises også foresatt: <code>Sett og bekreftet</code> eller <code>Ikke svart</code>.
             <br />
             Hvis samtykke ikke er oppfylt, kan du sende melding til deltaker eller foresatt.
         </li>
@@ -111,13 +111,27 @@
                                     </a>
                                 {% endif %}
                             {% endif %}
+                            {% if person.siste_beskjed_deltaker %}
+                                <div style="margin-top: .4em;">
+                                    <small>
+                                        Sist sendt til deltaker {{ person.siste_beskjed_deltaker.created_at|date('d.m.Y H:i') }}
+                                    </small>
+                                </div>
+                            {% endif %}
                             {% if person.kan_sende_foresatt %}
-                                {% if person.kan_sende_deltaker %}
+                                {% if person.kan_sende_deltaker or person.siste_beskjed_deltaker %}
                                     <br />
                                 {% endif %}
                                 <a href="?page=UKMdeltakere_personvern&amp;send=melding&amp;mottaker=foresatt&amp;id={{ person.id }}" class="btn btn-ukm btn-success btn-xs btn-mini">
                                     Send melding til foresatt
                                 </a>
+                            {% endif %}
+                            {% if person.siste_beskjed_foresatt %}
+                                <div style="margin-top: .4em;">
+                                    <small>
+                                        Sist sendt til foresatt {{ person.siste_beskjed_foresatt.created_at|date('d.m.Y H:i') }}
+                                    </small>
+                                </div>
                             {% endif %}
                         </td>
                     </tr>
