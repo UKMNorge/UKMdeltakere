@@ -80,6 +80,9 @@ switch( $_POST['doSave'] ) {
 	case 'tittellos':
 		require_once( plugin_dir_path( __FILE__ ). '../save/innslag_tittellos.save.php');
 		break;
+	case 'arrangorKommentar':
+		require_once( plugin_dir_path( __FILE__ ). '../save/arrangorKommentar.save.php');
+		break;
 	case 'musikkTittel':
 	case 'dansTittel':
 	case 'teaterTittel':

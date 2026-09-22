@@ -470,7 +470,8 @@ jQuery(document).on('simpleSave', function(e, innslag_id, clicked) {
         'do': 'save',
         'doSave': clicked.attr('data-handle'),
         'innslag': innslag_id,
-        'object_id': clicked.attr('data-object-id')
+        'object_id': clicked.attr('data-object-id'),
+        'arrangor_kommentar': clicked.attr('data-arrangor-kommentar')
     }
     jQuery(document).trigger('saveAjax', [innslag_id, data]);
     
